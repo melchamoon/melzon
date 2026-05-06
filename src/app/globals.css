@@ -35,8 +35,53 @@ body {
   background: linear-gradient(135deg, #FFD86F 0%, #D4AF37 50%, #8B6914 100%);
 }
 
+.gauge-fill {
+  transition: width 75ms, background 300ms ease;
+}
+.gauge-white { background: #ffffff; }
+.gauge-blue  { background: #3b82f6; }
+.gauge-red   { background: #ef4444; }
+
+@keyframes gold-sweep {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes gold-glow-pulse {
+  0%, 100% { box-shadow: 0 0 6px 2px rgba(212, 175, 55, 0.5); }
+  50%       { box-shadow: 0 0 18px 6px rgba(212, 175, 55, 0.95); }
+}
+
+.gauge-gold-shine {
+  background: linear-gradient(
+    90deg,
+    #8B6914 0%,
+    #D4AF37 20%,
+    #FFD86F 35%,
+    #fffbe6 50%,
+    #FFD86F 65%,
+    #D4AF37 80%,
+    #8B6914 100%
+  );
+  background-size: 300% 100%;
+  animation: gold-sweep 1.2s linear infinite;
+  transition: width 75ms;
+}
+.gauge-max {
+  animation: gold-glow-pulse 1s ease-in-out infinite;
+}
+
 .shadow-gold-glow {
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.45);
+}
+
+@keyframes float-up {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  80%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.8); }
+}
+
+.animate-float-up {
+  animation: float-up 0.9s ease-out forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
