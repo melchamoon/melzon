@@ -64,51 +64,50 @@
   reviews:
     - 音は普通でした。見た目は最強です。
 - id: p_009
-  name: 金箔ティッシュ(180組)
+  name: 燃える氷
   price: 3200
   image: /products/p_009.png
-  description: 1 枚 1 枚に金箔が貼られたティッシュ。鼻をかむのが申し訳なくなる。
+  description: 伝説のアイテム。
   reviews:
-    - 使えませんでした。
-    - 来客時に飾っています。
+    - 電球の代わりとして使おうと思いましたが、消せないので不便です。
+    - タバコに火をつけるのに便利です。
 - id: p_010
-  name: めるちゃも公認 金色のヤカン
+  name: めるちゃも印 金色のヤカン
   price: 9800
   image: /products/p_010.png
   description: お湯を沸かすと金色の蒸気が出ません。
   reviews:
-    - 注ぎ口から金粉が落ちると言われましたが落ちません。
     - お湯が美味しく感じます。気のせいかもしれません。
     - キッチンが豪華になりました。
 - id: p_011
-  name: 金粉スプレー(食用ではない)
+  name: 等身大めるちゃもビニール人形
   price: 5400
   image: /products/p_011.png
-  description: 食品にかけてはいけません。インテリアにどうぞ。
+  description: お店の宣伝やインテリアまで幅広くご利用ください。
   reviews:
-    - 部屋中が金色になりました。家族に怒られました。
+    - パンチすると「やめてくれなのだー！」という音声が鳴ります。
+    - 庭に置いてたら風で飛ばされてどこかに行きました。
 - id: p_012
-  name: 黄金のしゃもじ
+  name: きれいな石
   price: 7200
   image: /products/p_012.png
-  description: ご飯がよそえます。よそうたびに金が剥がれます。
-  reviews:
-    - ご飯に金粉が混ざります。
-    - 縁起が良さそうです。
-- id: p_013
-  name: 金で塗装した石(中)
-  price: 2800
-  image: /products/p_013.png
-  description: 石です。金色です。それ以上の機能はありません。
+  description: 河原で拾いました。
   reviews:
     - 石でした。
     - 重さに驚きました。
     - 文鎮にしています。
+- id: p_013
+  name: ゴールデン☆柑橘類皮向き
+  price: 2800
+  image: /products/p_013.png
+  description: はっさくとかの皮を剥けます。
+  reviews:
+    - これを買ったらはっさくを買うお金がなくなりました。
 - id: p_014
-  name: 金色ガムテープ(1巻)
+  name: おいしいレトルトカレー
   price: 1200
   image: /products/p_014.png
-  description: 段ボールが豪華になります。粘着力は普通。
+  description: 種類
   reviews:
     - 引越しが豪華になりました。
 - id: p_015
@@ -142,10 +141,10 @@
   reviews:
     - 経費で落ちませんでした。
 - id: p_019
-  name: 金粉バウムクーヘン
+  name: 金粉たっぷりバウムクーヘン
   price: 5800
   image: /products/p_019.png
-  description: バウムクーヘンの年輪に沿って金粉。輪切りにすると断面が輝きます。
+  description: バウムクーヘンにたっぷり金箔をのせました。輪切りにすると断面が輝きます。
   reviews:
     - 見た目は最強。味は普通でした。
     - 切るのを躊躇しました。
