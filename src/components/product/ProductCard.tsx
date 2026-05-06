@@ -1,12 +1,17 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/types/product';
+import { pickProductImage } from '@/lib/product-image';
 import { formatPoints } from '@/lib/format';
 import { RatingStars } from '@/components/ui/RatingStars';
 
 export function ProductCard({ product }: { product: Product }) {
+  const [imgSrc, setImgSrc] = useState(product.images[0]);
+  useEffect(() => { setImgSrc(pickProductImage(product)); }, [product]);
+
   return (
     <Link
       href={`/products/${product.id}`}
@@ -14,7 +19,7 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-square bg-white">
         <Image
-          src={product.image}
+          src={imgSrc!}
           alt={product.name}
           fill
           className="object-contain p-2"

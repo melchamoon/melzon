@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { earnPointsLocal } from '@/lib/points';
+import { pickProductImage } from '@/lib/product-image';
 import { usePoints } from '@/lib/use-storage';
 import { payoutByMisses } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
@@ -19,11 +20,12 @@ type MemoryCard = {
   flipped: boolean;
 };
 
-function initCards(products: Product[]): MemoryCard[] {
+function initCards(products: Product[], pickImage: (p: Product) => string): MemoryCard[] {
   const pairs: MemoryCard[] = [];
   products.slice(0, 6).forEach((p, i) => {
-    pairs.push({ id: i * 2, symbol: p.id, image: p.image, matched: false, flipped: false });
-    pairs.push({ id: i * 2 + 1, symbol: p.id, image: p.image, matched: false, flipped: false });
+    const img = pickImage(p);
+    pairs.push({ id: i * 2,     symbol: p.id, image: img, matched: false, flipped: false });
+    pairs.push({ id: i * 2 + 1, symbol: p.id, image: img, matched: false, flipped: false });
   });
   return pairs;
 }
@@ -34,11 +36,11 @@ function shuffleCards(cards: MemoryCard[]): MemoryCard[] {
 
 export function Memory({ products }: { products: Product[] }) {
   const balance = usePoints();
-  const [cards, setCards] = useState(() => initCards(products));
+  const [cards, setCards] = useState(() => initCards(products, (p) => p.images[0]!));
   const [selected, setSelected] = useState<number[]>([]);
 
   useEffect(() => {
-    setCards(shuffleCards(initCards(products)));
+    setCards(shuffleCards(initCards(products, pickProductImage)));
   }, [products]);
   const [misses, setMisses] = useState(0);
   const [cleared, setCleared] = useState(false);
@@ -86,7 +88,7 @@ export function Memory({ products }: { products: Product[] }) {
   );
 
   const restart = useCallback(() => {
-    setCards(shuffleCards(initCards(products)));
+    setCards(shuffleCards(initCards(products, pickProductImage)));
     setSelected([]);
     setMisses(0);
     setCleared(false);

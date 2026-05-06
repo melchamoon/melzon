@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { getProduct } from '@/lib/products';
+import { getProduct, pickProductImage } from '@/lib/products';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { BuyBox } from '@/components/product/BuyBox';
 
@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: p.name,
     description: p.description,
-    openGraph: { images: [p.image] },
-    twitter: { images: [p.image] },
+    openGraph: { images: [p.images[0]!] },
+    twitter: { images: [p.images[0]!] },
   };
 }
 
@@ -24,12 +24,14 @@ export default async function ProductPage({ params }: Props) {
   const product = getProduct(id);
   if (!product) notFound();
 
+  const heroImage = pickProductImage(product);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_320px] gap-6 bg-white p-4 lg:p-6">
       {/* 画像 */}
       <div className="aspect-square bg-white overflow-hidden md:row-span-2 lg:row-span-1">
         <Image
-          src={product.image}
+          src={heroImage}
           alt={product.name}
           width={0}
           height={0}

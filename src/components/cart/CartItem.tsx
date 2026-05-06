@@ -1,9 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { formatPoints } from '@/lib/format';
 import { readCart, writeCart } from '@/lib/storage';
 import { updateQty, removeItem } from '@/lib/cart';
+import { pickProductImage } from '@/lib/product-image';
 import type { Product } from '@/types/product';
 import type { CartItem as CartItemType } from '@/types/cart';
 
@@ -13,11 +15,14 @@ type Props = {
 };
 
 export function CartItem({ item, product }: Props) {
+  const [imgSrc, setImgSrc] = useState(product.images[0]);
+  useEffect(() => { setImgSrc(pickProductImage(product)); }, [product]);
+
   return (
     <div className="flex gap-4 py-4 border-b border-[color:var(--color-line)]">
       <div className="relative w-20 h-20 bg-white border border-[color:var(--color-line)] rounded-sm shrink-0">
         <Image
-          src={product.image}
+          src={imgSrc!}
           alt={product.name}
           fill
           className="object-contain p-2"
