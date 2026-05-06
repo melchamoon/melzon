@@ -14,8 +14,7 @@ test.describe('ミニゲーム', () => {
     await expect(spinBtn).toBeVisible();
     await spinBtn.click();
     await expect(spinBtn).toBeDisabled();
-    await page.waitForTimeout(1200);
-    await expect(spinBtn).toBeEnabled();
+    await expect(spinBtn).toBeEnabled({ timeout: 5000 });
   });
 
   test('連打ゲーム: ボタンをクリックするとポイントが増える', async ({ page }) => {
