@@ -21,6 +21,7 @@ const eslintConfig = [
         "error",
         { "ts-ignore": true, "ts-nocheck": true },
       ],
+      "@typescript-eslint/no-explicit-any": "error",
     },
   },
   {
