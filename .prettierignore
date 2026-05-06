@@ -1,0 +1,9 @@
+# 依存関係・ビルド成果物
+node_modules
+.next
+out
+build
+
+# 自動生成ファイル
+next-env.d.ts
+pnpm-lock.yaml
