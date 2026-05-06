@@ -84,6 +84,15 @@ body {
   animation: float-up 0.9s ease-out forwards;
 }
 
+@keyframes hover-bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.animate-hover-bob {
+  animation: hover-bob 1.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
