@@ -44,10 +44,12 @@ export default function GamePage() {
   }
 
   return (
-    <PageShell>
+    <PageShell variant={slug === 'memory' ? 'kaiji' : slug === 'click' ? 'click' : 'default'}>
       <div className="space-y-6">
         {banner && (
-          <div className="relative w-full max-w-lg mx-auto aspect-[3/1] rounded-sm overflow-hidden border border-[color:var(--color-line)]">
+          <div className={`relative w-full max-w-lg mx-auto aspect-[3/1] rounded-sm overflow-hidden border ${
+            slug === 'memory' ? 'border-red-900/60 shadow-lg shadow-red-950/40' : 'border-[color:var(--color-line)]'
+          }`}>
             <Image src={banner} alt={title} fill className="object-cover pointer-events-none" priority />
           </div>
         )}

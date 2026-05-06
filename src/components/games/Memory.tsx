@@ -94,13 +94,20 @@ export function Memory({ products }: { products: Product[] }) {
     setCleared(false);
   }, [products]);
 
+  const verdict = clearVerdict(misses);
+
   return (
-    <div className="flex flex-col lg:flex-row gap-8 items-start justify-center max-w-4xl mx-auto w-full">
-      <div className="flex flex-col items-center gap-6 flex-1 w-full bg-white border border-[color:var(--color-line)] p-4">
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-fg">
-          <span>ミス: {misses} 回</span>
-          <span className="text-[color:var(--color-cta)] font-bold">獲得予定: {formatPoints(payoutByMisses(misses))} pt</span>
-          <span>残高: {formatPoints(balance)} pt</span>
+    <div className="flex flex-col lg:flex-row gap-6 items-start justify-center max-w-4xl mx-auto w-full">
+      <div className="flex flex-col items-center gap-6 flex-1 w-full bg-black border-2 border-red-900/70 shadow-[0_0_24px_rgba(127,0,0,0.4)] p-5">
+        <div className="w-full text-center">
+          <div className="text-[10px] tracking-[0.5em] text-red-500/80 font-bold">― 限定 神経衰弱 ―</div>
+          <div className="mt-1 text-xs tracking-[0.3em] text-zinc-400">記憶を、賭けろ。</div>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-mono">
+          <span className="text-zinc-300">ペナルティ: <span className="text-red-400 font-bold">{misses}</span></span>
+          <span className="text-amber-300 font-bold">配当: {formatPoints(payoutByMisses(misses))} pt</span>
+          <span className="text-zinc-400">所持: {formatPoints(balance)} pt</span>
         </div>
 
         <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
@@ -111,12 +118,12 @@ export function Memory({ products }: { products: Product[] }) {
               disabled={card.matched || card.flipped || processing}
               aria-label={card.flipped || card.matched ? `カード ${card.symbol}` : '裏向きのカード'}
               data-testid={`memory-card-${card.id}`}
-              className={`w-24 h-24 md:w-32 md:h-32 rounded-sm border-2 transition-all ${
+              className={`w-24 h-24 md:w-32 md:h-32 transition-all relative ${
                 card.matched
-                  ? 'border-[color:var(--color-success)] bg-[color:var(--color-surface)]'
+                  ? 'border-2 border-amber-500 bg-amber-950/40 shadow-[inset_0_0_12px_rgba(251,191,36,0.3)]'
                   : card.flipped
-                    ? 'border-[color:var(--color-cta)] bg-white'
-                    : 'border-[color:var(--color-line-strong)] bg-nav-sub hover:border-[color:var(--color-cta)] cursor-pointer'
+                    ? 'border-2 border-amber-400 bg-zinc-100 shadow-[0_0_16px_rgba(251,191,36,0.5)]'
+                    : 'hover:shadow-[0_0_16px_rgba(220,38,38,0.6)] cursor-pointer'
               }`}
             >
               {card.flipped || card.matched ? (
@@ -124,55 +131,71 @@ export function Memory({ products }: { products: Product[] }) {
                   <Image src={card.image} alt={card.symbol} fill className="object-contain p-2" unoptimized />
                 </div>
               ) : (
-                <span className="text-2xl text-white">？</span>
+                <Image
+                  src="/games/memory/card.png"
+                  alt="裏向きのカード"
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
               )}
             </button>
           ))}
         </div>
+
       </div>
 
-      <div className="w-full lg:w-64 shrink-0 bg-surface-soft border border-[color:var(--color-line)] p-4">
-        <h3 className="text-fg font-bold mb-3 text-center border-b border-[color:var(--color-line)] pb-2">報酬一覧</h3>
+      <div className="w-full lg:w-64 shrink-0 bg-black/80 backdrop-blur-sm border-2 border-amber-700/60 p-4 shadow-[0_0_16px_rgba(180,83,9,0.3)]">
+        <h3 className="text-amber-400 font-black tracking-[0.3em] mb-3 text-center border-b border-amber-700/50 pb-2 text-sm">
+          配 当 表
+        </h3>
         <div className="space-y-1 text-sm font-mono">
           {[0, 1, 2, 3, 4, 5, 6].map((m) => (
             <div
               key={m}
-              className={`flex justify-between py-1.5 px-3 rounded-sm transition-colors ${
+              className={`flex justify-between py-1.5 px-3 transition-colors ${
                 misses === m && !cleared
-                  ? 'bg-cta-yellow border border-[color:var(--color-cta-yellow-border)] text-fg font-bold'
-                  : 'text-fg-muted'
+                  ? 'bg-red-900/60 border border-amber-500 text-amber-200 font-bold shadow-[inset_0_0_8px_rgba(251,191,36,0.3)]'
+                  : 'text-zinc-500'
               }`}
             >
-              <span>{m} ミス</span>
-              <span>{formatPoints(payoutByMisses(m))} pt</span>
+              <span>{m === 0 ? '完全勝利' : `失策 ${m}`}</span>
+              <span>{formatPoints(payoutByMisses(m))}</span>
             </div>
           ))}
           <div
-            className={`flex justify-between py-1.5 px-3 rounded-sm transition-colors ${
+            className={`flex justify-between py-1.5 px-3 transition-colors ${
               misses >= 7 && !cleared
-                ? 'bg-cta-yellow border border-[color:var(--color-cta-yellow-border)] text-fg font-bold'
-                : 'text-fg-muted'
+                ? 'bg-red-900/60 border border-amber-500 text-amber-200 font-bold'
+                : 'text-zinc-600'
             }`}
           >
-            <span>7+ ミス</span>
-            <span>{formatPoints(payoutByMisses(7))} pt</span>
+            <span>失策 7+</span>
+            <span>{formatPoints(payoutByMisses(7))}</span>
           </div>
         </div>
+        <p className="mt-3 pt-3 border-t border-amber-900/40 text-[10px] text-zinc-500 leading-relaxed text-center italic">
+          ※ 失策一つにつき<br />配当は容赦なく削られる
+        </p>
       </div>
 
       <Dialog open={cleared}>
-        <DialogContent>
+        <DialogContent className="bg-gradient-to-b from-zinc-950 to-black border-2 border-amber-500 text-zinc-100 shadow-[0_0_40px_rgba(251,191,36,0.5)]">
           <DialogHeader>
-            <DialogTitle>🎉 クリア！</DialogTitle>
-            <DialogDescription>
-              ミス {misses} 回 → {formatPoints(payoutByMisses(misses))} ポイント獲得！
+            <DialogTitle className="text-center text-2xl font-black tracking-[0.2em] text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">
+              {verdict.title}
+            </DialogTitle>
+            <DialogDescription className="text-center text-zinc-300 mt-2">
+              {verdict.subtitle}
             </DialogDescription>
           </DialogHeader>
-          <p className="text-fg-muted text-center text-sm mt-2">
-            残高: {formatPoints(balance)} pt
-          </p>
+          <div className="text-center font-mono text-sm space-y-1 mt-2">
+            <p className="text-zinc-400">失策 <span className="text-red-400 font-bold">{misses}</span></p>
+            <p className="text-amber-300 text-lg font-bold">獲得配当 {formatPoints(payoutByMisses(misses))} pt</p>
+            <p className="text-zinc-500 text-xs">所持 {formatPoints(balance)} pt</p>
+          </div>
           <div className="flex flex-col gap-2 mt-4">
-            <Button onClick={restart} variant="primary">もう一度</Button>
+            <Button onClick={restart} variant="primary">もう一勝負</Button>
             <Button variant="secondary" asChild>
               <Link href="/">ストアに戻る</Link>
             </Button>
@@ -184,4 +207,12 @@ export function Memory({ products }: { products: Product[] }) {
       </Dialog>
     </div>
   );
+}
+
+function clearVerdict(misses: number): { title: string; subtitle: string } {
+  if (misses === 0) return { title: '圧倒的 … 勝利 … ！', subtitle: '神の領域 … 記憶の覇者である … ！' };
+  if (misses <= 2) return { title: '完 全 制 圧 ！', subtitle: '見事な集中力 … 並の勝負師ではない … ！' };
+  if (misses <= 4) return { title: '勝 利 … ！', subtitle: '辛うじて … 摑み取った勝利 … ！' };
+  if (misses <= 6) return { title: 'ギリギリ … 凌いだ … ！', subtitle: '配当は薄い … が、生き残った … ！' };
+  return { title: '辛 勝 … 。', subtitle: '次は … もっと冷静になれ … 。' };
 }
