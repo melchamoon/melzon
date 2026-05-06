@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { earnPointsLocal } from '@/lib/points';
 import { pickProductImage } from '@/lib/product-image';
 import { usePoints } from '@/lib/use-storage';
-import { payoutByMisses } from '@/lib/slot';
+import { payoutByMisses } from '@/lib/memory';
 import { formatPoints } from '@/lib/format';
 import type { Product } from '@/types/product';
 import Link from 'next/link';
@@ -133,7 +133,7 @@ export function Memory({ products }: { products: Product[] }) {
       <div className="w-full lg:w-64 shrink-0 bg-surface-soft border border-[color:var(--color-line)] p-4">
         <h3 className="text-fg font-bold mb-3 text-center border-b border-[color:var(--color-line)] pb-2">報酬一覧</h3>
         <div className="space-y-1 text-sm font-mono">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => (
+          {[0, 1, 2, 3, 4, 5, 6].map((m) => (
             <div
               key={m}
               className={`flex justify-between py-1.5 px-3 rounded-sm transition-colors ${
@@ -148,13 +148,13 @@ export function Memory({ products }: { products: Product[] }) {
           ))}
           <div
             className={`flex justify-between py-1.5 px-3 rounded-sm transition-colors ${
-              misses >= 10 && !cleared
+              misses >= 7 && !cleared
                 ? 'bg-cta-yellow border border-[color:var(--color-cta-yellow-border)] text-fg font-bold'
                 : 'text-fg-muted'
             }`}
           >
-            <span>10+ ミス</span>
-            <span>{formatPoints(payoutByMisses(10))} pt</span>
+            <span>7+ ミス</span>
+            <span>{formatPoints(payoutByMisses(7))} pt</span>
           </div>
         </div>
       </div>

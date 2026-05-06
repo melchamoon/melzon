@@ -1,20 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { payoutByMisses } from '@/lib/slot';
+import { payoutByMisses } from '@/lib/memory';
 
 describe('memory payout', () => {
   const table = [
-    [0, 1_000_000],
-    [1, 300_000],
-    [2, 100_000],
-    [3, 30_000],
-    [4, 10_000],
-    [5, 5_000],
-    [6, 2_500],
+    [0, 100_000_000],
+    [1, 1_000_000],
+    [2, 500_000],
+    [3, 250_000],
+    [4, 150_000],
+    [5, 50_000],
+    [6, 10_000],
     [7, 1_000],
-    [8, 500],
-    [9, 300],
-    [10, 100],
-    [99, 100],
+    [99, 1_000],
   ] as const;
 
   for (const [misses, expected] of table) {
