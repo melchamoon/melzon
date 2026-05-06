@@ -3,11 +3,9 @@ import { CATEGORIES } from '@/lib/categories';
 
 const NAV_LINKS = [
   { label: 'ホーム', href: '/' },
+  { label: 'ポイントを稼ぐ', href: '/games' },
   { label: 'ベストセラー', href: '/bestsellers' },
   ...CATEGORIES.map((c) => ({ label: c.label, href: `/categories/${c.slug}` })),
-  { label: '褒める', href: '/games/click' },
-  { label: 'スロット', href: '/games/slot' },
-  { label: '神経衰弱', href: '/games/memory' },
 ];
 
 export function HeaderNav() {

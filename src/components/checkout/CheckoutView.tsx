@@ -101,7 +101,7 @@ export function CheckoutView({ products }: { products: Product[] }) {
       ) : (
         <div className="space-y-3">
           <Button asChild size="lg" variant="primary" className="w-full">
-            <Link href="/games">ミニゲームでポイントを稼ぐ</Link>
+            <Link href="/games">Melmeeでポイントを稼ぐ</Link>
           </Button>
           <Button variant="secondary" asChild className="w-full">
             <Link href="/cart">カートに戻る</Link>

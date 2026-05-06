@@ -28,7 +28,7 @@ export default function HomePage() {
           href="/games"
           className="block relative w-full aspect-[4/1] rounded-sm overflow-hidden border border-[color:var(--color-line)] hover:shadow-[0_0_0_1px_var(--color-cta)] transition-shadow"
         >
-          <Image src="/banners/banner4.png" alt="ポイントが足りない？ ミニゲームで稼ごう" fill className="object-cover" />
+          <Image src="/banners/banner4.png" alt="ポイントが足りない？ Melmeeで稼ごう" fill className="object-cover" />
         </Link>
       </section>
     </div>
