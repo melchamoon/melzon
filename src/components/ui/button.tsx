@@ -11,7 +11,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-cta-yellow border border-[color:var(--color-cta-yellow-border)] text-fg rounded-[3px] hover:brightness-95 active:brightness-90',
+          'bg-cta-yellow text-fg rounded-full hover:brightness-95 active:brightness-90',
         secondary:
           'bg-white border border-[color:var(--color-line-strong)] text-fg rounded-[3px] hover:bg-surface',
         link: 'bg-transparent text-link hover:text-link-hover hover:underline',

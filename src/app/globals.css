@@ -37,13 +37,13 @@ body {
 }
 
 .bg-cta-yellow {
-  background: linear-gradient(180deg, #F7DFA5 0%, #F0C14B 50%, #EB8F00 100%);
+  background-color: #FFD814;
 }
 .bg-cta-yellow-hover {
-  background: linear-gradient(180deg, #F5D78E 0%, #EEB933 50%, #E47911 100%);
+  background-color: #F5C800;
 }
 .bg-cta-yellow-active {
-  background: linear-gradient(180deg, #F0C14B 0%, #EB8F00 100%);
+  background-color: #EAB900;
 }
 
 .gauge-fill {
