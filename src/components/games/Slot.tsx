@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { earnPoints } from '@/app/actions/points';
+import { earnPointsLocal } from '@/lib/points';
+import { usePoints } from '@/lib/use-storage';
 import { spinResult, type ReelSymbol } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
 import Link from 'next/link';
@@ -21,15 +22,14 @@ type SlotState = {
   spinning: boolean;
   reels: [ReelSymbol, ReelSymbol, ReelSymbol];
   lastEarn: number | null;
-  balance: number;
 };
 
-export function Slot({ initialBalance }: { initialBalance: number }) {
+export function Slot() {
+  const balance = usePoints();
   const [state, setState] = useState<SlotState>({
     spinning: false,
     reels: ['MEL', 'MEL', 'MEL'],
     lastEarn: null,
-    balance: initialBalance,
   });
 
   useEffect(() => {
@@ -62,8 +62,8 @@ export function Slot({ initialBalance }: { initialBalance: number }) {
     setState((s) => ({ ...s, spinning: false, reels: result.reels }));
 
     if (result.payout > 0) {
-      const res = await earnPoints({ game: 'slot', points: result.payout });
-      setState((s) => ({ ...s, lastEarn: result.payout, balance: res.balance }));
+      earnPointsLocal(result.payout);
+      setState((s) => ({ ...s, lastEarn: result.payout }));
     } else {
       setState((s) => ({ ...s, lastEarn: 0 }));
     }
@@ -129,7 +129,7 @@ export function Slot({ initialBalance }: { initialBalance: number }) {
             <div className="flex justify-between items-center w-full px-5 py-3 bg-ink-950/80 rounded-xl border border-gold-900/50 backdrop-blur-sm">
               <span className="text-gold-500/70 text-sm font-bold tracking-wider">BALANCE</span>
               <span className="text-gold-200 text-2xl font-mono tracking-wider font-semibold">
-                {formatPoints(state.balance)} <span className="text-sm text-gold-600">pt</span>
+                {formatPoints(balance)} <span className="text-sm text-gold-600">pt</span>
               </span>
             </div>
 
@@ -147,11 +147,11 @@ export function Slot({ initialBalance }: { initialBalance: number }) {
         {/* ペイアウト表 */}
         <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-ink-900 border border-gold-900/50 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative overflow-hidden shrink-0">
           <div className="absolute top-0 inset-x-0 h-32 bg-gold-900/10 blur-[50px] pointer-events-none" />
-          
+
           <h3 className="text-gold-400 font-bold text-xl text-center border-b border-gold-900/50 pb-4 tracking-widest relative z-10">
             PAYTABLE
           </h3>
-          
+
           <div className="flex flex-col gap-3 relative z-10">
             {/* 10,000 pt */}
             <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-gold-600/40 shadow-[0_0_10px_rgba(212,175,55,0.1)]">

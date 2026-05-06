@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { clientAddToCart } from '@/lib/cart-client';
+import { readCart, writeCart } from '@/lib/storage';
+import { addItem } from '@/lib/cart';
 import { Button } from '@/components/ui/button';
 
 export function AddToCartButton({ productId }: { productId: string }) {
@@ -9,7 +10,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
   const [added, setAdded] = useState(false);
 
   function handleAdd() {
-    clientAddToCart(productId, qty);
+    writeCart(addItem(readCart(), productId, qty));
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   }

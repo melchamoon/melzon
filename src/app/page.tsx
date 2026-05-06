@@ -1,10 +1,7 @@
-export const dynamic = 'force-dynamic';
-
 import Link from 'next/link';
 import { getProducts } from '@/lib/products';
-import { pickRandom } from '@/lib/recommend';
 import { BannerCarousel } from '@/components/layout/BannerCarousel';
-import { ProductGrid } from '@/components/product/ProductGrid';
+import { RecommendedProducts } from '@/components/product/RecommendedProducts';
 import { Button } from '@/components/ui/button';
 import type { BannerSlide } from '@/types/game';
 
@@ -16,15 +13,13 @@ const BANNERS: BannerSlide[] = [
 ];
 
 export default function HomePage() {
-  const products = pickRandom(getProducts(), 12);
-
   return (
     <div className="space-y-12">
       <BannerCarousel slides={BANNERS} />
 
       <section>
         <h2 className="text-xl font-display text-gold-400 mb-4">あなたへのおすすめ</h2>
-        <ProductGrid products={products} />
+        <RecommendedProducts products={getProducts()} />
       </section>
 
       <section className="bg-ink-900 border border-gold-800 rounded-xl p-8 text-center">

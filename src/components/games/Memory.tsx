@@ -4,7 +4,8 @@ import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { earnPoints } from '@/app/actions/points';
+import { earnPointsLocal } from '@/lib/points';
+import { usePoints } from '@/lib/use-storage';
 import { payoutByMisses } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
 import type { Product } from '@/types/product';
@@ -27,12 +28,12 @@ function initCards(products: Product[]): MemoryCard[] {
   return pairs.sort(() => Math.random() - 0.5);
 }
 
-export function Memory({ products, initialBalance }: { products: Product[]; initialBalance: number }) {
+export function Memory({ products }: { products: Product[] }) {
+  const balance = usePoints();
   const [cards, setCards] = useState(() => initCards(products));
   const [selected, setSelected] = useState<number[]>([]);
   const [misses, setMisses] = useState(0);
   const [cleared, setCleared] = useState(false);
-  const [balance, setBalance] = useState(initialBalance);
   const [processing, setProcessing] = useState(false);
 
   const flipCard = useCallback(
@@ -61,8 +62,7 @@ export function Memory({ products, initialBalance }: { products: Product[]; init
           setSelected([]);
           setProcessing(false);
           if (matched.every((c) => c.matched)) {
-            const res = await earnPoints({ game: 'memory', points: payoutByMisses(misses) });
-            setBalance(res.balance);
+            earnPointsLocal(payoutByMisses(misses));
             setCleared(true);
           }
         } else {

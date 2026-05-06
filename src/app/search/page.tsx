@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import Link from 'next/link';
 import { getProducts } from '@/lib/products';
 import { pickRandom } from '@/lib/recommend';

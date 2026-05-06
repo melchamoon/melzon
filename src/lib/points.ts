@@ -1,3 +1,5 @@
+import { readPoints, writePoints } from '@/lib/storage';
+
 const MAX_EARN_PER_REQUEST = 1_100_000;
 
 export function clampEarn(points: number): number {
@@ -6,4 +8,10 @@ export function clampEarn(points: number): number {
 
 export function addPoints(balance: number, earned: number): number {
   return balance + clampEarn(earned);
+}
+
+export function earnPointsLocal(earned: number): number {
+  const next = readPoints() + clampEarn(earned);
+  writePoints(next);
+  return next;
 }

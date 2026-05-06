@@ -1,19 +1,12 @@
-export const dynamic = 'force-dynamic';
-
-import { getPoints } from '@/lib/cookies';
 import { GameCard } from '@/components/games/GameCard';
-import { formatPoints } from '@/lib/format';
+import { GamesBalance } from '@/components/games/GamesBalance';
 
-export default async function GamesPage() {
-  const points = await getPoints();
-
+export default function GamesPage() {
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h1 className="text-3xl font-display text-gold-400 mb-2">ミニゲーム</h1>
-        <p className="text-2xl font-bold text-gold-500" data-testid="games-balance">
-          {formatPoints(points)} pt
-        </p>
+        <GamesBalance />
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">

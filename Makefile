@@ -14,6 +14,7 @@ lint:
 
 test:
 	pnpm exec vitest run
+	pnpm build
 	pnpm e2e
 
 ci:

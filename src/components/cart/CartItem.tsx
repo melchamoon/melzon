@@ -1,8 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { updateCartQty, removeFromCart } from '@/app/actions/cart';
 import { formatPoints } from '@/lib/format';
+import { readCart, writeCart } from '@/lib/storage';
+import { updateQty, removeItem } from '@/lib/cart';
 import type { Product } from '@/types/product';
 import type { CartItem as CartItemType } from '@/types/cart';
 
@@ -27,22 +28,28 @@ export function CartItem({ item, product }: Props) {
         <p className="text-gold-200 text-sm mb-1">{product.name}</p>
         <p className="text-gold-500 text-sm mb-2">{formatPoints(product.price)} pt</p>
         <div className="flex items-center gap-2">
-          <form action={async () => { await updateCartQty(item.id, item.qty - 1); }}>
-            <button type="submit" className="w-7 h-7 border border-gold-700 rounded text-gold-400 hover:bg-ink-900 flex items-center justify-center text-sm">
-              −
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={() => writeCart(updateQty(readCart(), item.id, item.qty - 1))}
+            className="w-7 h-7 border border-gold-700 rounded text-gold-400 hover:bg-ink-900 flex items-center justify-center text-sm"
+          >
+            −
+          </button>
           <span className="text-gold-200 text-sm w-8 text-center">{item.qty}</span>
-          <form action={async () => { await updateCartQty(item.id, item.qty + 1); }}>
-            <button type="submit" className="w-7 h-7 border border-gold-700 rounded text-gold-400 hover:bg-ink-900 flex items-center justify-center text-sm">
-              ＋
-            </button>
-          </form>
-          <form action={async () => { await removeFromCart(item.id); }} className="ml-auto">
-            <button type="submit" className="text-ruby text-xs hover:text-red-400">
-              削除
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={() => writeCart(updateQty(readCart(), item.id, item.qty + 1))}
+            className="w-7 h-7 border border-gold-700 rounded text-gold-400 hover:bg-ink-900 flex items-center justify-center text-sm"
+          >
+            ＋
+          </button>
+          <button
+            type="button"
+            onClick={() => writeCart(removeItem(readCart(), item.id))}
+            className="ml-auto text-ruby text-xs hover:text-red-400"
+          >
+            削除
+          </button>
         </div>
       </div>
       <div className="shrink-0 text-right">

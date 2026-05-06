@@ -1,12 +1,17 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getPoints } from '@/lib/cookies';
-import { getCart } from '@/lib/cookies';
+import { usePoints, useCart } from '@/lib/use-storage';
 import { SearchBar } from './SearchBar';
 import { formatPoints } from '@/lib/format';
 
-export async function Header() {
-  const [points, cart] = await Promise.all([getPoints(), getCart()]);
+export function Header() {
+  const points = usePoints();
+  const cart = useCart();
   const cartCount = cart.items.reduce((s, i) => s + i.qty, 0);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <header className="bg-ink-950 border-b border-gold-800 sticky top-0 z-40">
@@ -25,7 +30,11 @@ export async function Header() {
 
           <div className="flex items-center gap-3 ml-auto shrink-0">
             <span className="hidden sm:block text-gold-300 text-sm">
-              {formatPoints(points)} pt
+              {mounted ? (
+                <span>{formatPoints(points)} pt</span>
+              ) : (
+                <span className="invisible">0 pt</span>
+              )}
             </span>
 
             <Link
@@ -40,10 +49,10 @@ export async function Header() {
             <Link
               href="/cart"
               className="relative text-gold-400 hover:text-gold-300"
-              aria-label={`カート（${cartCount}件）`}
+              aria-label={`カート（${mounted ? cartCount : 0}件）`}
             >
               🛒
-              {cartCount > 0 && (
+              {mounted && cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-ruby text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   {cartCount}
                 </span>

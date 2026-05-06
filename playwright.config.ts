@@ -4,9 +4,9 @@ export default defineConfig({
   testDir: './tests/e2e',
   use: { baseURL: 'http://localhost:3100' },
   webServer: {
-    command: process.env.CI ? 'pnpm start --port 3100' : 'pnpm dev --port 3100',
+    command: 'pnpm start --port 3100',
     url: 'http://localhost:3100',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 60000,
   },
   projects: [

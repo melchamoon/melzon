@@ -1,28 +1,27 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { earnPoints } from '@/app/actions/points';
+import { earnPointsLocal } from '@/lib/points';
+import { usePoints } from '@/lib/use-storage';
 import { calcClickPt } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
 
-const GAUGE_TICK_MS = 50;          // ゲージ更新インターバル（ms）
-const GAUGE_DECAY = 0.05;          // 1tickあたりのゲージ減少量
-const GAUGE_CLICK_RISE = 1.67;     // 1クリックあたりのゲージ増加量（60クリックで満タン）
-const CLICK_GRACE_MS = 1000;       // クリック後にゲージが減らない猶予時間（ms）
-const FLOAT_DURATION_MS = 900;     // 浮き上がりテキストのアニメーション時間（ms）
-const FLOAT_X_MIN = 35;            // 浮き上がりテキストのX位置最小値（%）
-const FLOAT_X_RANGE = 30;          // 浮き上がりテキストのX位置ランダム幅（%）
-const GAUGE_COLOR_BLUE = 33;       // 青色になるゲージ閾値（%）
-const GAUGE_COLOR_RED = 66;        // 赤色になるゲージ閾値（%）
-const GAUGE_COLOR_GOLD = 100;      // 金色になるゲージ閾値（%）
-const FLUSH_INTERVAL_MS = 300;     // ポイント保存インターバル（ms）
+const GAUGE_TICK_MS = 50;
+const GAUGE_DECAY = 0.05;
+const GAUGE_CLICK_RISE = 1.67;
+const CLICK_GRACE_MS = 1000;
+const FLOAT_DURATION_MS = 900;
+const FLOAT_X_MIN = 35;
+const FLOAT_X_RANGE = 30;
+const GAUGE_COLOR_BLUE = 33;
+const GAUGE_COLOR_RED = 66;
+const GAUGE_COLOR_GOLD = 100;
 
-export function Click({ initialBalance }: { initialBalance: number }) {
+export function Click() {
+  const balance = usePoints();
   const [gauge, setGauge] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
-  const [balance, setBalance] = useState(initialBalance);
   const [running, setRunning] = useState(false);
-  const pendingRef = useRef(0);
   const lastClickTimeRef = useRef(0);
   const [floats, setFloats] = useState<{ id: number; pt: number; x: number; color: string }[]>([]);
   const floatIdRef = useRef(0);
@@ -36,23 +35,11 @@ export function Click({ initialBalance }: { initialBalance: number }) {
     return () => clearInterval(id);
   }, [running]);
 
-  useEffect(() => {
-    if (!running) return;
-    const id = setInterval(async () => {
-      const pts = pendingRef.current;
-      if (pts <= 0) return;
-      pendingRef.current = 0;
-      const res = await earnPoints({ game: 'click', points: pts });
-      setBalance(res.balance);
-    }, FLUSH_INTERVAL_MS);
-    return () => clearInterval(id);
-  }, [running]);
-
   const handleClick = useCallback(() => {
     if (!running) setRunning(true);
     lastClickTimeRef.current = Date.now();
     const pt = calcClickPt(gauge);
-    pendingRef.current += pt;
+    earnPointsLocal(pt);
     setTotalEarned((t) => t + pt);
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
     const id = ++floatIdRef.current;
@@ -61,14 +48,6 @@ export function Click({ initialBalance }: { initialBalance: number }) {
     setFloats((prev) => [...prev, { id, pt, x, color }]);
     setTimeout(() => setFloats((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
   }, [running, gauge]);
-
-  useEffect(() => {
-    return () => {
-      if (pendingRef.current > 0) {
-        earnPoints({ game: 'click', points: pendingRef.current }).catch(() => {});
-      }
-    };
-  }, []);
 
   return (
     <div className="flex flex-col items-center gap-6">

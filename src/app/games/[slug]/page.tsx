@@ -1,7 +1,4 @@
-export const dynamic = 'force-dynamic';
-
 import { notFound } from 'next/navigation';
-import { getPoints } from '@/lib/cookies';
 import { getProducts } from '@/lib/products';
 import { pickRandom } from '@/lib/recommend';
 import { Slot } from '@/components/games/Slot';
@@ -20,17 +17,16 @@ export default async function GamePage({ params }: Props) {
   const { slug } = await params;
   if (!['slot', 'click', 'memory'].includes(slug)) notFound();
 
-  const balance = await getPoints();
   const title = GAME_TITLES[slug]!;
 
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-display text-gold-400 text-center">{title}</h1>
 
-      {slug === 'slot' && <Slot initialBalance={balance} />}
-      {slug === 'click' && <Click initialBalance={balance} />}
+      {slug === 'slot' && <Slot />}
+      {slug === 'click' && <Click />}
       {slug === 'memory' && (
-        <Memory products={pickRandom(getProducts(), 6)} initialBalance={balance} />
+        <Memory products={pickRandom(getProducts(), 6)} />
       )}
     </div>
   );

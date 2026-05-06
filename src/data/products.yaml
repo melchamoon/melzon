@@ -41,13 +41,13 @@
     - 重すぎて叩けません。
     - Happy Man BSC で落ちました。
 - id: p_006
-  name: 純金風のマウス
+  name: ゴールデンマウス
   price: 3500
   image: /products/p_006.png
   description: 純金「風」のマウス。
   reviews:
     - 重すぎて手が疲れます。
-    - マウスホイールは回転しません。
+    - マウスホイールは回転しませんでした。
 - id: p_007
   name: 金のイーパス
   price: 6800
@@ -107,24 +107,25 @@
   name: おいしいレトルトカレー
   price: 1200
   image: /products/p_014.png
-  description: 種類
+  description: 905種類のスパイスを使ったインド風のカレーです。
   reviews:
-    - 引越しが豪華になりました。
+    - インドを感じました。
 - id: p_015
-  name: 金箔貼り煮干し(50g)
+  name: 大人気ゲーム
   price: 8800
   image: /products/p_015.png
-  description: 煮干しに金箔を貼った渾身の一品。出汁を取ると金箔が浮きます。
+  description: 150匹の仲間と共にめざせめるモンマスター！
   reviews:
-    - 猫が見向きもしませんでした。
-    - 出汁は美味しかったです。
+    - 3匹を選ぶところで迷って1時間が経過しました。
+    - 最初の森でめるチュウがなかなかゲットできません。
 - id: p_016
-  name: 金色シャワーキャップ
+  name: デスクライト バージョン5
   price: 2400
   image: /products/p_016.png
   description: お風呂で輝くあなたを演出。
   reviews:
-    - 鏡で見るたびに笑顔になります。
+    - 威圧感がありすぎて勉強できません。
+    - 単三電池5本も使うと思ってませんでした。
 - id: p_017
   name: 金の洗濯バサミ(10個セット)
   price: 1800
