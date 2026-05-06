@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-50: #FDF8E1;
+  --color-gold-100: #FAEFB4;
+  --color-gold-200: #F5E184;
+  --color-gold-300: #EFD05A;
+  --color-gold-400: #E5BD3F;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #B8860B;
+  --color-gold-700: #8B6914;
+  --color-gold-800: #5A440D;
+  --color-gold-900: #2F2306;
+  --color-gold-950: #1A1303;
+  --color-ink-50: #F4F4F5;
+  --color-ink-100: #E4E4E7;
+  --color-ink-400: #52525B;
+  --color-ink-700: #27272A;
+  --color-ink-900: #1A1A1A;
+  --color-ink-950: #0A0A0A;
+  --color-champagne: #F7E7CE;
+  --color-ruby: #9B1B30;
+
+  --font-display: var(--font-cormorant), serif;
+  --font-sans: var(--font-noto), sans-serif;
+}
+
+body {
+  background: #0A0A0A;
+  color: #F5E184;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.bg-gold-metal {
+  background: linear-gradient(135deg, #FFD86F 0%, #D4AF37 50%, #8B6914 100%);
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

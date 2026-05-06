@@ -1,0 +1,160 @@
+- id: p_001
+  name: 金鮭のフレークギフト(6個入)
+  price: 12800
+  image: /products/p_001.png
+  description: 金沢の老舗が金箔をまぶした鮭フレーク。めるちゃもへの贈答に最適。
+  reviews:
+    - 食べてないけど見た目が金色で良い。
+    - 高すぎて開けられません。
+- id: p_002
+  name: 金のめるちゃも像(手のひらサイズ)
+  price: 980000
+  image: /products/p_002.png
+  description: 純度の表示は無いが見た目は金。重量感あり。
+  reviews:
+    - 想像の3倍ピカピカでした。
+    - 玄関に飾ったら泥棒に狙われそう。
+    - めるちゃもさん本人より重い。
+- id: p_003
+  name: 金箔ティラミス(2個)
+  price: 4800
+  image: /products/p_003.png
+  description: ティラミスの上から金箔を吹雪のごとく散らした逸品。
+  reviews:
+    - 口の中が金色になりました。
+    - ココアの味は普通でした。
+- id: p_004
+  name: 24K コーヒー豆缶(200g)
+  price: 18000
+  image: /products/p_004.png
+  description: 缶が金色。中身は普通のコーヒー豆。
+  reviews:
+    - 缶を飾ってます。豆は知人にあげました。
+    - 缶を開けるのに3日悩みました。
+    - 香りはとても良いです。
+- id: p_005
+  name: 金箔入り日本酒(一升瓶)
+  price: 22000
+  image: /products/p_005.png
+  description: 純米大吟醸に金箔が舞う。注ぐ角度で景色が変わる。
+  reviews:
+    - 飲むのがもったいなくて飾ってます。
+- id: p_006
+  name: 純金風ボールペン
+  price: 3500
+  image: /products/p_006.png
+  description: 純金「風」。書き味は普通。
+  reviews:
+    - 重すぎて手が疲れます。
+    - 落としたら塗装が剥げました。
+- id: p_007
+  name: 金縁スマホケース(各機種)
+  price: 6800
+  image: /products/p_007.png
+  description: フチが金。中央は透明。電波も金色になります(なりません)。
+  reviews:
+    - フチで指を切りました。
+    - 落としたら金が欠けました。
+    - めるちゃもさんに贈ります。
+- id: p_008
+  name: 金色ワイヤレスイヤホン
+  price: 24800
+  image: /products/p_008.png
+  description: 音質は普通。耳から金が生えているように見えます。
+  reviews:
+    - 音は普通でした。見た目は最強です。
+- id: p_009
+  name: 金箔ティッシュ(180組)
+  price: 3200
+  image: /products/p_009.png
+  description: 1 枚 1 枚に金箔が貼られたティッシュ。鼻をかむのが申し訳なくなる。
+  reviews:
+    - 使えませんでした。
+    - 来客時に飾っています。
+- id: p_010
+  name: めるちゃも公認 金色のヤカン
+  price: 9800
+  image: /products/p_010.png
+  description: お湯を沸かすと金色の蒸気が出ます(出ません)。
+  reviews:
+    - 注ぎ口から金粉が落ちると言われましたが落ちません。
+    - お湯が美味しく感じます。気のせいかもしれません。
+    - キッチンが豪華になりました。
+- id: p_011
+  name: 金粉スプレー(食用ではない)
+  price: 5400
+  image: /products/p_011.png
+  description: 食品にかけてはいけません。インテリアにどうぞ。
+  reviews:
+    - 部屋中が金色になりました。家族に怒られました。
+- id: p_012
+  name: 黄金のしゃもじ
+  price: 7200
+  image: /products/p_012.png
+  description: ご飯がよそえます。よそうたびに金が剥がれます。
+  reviews:
+    - ご飯に金粉が混ざります。
+    - 縁起が良さそうです。
+- id: p_013
+  name: 金で塗装した石(中)
+  price: 2800
+  image: /products/p_013.png
+  description: 石です。金色です。それ以上の機能はありません。
+  reviews:
+    - 石でした。
+    - 重さに驚きました。
+    - 文鎮にしています。
+- id: p_014
+  name: 金色ガムテープ(1巻)
+  price: 1200
+  image: /products/p_014.png
+  description: 段ボールが豪華になります。粘着力は普通。
+  reviews:
+    - 引越しが豪華になりました。
+- id: p_015
+  name: 金箔貼り煮干し(50g)
+  price: 8800
+  image: /products/p_015.png
+  description: 煮干しに金箔を貼った渾身の一品。出汁を取ると金箔が浮きます。
+  reviews:
+    - 猫が見向きもしませんでした。
+    - 出汁は美味しかったです。
+- id: p_016
+  name: 金色シャワーキャップ
+  price: 2400
+  image: /products/p_016.png
+  description: お風呂で輝くあなたを演出。
+  reviews:
+    - 鏡で見るたびに笑顔になります。
+- id: p_017
+  name: 金の洗濯バサミ(10個セット)
+  price: 1800
+  image: /products/p_017.png
+  description: 洗濯物が金で挟まれます。塗装は徐々に剥げます。
+  reviews:
+    - ベランダが豪華になりました。
+    - 雨の日は使えないと言われましたが普通に使えました。
+- id: p_018
+  name: 金で書かれた領収書(白紙10枚)
+  price: 4200
+  image: /products/p_018.png
+  description: あらかじめ金色のペンで罫線が書かれた領収書。何に使うかは貴方次第。
+  reviews:
+    - 経費で落ちませんでした。
+- id: p_019
+  name: 金粉バウムクーヘン
+  price: 5800
+  image: /products/p_019.png
+  description: バウムクーヘンの年輪に沿って金粉。輪切りにすると断面が輝きます。
+  reviews:
+    - 見た目は最強。味は普通でした。
+    - 切るのを躊躇しました。
+- id: p_020
+  name: 金色のキーホルダー(鳴く)
+  price: 1600
+  image: /products/p_020.png
+  description: ボタンを押すとめるちゃもの声(風)が鳴ります。
+  reviews:
+    - うるさいです。
+    - 子供にウケました。
+    - 電池が切れたら鳴かなくなりました。
