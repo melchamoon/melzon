@@ -82,8 +82,8 @@ export function Click() {
   }, [running, gauge]);
 
   return (
-    <div className="flex flex-col items-center gap-6 bg-white border border-[color:var(--color-line)] p-6">
-      <div className={`w-full max-w-sm bg-surface rounded-full h-6 border border-[color:var(--color-line-strong)] overflow-hidden`}>
+    <div className="flex flex-col items-center gap-6 p-6">
+      <div className={`w-full max-w-sm bg-white/85 rounded-full h-6 border border-[color:var(--color-line-strong)] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.35)]`}>
         <div
           className={`h-full gauge-fill ${getGaugeStage(gauge).cls}`}
           style={{ width: `${gauge}%` }}
@@ -94,15 +94,15 @@ export function Click() {
       <div className="relative flex items-center justify-center">
         <button
           onClick={handleClick}
-          className="relative w-48 h-48 rounded-full overflow-hidden active:scale-95 transition-transform select-none cursor-pointer"
+          className="relative w-72 h-72 md:w-80 md:h-80 rounded-full overflow-hidden active:scale-95 transition-transform select-none cursor-pointer"
           data-testid="click-button"
           aria-label="連打ボタン"
         >
           <Image
             src={clicked ? '/games/click/smile.png' : '/games/click/default.png'}
             alt="連打ボタン"
-            width={192}
-            height={192}
+            width={320}
+            height={320}
             className="w-full h-full object-cover"
             draggable={false}
             priority
@@ -118,11 +118,11 @@ export function Click() {
         {praises.map((p) => (
           <span
             key={`p-${p.id}`}
-            className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-2xl select-none"
+            className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-4xl select-none"
             style={{
               left: `${p.x}%`,
               color: '#FF9900',
-              textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+              textShadow: '-2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff',
             }}
           >
             {p.word}
@@ -131,22 +131,36 @@ export function Click() {
         {floats.map((f) => (
           <span
             key={f.id}
-            className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-3xl select-none"
+            className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-5xl select-none"
             style={{
               left: `${f.x}%`,
               color: f.color,
-              textShadow: `-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000`,
+              textShadow: `-2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff`,
             }}
           >
-            +{f.pt}
+            +{f.pt}pt
           </span>
         ))}
       </div>
 
-      <p className="text-price text-lg font-semibold" data-testid="total-earned">
-        累計: {formatPoints(totalEarned)} pt
-      </p>
-      <p className="text-fg-muted text-sm">残高: {formatPoints(balance)} pt</p>
+      <div
+        className="relative mt-2 px-6 py-3 bg-gradient-to-b from-zinc-900 to-black border-2 border-amber-400 shadow-[0_0_18px_rgba(0,0,0,0.55),inset_0_0_8px_rgba(251,191,36,0.25)] flex flex-col items-center gap-1"
+      >
+        <span aria-hidden className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-amber-300" />
+        <span aria-hidden className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-amber-300" />
+        <span aria-hidden className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-amber-300" />
+        <span aria-hidden className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-amber-300" />
+        <p
+          className="text-xl font-black tracking-wider text-amber-300"
+          style={{ textShadow: '0 0 8px rgba(251,191,36,0.6), 0 1px 0 #000' }}
+          data-testid="total-earned"
+        >
+          累計 {formatPoints(totalEarned)} pt
+        </p>
+        <p className="text-xs font-mono tracking-widest text-zinc-300">
+          残高 {formatPoints(balance)} pt
+        </p>
+      </div>
     </div>
   );
 }
