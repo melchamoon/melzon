@@ -47,7 +47,7 @@ export function Click() {
   const [clicked, setClicked] = useState(false);
   const lastClickTimeRef = useRef(0);
   const imageResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [floats, setFloats] = useState<{ id: number; pt: number; x: number; color: string }[]>([]);
+  const [floats, setFloats] = useState<{ id: number; pt: number; x: number; color: string; rainbow: boolean }[]>([]);
   const [praises, setPraises] = useState<{ id: number; word: string; x: number }[]>([]);
   const floatIdRef = useRef(0);
 
@@ -72,8 +72,8 @@ export function Click() {
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
     const id = ++floatIdRef.current;
     const x = FLOAT_X_MIN + Math.random() * FLOAT_X_RANGE;
-    const color = getGaugeStage(gauge).color;
-    setFloats((prev) => [...prev, { id, pt, x, color }]);
+    const stage = getGaugeStage(gauge);
+    setFloats((prev) => [...prev, { id, pt, x, color: stage.color, rainbow: stage.cls === 'gauge-rainbow' }]);
     setTimeout(() => setFloats((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
     const word = PRAISE_WORDS[Math.floor(Math.random() * PRAISE_WORDS.length)]!;
     const px = PRAISE_X_MIN + Math.random() * PRAISE_X_RANGE;
@@ -132,11 +132,25 @@ export function Click() {
           <span
             key={f.id}
             className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-5xl select-none"
-            style={{
-              left: `${f.x}%`,
-              color: f.color,
-              textShadow: `-2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff`,
-            }}
+            style={
+              f.rainbow
+                ? {
+                    left: `${f.x}%`,
+                    backgroundImage:
+                      'linear-gradient(90deg, #ff0000, #ff8800, #ffdd00, #00cc00, #0088ff, #6600ff, #ff00aa)',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    color: 'transparent',
+                    filter:
+                      'drop-shadow(1px 1px 0 #fff) drop-shadow(-1px -1px 0 #fff) drop-shadow(1px -1px 0 #fff) drop-shadow(-1px 1px 0 #fff)',
+                  }
+                : {
+                    left: `${f.x}%`,
+                    color: f.color,
+                    textShadow: `-2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff`,
+                  }
+            }
           >
             +{f.pt}pt
           </span>
