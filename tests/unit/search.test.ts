@@ -3,8 +3,8 @@ import { generateDidYouMean } from '@/lib/search';
 import type { Product } from '@/types/product';
 
 const products: Product[] = [
-  { id: 'p_001', name: '金鮭のフレーク', price: 100, image: '/products/p_001.png', description: '', reviews: ['good'] },
-  { id: 'p_002', name: '金のめるちゃも像', price: 200, image: '/products/p_002.png', description: '', reviews: ['nice'] },
+  { id: 'p_001', name: '金鮭のフレーク', price: 100, images: ['/products/p_001.png'], description: '', reviews: ['good'] },
+  { id: 'p_002', name: '金のめるちゃも像', price: 200, images: ['/products/p_002.png'], description: '', reviews: ['nice'] },
 ];
 
 describe('search', () => {
