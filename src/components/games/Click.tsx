@@ -11,16 +11,16 @@ const CLICK_PT_MAX = 100;
 const IMAGE_RESET_MS = 200;
 
 const PRAISE_WORDS = ['すごい！', 'えらい！', 'やるね！', 'さすが！', 'いいね！', 'かっこいい！', '天才！', 'ナイス！'];
-const PRAISE_X_MIN = 0;
-const PRAISE_X_RANGE = 25;
+const PRAISE_X_MIN = -10;
+const PRAISE_X_RANGE = 15;
 
 const GAUGE_TICK_MS = 50;
 const GAUGE_DECAY = 0.15;
 const GAUGE_CLICK_RISE = 0.5;
 const CLICK_GRACE_MS = 1000;
 const FLOAT_DURATION_MS = 900;
-const FLOAT_X_MIN = 55;
-const FLOAT_X_RANGE = 30;
+const FLOAT_X_MIN = 40;
+const FLOAT_X_RANGE = 25;
 
 const GAUGE_STAGES = [
   { min: 100, cls: 'gauge-rainbow', color: '#FFD700' },
