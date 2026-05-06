@@ -56,7 +56,7 @@ export function CartView({ products }: { products: Product[] }) {
               </span>
             </p>
             <p className="text-xs text-fg-muted">残高: {formatPoints(points)} pt</p>
-            <Button asChild size="lg" variant="primary" className="w-full">
+            <Button asChild size="lg" variant="primary" className="w-full whitespace-nowrap">
               <Link href="/checkout">めるちゃもへプレゼントする</Link>
             </Button>
           </div>
