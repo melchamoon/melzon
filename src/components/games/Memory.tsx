@@ -97,8 +97,9 @@ export function Memory({ products }: { products: Product[] }) {
   return (
     <div className="flex flex-col lg:flex-row gap-8 items-start justify-center max-w-4xl mx-auto w-full">
       <div className="flex flex-col items-center gap-6 flex-1 w-full bg-white border border-[color:var(--color-line)] p-4">
-        <div className="flex gap-4 text-sm text-fg">
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-fg">
           <span>ミス: {misses} 回</span>
+          <span className="text-[color:var(--color-cta)] font-bold">獲得予定: {formatPoints(payoutByMisses(misses))} pt</span>
           <span>残高: {formatPoints(balance)} pt</span>
         </div>
 
