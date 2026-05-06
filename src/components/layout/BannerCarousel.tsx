@@ -7,6 +7,7 @@ import type { BannerSlide } from '@/types/game';
 
 const PEEK = 120;
 const GAP = 8;
+const MOBILE_BREAKPOINT = 768;
 
 export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
   const extended: BannerSlide[] = [slides[slides.length - 1]!, ...slides, slides[0]!];
@@ -14,6 +15,7 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
   const [current, setCurrent] = useState(1);
   const [animated, setAnimated] = useState(true);
   const [slideWidth, setSlideWidth] = useState(0);
+  const [peek, setPeek] = useState(PEEK);
   const containerRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -22,7 +24,13 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const measure = () => setSlideWidth(el.clientWidth - PEEK * 2 - GAP);
+    const measure = () => {
+      const isMobile = el.clientWidth < MOBILE_BREAKPOINT;
+      const p = isMobile ? 0 : PEEK;
+      const gap = isMobile ? 0 : GAP;
+      setPeek(p);
+      setSlideWidth(el.clientWidth - p * 2 - gap);
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(el);
@@ -84,8 +92,9 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
     : current === extended.length - 1 ? 0
     : current - 1;
 
+  const gap = peek > 0 ? GAP : 0;
   const translateX = slideWidth > 0
-    ? -(current * (slideWidth + GAP)) + PEEK
+    ? -(current * (slideWidth + gap)) + peek
     : 0;
 
   const renderInner = (slide: BannerSlide, priority: boolean) => {
@@ -117,7 +126,7 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
       >
         <div
           className={animated ? 'flex transition-transform duration-500 ease-in-out' : 'flex'}
-          style={{ transform: `translateX(${translateX}px)`, gap: `${GAP}px` }}
+          style={{ transform: `translateX(${translateX}px)`, gap: `${gap}px` }}
         >
           {extended.map((slide, i) => (
             <div
@@ -131,18 +140,22 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
         </div>
       </div>
 
-      <button
-        aria-label="前のスライド"
-        onClick={() => { setCurrent((c) => c - 1); resetTimer(); }}
-        className="absolute inset-y-0 left-0 cursor-pointer z-10"
-        style={{ width: `${PEEK}px` }}
-      />
-      <button
-        aria-label="次のスライド"
-        onClick={() => { setCurrent((c) => c + 1); resetTimer(); }}
-        className="absolute inset-y-0 right-0 cursor-pointer z-10"
-        style={{ width: `${PEEK}px` }}
-      />
+      {peek > 0 && (
+        <>
+          <button
+            aria-label="前のスライド"
+            onClick={() => { setCurrent((c) => c - 1); resetTimer(); }}
+            className="absolute inset-y-0 left-0 cursor-pointer z-10"
+            style={{ width: `${peek}px` }}
+          />
+          <button
+            aria-label="次のスライド"
+            onClick={() => { setCurrent((c) => c + 1); resetTimer(); }}
+            className="absolute inset-y-0 right-0 cursor-pointer z-10"
+            style={{ width: `${peek}px` }}
+          />
+        </>
+      )}
 
       <div className="flex justify-center gap-2 mt-3">
         {slides.map((_, i) => (
