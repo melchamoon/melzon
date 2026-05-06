@@ -49,9 +49,29 @@ body {
 .gauge-fill {
   transition: width 75ms, background 300ms ease;
 }
-.gauge-white { background: #ffffff; }
-.gauge-blue  { background: #0066C0; }
-.gauge-red   { background: #B12704; }
+.gauge-orange  { background: #FF8C00; }
+.gauge-yellow  { background: #FFD700; }
+.gauge-green   { background: #00AA00; }
+.gauge-blue    { background: #0066C0; }
+.gauge-purple  { background: #8800CC; }
+.gauge-red     { background: #CC0000; }
+.gauge-copper  { background: #B87333; }
+.gauge-silver  { background: #C0C0C0; }
+.gauge-gold    { background: #C5A028; }
+.gauge-rainbow {
+  transition: width 75ms;
+  animation: rainbow-bar 1s linear infinite;
+}
+
+@keyframes rainbow-bar {
+  0%   { background: #FF0000; }
+  16%  { background: #FF8C00; }
+  33%  { background: #FFD700; }
+  50%  { background: #00CC00; }
+  66%  { background: #0066C0; }
+  83%  { background: #8800CC; }
+  100% { background: #FF0000; }
+}
 
 @keyframes float-up {
   0%   { opacity: 1; transform: translateY(0) scale(1); }

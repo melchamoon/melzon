@@ -20,8 +20,23 @@ const CLICK_GRACE_MS = 1000;
 const FLOAT_DURATION_MS = 900;
 const FLOAT_X_MIN = 55;
 const FLOAT_X_RANGE = 30;
-const GAUGE_COLOR_BLUE = 33;
-const GAUGE_COLOR_RED = 66;
+
+const GAUGE_STAGES = [
+  { min: 100, cls: 'gauge-rainbow', color: '#FFD700' },
+  { min: 80,  cls: 'gauge-gold',   color: '#C5A028' },
+  { min: 70, cls: 'gauge-silver',  color: '#C0C0C0' },
+  { min: 60, cls: 'gauge-copper',  color: '#B87333' },
+  { min: 50, cls: 'gauge-red',     color: '#CC0000' },
+  { min: 40, cls: 'gauge-purple',  color: '#8800CC' },
+  { min: 30, cls: 'gauge-blue',    color: '#0066C0' },
+  { min: 20, cls: 'gauge-green',   color: '#00AA00' },
+  { min: 10, cls: 'gauge-yellow',  color: '#DDC000' },
+  { min: 0,  cls: 'gauge-orange',  color: '#FF8C00' },
+] as const;
+
+function getGaugeStage(gauge: number) {
+  return GAUGE_STAGES.find((s) => gauge >= s.min) ?? GAUGE_STAGES[GAUGE_STAGES.length - 1]!;
+}
 
 export function Click() {
   const balance = usePoints();
@@ -56,7 +71,7 @@ export function Click() {
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
     const id = ++floatIdRef.current;
     const x = FLOAT_X_MIN + Math.random() * FLOAT_X_RANGE;
-    const color = gauge >= GAUGE_COLOR_RED ? '#B12704' : gauge >= GAUGE_COLOR_BLUE ? '#0066C0' : '#ffffff';
+    const color = getGaugeStage(gauge).color;
     setFloats((prev) => [...prev, { id, pt, x, color }]);
     setTimeout(() => setFloats((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
     const word = PRAISE_WORDS[Math.floor(Math.random() * PRAISE_WORDS.length)]!;
@@ -69,7 +84,7 @@ export function Click() {
     <div className="flex flex-col items-center gap-6 bg-white border border-[color:var(--color-line)] p-6">
       <div className={`w-full max-w-sm bg-surface rounded-full h-6 border border-[color:var(--color-line-strong)] overflow-hidden`}>
         <div
-          className={`h-full gauge-fill ${gauge >= GAUGE_COLOR_RED ? 'gauge-red' : gauge >= GAUGE_COLOR_BLUE ? 'gauge-blue' : 'gauge-white'}`}
+          className={`h-full gauge-fill ${getGaugeStage(gauge).cls}`}
           style={{ width: `${gauge}%` }}
           data-testid="gauge"
         />
