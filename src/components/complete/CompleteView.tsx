@@ -30,6 +30,15 @@ export function CompleteView() {
         </h1>
       </div>
 
+      <video
+        src="/thanks.mp4"
+        autoPlay
+        muted
+        playsInline
+        controls
+        className="w-full"
+      />
+
       <div className="bg-surface-soft border border-[color:var(--color-line)] p-6 text-left space-y-3">
         <h2 className="text-fg font-bold">プレゼント内容</h2>
         {summary.items.map((item, i) => (
