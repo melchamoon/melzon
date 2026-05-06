@@ -4,16 +4,23 @@ import path from 'node:path';
 import { z } from 'zod';
 import type { Product } from '@/types/product';
 
+const imageField = z
+  .union([
+    z.string().startsWith('/products/'),
+    z.array(z.string().startsWith('/products/')).min(1),
+  ])
+  .transform((v) => (Array.isArray(v) ? v : [v]));
+
 const productSchema = z.object({
   id: z.string().regex(/^p_\d{3}$/),
   name: z.string().min(1),
   price: z.number().int().min(1).max(1_000_000),
-  image: z.string().startsWith('/products/'),
+  image: imageField,
   description: z.string(),
   reviews: z.array(z.string()).min(1).max(3),
   featured: z.boolean().optional(),
   category: z.string().optional(),
-});
+}).transform(({ image, ...rest }) => ({ ...rest, images: image }));
 
 let cache: Product[] | null = null;
 
@@ -37,3 +44,5 @@ export function getFeaturedProducts(): Product[] {
 export function getProductsByCategory(category: string): Product[] {
   return getProducts().filter((p) => p.category === category);
 }
+
+export { pickProductImage } from '@/lib/product-image';
