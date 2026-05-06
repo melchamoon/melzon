@@ -2,7 +2,7 @@
 
 export function Footer() {
   return (
-    <footer className="mt-8">
+    <footer>
       {/* Back to top */}
       <button
         type="button"

@@ -31,11 +31,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja" className={noto.variable}>
-      <body className="bg-white text-fg font-sans min-h-screen">
+    <html lang="ja" className={`${noto.variable} bg-nav-night`}>
+      <body className="bg-nav-night text-fg font-sans min-h-screen">
         <ToastProviderWrapper>
           <Header />
-          <main className="max-w-[1500px] mx-auto px-2 md:px-4 py-4">{children}</main>
+          <main className="bg-white">
+            <div className="max-w-[1500px] mx-auto px-2 md:px-4 pt-4 pb-8">{children}</div>
+          </main>
           <Footer />
         </ToastProviderWrapper>
         <Analytics />

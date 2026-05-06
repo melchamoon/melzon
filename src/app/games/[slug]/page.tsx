@@ -26,6 +26,26 @@ export default function GamePage() {
 
   const title = GAME_TITLES[slug]!;
   const banner = GAME_BANNERS[slug];
+  const isSlot = slug === 'slot';
+
+  if (isSlot) {
+    return (
+      <div className="relative -mt-4 -mb-8">
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-screen bg-gradient-to-b from-zinc-950 via-black to-zinc-950"
+        />
+        <div className="relative space-y-6 py-8 md:py-12">
+          {banner && (
+            <div className="relative w-full max-w-lg mx-auto aspect-[3/1] rounded-sm overflow-hidden border border-amber-500/40 shadow-lg shadow-amber-500/10">
+              <Image src={banner} alt={title} fill className="object-cover pointer-events-none" priority />
+            </div>
+          )}
+          <Slot />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -35,7 +55,6 @@ export default function GamePage() {
         </div>
       )}
 
-      {slug === 'slot' && <Slot />}
       {slug === 'click' && <Click />}
       {slug === 'memory' && (
         <Memory products={pickRandom(getProducts(), 6)} />
