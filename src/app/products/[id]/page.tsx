@@ -28,12 +28,14 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-      <div className="relative aspect-square bg-ink-900 rounded-xl overflow-hidden">
+      <div className="bg-ink-900 rounded-xl overflow-hidden self-start">
         <Image
           src={product.image}
           alt={product.name}
-          fill
-          className="object-cover"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-auto"
           unoptimized
           priority
         />
