@@ -16,6 +16,9 @@
     - /products/p_002_3.png
     - /products/p_002_4.png
     - /products/p_002_5.png
+    - /products/p_002_6.png
+    - /products/p_002_7.png
+    - /products/p_002_8.png
   featured: true
   description: 純度の表示は無いが見た目は金。重量感あり。
   reviews:
@@ -132,7 +135,7 @@
   price: 9880
   image: /products/p_015.png
   category: gadget
-  description: 150匹の仲間と共にめざせめるモンマスター！
+  description: 目指せ！めるモンマスター！
   reviews:
     - 3匹を選ぶところで迷って1時間が経過しました。
     - 最初の森でめるチュウがなかなかゲットできません。
@@ -174,7 +177,7 @@
   name: スポーツジムの利用券
   price: 6600
   image: /products/p_020.png
-  description: めるちゃもジム東京店で1回利用できます。タオル・水・気合は別売です。
+  description: めるちゃもジム東京店で利用できます。タオル・水・気合は別売です。
   reviews:
     - ランニングマシンでめるちゃもさんが隣にいました。
     - 帰り際にプロテインを売りつけられました。買いました。
