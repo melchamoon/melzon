@@ -58,7 +58,7 @@ export const HANDS: readonly HandConfig[] = [
   { id: 'SEVEN_BLUE_3',  label: '青セブン×3', prob: 0.002, payout: 500_000,  reels: ['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE'], highlight: 'blue' },
   { id: 'SEVEN_RED_3',   label: '赤セブン×3', prob: 0.012, payout: 100_000,   reels: ['SEVEN_RED',  'SEVEN_RED',  'SEVEN_RED' ], highlight: 'red'  },
   { id: 'SEVEN_BAR_MIX', label: 'セブン-BAR', prob: 0.015, payout: 10_000,       reels: null, displayReels: ['SEVEN_RED', 'SEVEN_RED', 'BAR'], note: '7-7-BAR' },
-  { id: 'PIERROT_3',     label: 'ピエロ×3',   prob: 0.005, payout: 5_000,       reels: ['PIERROT',    'PIERROT',    'PIERROT'   ] },
+  { id: 'PIERROT_3',     label: 'ピエロ×3',   prob: 0.002, payout: 5_000,       reels: ['PIERROT',    'PIERROT',    'PIERROT'   ] },
   { id: 'CHERRY_3',      label: 'チェリー×3', prob: 0.030, payout: 2_500,       reels: ['CHERRY',     'CHERRY',     'CHERRY'    ] },
   { id: 'WATERMELON_3',  label: 'スイカ×3',   prob: 0.10,  payout: 2000,         reels: ['WATERMELON', 'WATERMELON', 'WATERMELON'] },
   { id: 'BELL_3',        label: 'ベル×3',     prob: 0.25,  payout: 500,         reels: ['BELL',       'BELL',       'BELL'      ] },
@@ -78,8 +78,6 @@ export const PAY_TABLE: readonly PayTableEntry[] = HANDS.map((h) => ({
 /** 1スピンあたりの期待ペイアウト合計 */
 export const EXPECTED_PAYOUT: number = PAY_TABLE.reduce((sum, row) => sum + row.ev, 0);
 
-const SEVEN_COLORS: readonly ReelSymbol[] = ['SEVEN_GOLD', 'SEVEN_BLUE', 'SEVEN_RED'];
-
 // 左リールにCHERRYは出ない + 7は揃いかけ不可（7×2=ハズレにできないため）
 const NEAR_MISS_POOL: readonly ReelSymbol[] = ['BAR', 'PIERROT', 'WATERMELON', 'BELL'];
 
@@ -91,9 +89,22 @@ function isSeven(s: ReelSymbol): boolean {
   return s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED';
 }
 
+const SEVEN_HAND_WEIGHTS = HANDS
+  .filter((h): h is HandConfig & { reels: [ReelSymbol, ReelSymbol, ReelSymbol] } =>
+    h.reels !== null && isSeven(h.reels[0]) && h.reels[0] === h.reels[1] && h.reels[1] === h.reels[2]
+  )
+  .map((h) => ({ symbol: h.reels[0], prob: h.prob }));
+
+const SEVEN_TOTAL_PROB = SEVEN_HAND_WEIGHTS.reduce((s, w) => s + w.prob, 0);
+
 function generateMixedSevenBar(): [ReelSymbol, ReelSymbol, ReelSymbol] {
-  const seven = pickRandom(SEVEN_COLORS);
-  return [seven, seven, 'BAR'];
+  const r = Math.random() * SEVEN_TOTAL_PROB;
+  let cum = 0;
+  for (const { symbol, prob } of SEVEN_HAND_WEIGHTS) {
+    cum += prob;
+    if (r < cum) return [symbol, symbol, 'BAR'];
+  }
+  return [SEVEN_HAND_WEIGHTS.at(-1)!.symbol, SEVEN_HAND_WEIGHTS.at(-1)!.symbol, 'BAR'];
 }
 
 // ハズレ時のリール: 役と被らないこと、左リールにチェリーを出さないこと、BAR×3 にならないこと
