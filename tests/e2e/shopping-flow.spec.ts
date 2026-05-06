@@ -27,12 +27,7 @@ test.describe('ショッピングフロー', () => {
     await page.goto('/products/p_020');
     await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
-    // dev mode の HMR full-reload で割り込まれた場合にリトライ
-    await page.goto('/cart').catch(async () => {
-      await page.waitForLoadState('load');
-      await page.goto('/cart');
-    });
+    await page.waitForURL('/cart');
     await expect(page.getByTestId('cart-total')).toBeVisible();
     const totalText = await page.getByTestId('cart-total').textContent();
     expect(totalText).toContain('pt');
@@ -42,7 +37,7 @@ test.describe('ショッピングフロー', () => {
     await page.goto('/products/p_002');
     await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
+    await page.waitForURL('/cart');
     await page.goto('/checkout');
     await page.waitForLoadState('networkidle');
 
@@ -65,13 +60,9 @@ test.describe('ショッピングフロー', () => {
     await page.goto('/products/p_020');
     await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
+    await page.waitForURL('/cart');
 
-    // dev mode の HMR full-reload で割り込まれた場合にリトライ
-    await page.goto('/checkout').catch(async () => {
-      await page.waitForLoadState('load');
-      await page.goto('/checkout');
-    });
+    await page.goto('/checkout');
     await expect(page.getByTestId('present-button')).toBeVisible();
     await page.getByTestId('present-button').click();
 
@@ -87,7 +78,7 @@ test.describe('ショッピングフロー', () => {
     await page.goto('/products/p_014');
     await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
+    await page.waitForURL('/cart');
 
     await page.goto('/checkout');
     await page.getByTestId('present-button').click();
