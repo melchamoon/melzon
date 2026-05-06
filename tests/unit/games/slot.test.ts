@@ -10,24 +10,24 @@ describe('spinResult', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.00005);
     const result = spinResult();
     expect(result.reels).toEqual(['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD']);
-    expect(result.payout).toBe(100_000_000);
+    expect(result.payout).toBe(1_000_000);
   });
 
   it('青7×3揃い (0.0001 <= r < 0.0011)', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.0005);
     const result = spinResult();
     expect(result.reels).toEqual(['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE']);
-    expect(result.payout).toBe(1_000_000);
+    expect(result.payout).toBe(100_000);
   });
 
-  it('赤7×3揃い (0.0011 <= r < 0.0111)', () => {
+  it('赤7×3揃い (0.0011 <= r < 0.0131)', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.005);
     const result = spinResult();
     expect(result.reels).toEqual(['SEVEN_RED', 'SEVEN_RED', 'SEVEN_RED']);
     expect(result.payout).toBe(10_000);
   });
 
-  it('7-7-BAR ミックス (0.0111 <= r < 0.0211): BARは必ず右リール', () => {
+  it('7-7-BAR ミックス (0.0131 <= r < 0.0431): BARは必ず右リール', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.015);
     const result = spinResult();
     expect(result.payout).toBe(3_000);
@@ -37,35 +37,35 @@ describe('spinResult', () => {
     expect(result.reels[2]).toBe('BAR');
   });
 
-  it('ピエロ×3揃い (0.0211 <= r < 0.0261)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.024);
+  it('ピエロ×3揃い (0.0431 <= r < 0.0481)', () => {
+    vi.spyOn(Math, 'random').mockReturnValueOnce(0.045);
     const result = spinResult();
     expect(result.reels).toEqual(['PIERROT', 'PIERROT', 'PIERROT']);
     expect(result.payout).toBe(1_000);
   });
 
-  it('チェリー×3揃い (0.0261 <= r < 0.0411)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.03);
+  it('チェリー×3揃い (0.0481 <= r < 0.0631)', () => {
+    vi.spyOn(Math, 'random').mockReturnValueOnce(0.055);
     const result = spinResult();
     expect(result.reels).toEqual(['CHERRY', 'CHERRY', 'CHERRY']);
     expect(result.payout).toBe(1_500);
   });
 
-  it('スイカ×3揃い (0.0411 <= r < 0.1411)', () => {
+  it('スイカ×3揃い (0.0631 <= r < 0.1631)', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.10);
     const result = spinResult();
     expect(result.reels).toEqual(['WATERMELON', 'WATERMELON', 'WATERMELON']);
     expect(result.payout).toBe(800);
   });
 
-  it('ベル×3揃い (0.1411 <= r < 0.3411)', () => {
+  it('ベル×3揃い (0.1631 <= r < 0.4131)', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.25);
     const result = spinResult();
     expect(result.reels).toEqual(['BELL', 'BELL', 'BELL']);
     expect(result.payout).toBe(300);
   });
 
-  it('ハズレ (r >= 0.3411)', () => {
+  it('ハズレ (r >= 0.4131)', () => {
     vi.spyOn(Math, 'random').mockReturnValueOnce(0.99);
     const result = spinResult();
     expect(result.payout).toBe(0);
@@ -119,8 +119,8 @@ describe('spinResult', () => {
     };
     for (let i = 0; i < 10_000; i++) {
       const r = spinResult();
-      if (r.payout === 100_000_000) counts.gold++;
-      else if (r.payout === 1_000_000) counts.blue++;
+      if (r.payout === 1_000_000) counts.gold++;
+      else if (r.payout === 100_000) counts.blue++;
       else if (r.payout === 10_000) counts.red++;
       else if (r.payout === 3_000) counts.bar++;
       else if (r.payout === 1_500) counts.cherry++;
@@ -130,9 +130,9 @@ describe('spinResult', () => {
       else counts.miss++;
     }
     // 各カテゴリの統計検証 (寛容な許容範囲)
-    expect(counts.bell / 10_000).toBeCloseTo(0.20, 1);
+    expect(counts.bell / 10_000).toBeCloseTo(0.25, 1);
     expect(counts.watermelon / 10_000).toBeCloseTo(0.10, 1);
     expect(counts.cherry / 10_000).toBeCloseTo(0.015, 2);
-    expect(counts.miss / 10_000).toBeCloseTo(0.6589, 1);
+    expect(counts.miss / 10_000).toBeCloseTo(0.5869, 1);
   });
 });
