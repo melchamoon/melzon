@@ -1,4 +1,15 @@
-.PHONY: run-dev run-dev-hmr lint test ci
+.PHONY: run-dev run-dev-hmr build start build-start lint test ci
+
+# 本番ビルド（再ビルド不要な実行用）
+build:
+	pnpm build
+
+# ビルド済み成果物を起動（コード変更があっても再ビルドしない）
+start:
+	pnpm start
+
+# ビルドして即起動
+build-start: build start
 
 # ファイル変更検知 → フルビルド → サーバー再起動
 run-dev:
