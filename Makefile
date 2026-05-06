@@ -1,6 +1,11 @@
-.PHONY: run lint test ci
+.PHONY: run-dev run-dev-hmr lint test ci
 
-run:
+# ファイル変更検知 → フルビルド → サーバー再起動
+run-dev:
+	pnpm run dev:build
+
+# HMR方式 (CSS問題あり、現在非推奨)
+run-dev-hmr:
 	pnpm dev
 
 lint:

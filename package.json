@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3967",
+    "dev:build": "node scripts/dev-watch.mjs",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3967",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
@@ -52,6 +53,7 @@
     "prettier-plugin-tailwindcss": "^0.6.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "chokidar": "^5.0.0"
   }
 }
