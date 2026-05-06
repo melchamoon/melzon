@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProductsByCategory } from '@/lib/products';
 import { CATEGORIES } from '@/lib/categories';
 import { ProductGrid } from '@/components/product/ProductGrid';
+import { PageShell } from '@/components/layout/PageShell';
 
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -15,13 +16,15 @@ export default function CategoryPage() {
   );
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-fg">{category.label}</h1>
-      {products.length === 0 ? (
-        <p className="text-fg/60">商品がありません。</p>
-      ) : (
-        <ProductGrid products={products} />
-      )}
-    </div>
+    <PageShell>
+      <div className="space-y-4">
+        <h1 className="text-2xl font-bold text-fg">{category.label}</h1>
+        {products.length === 0 ? (
+          <p className="text-fg/60">商品がありません。</p>
+        ) : (
+          <ProductGrid products={products} />
+        )}
+      </div>
+    </PageShell>
   );
 }

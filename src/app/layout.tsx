@@ -32,12 +32,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" className={`${noto.variable} bg-nav-night`}>
-      <body className="bg-nav-night text-fg font-sans min-h-screen">
+      <body className="bg-nav-night text-fg font-sans min-h-screen flex flex-col">
         <ToastProviderWrapper>
           <Header />
-          <main className="bg-white">
-            <div className="max-w-[1500px] mx-auto px-2 md:px-4 pt-4 pb-8">{children}</div>
-          </main>
+          <main className="flex-1 flex flex-col">{children}</main>
           <Footer />
         </ToastProviderWrapper>
         <Analytics />

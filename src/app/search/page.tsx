@@ -6,6 +6,7 @@ import { getProducts } from '@/lib/products';
 import { pickRandom } from '@/lib/recommend';
 import { generateDidYouMean } from '@/lib/search';
 import { ProductGrid } from '@/components/product/ProductGrid';
+import { PageShell } from '@/components/layout/PageShell';
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -46,8 +47,10 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense>
-      <SearchContent />
-    </Suspense>
+    <PageShell>
+      <Suspense>
+        <SearchContent />
+      </Suspense>
+    </PageShell>
   );
 }
