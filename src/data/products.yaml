@@ -24,7 +24,7 @@
     - めるちゃもさん本人より重い。
 - id: p_003
   name: めるちゃもキーホルダー
-  price: 1000
+  price: 1500
   image: /products/p_003.png
   description: かわいいキーホルダー。金属部分は金メッキ。
   reviews:
@@ -50,7 +50,7 @@
     - Happy Man BSC で落ちました。
 - id: p_006
   name: ゴールデンマウス
-  price: 3500
+  price: 9500
   image: /products/p_006.png
   category: gadget
   description: 純金「風」のマウス。
@@ -59,7 +59,7 @@
     - マウスホイールは回転しませんでした。
 - id: p_007
   name: 金のイーパス
-  price: 6800
+  price: 76800
   image: /products/p_007.png
   description: 使えるかは分かりません。
   reviews:
@@ -67,7 +67,7 @@
     - V筐体に入れたら詰まりました。
 - id: p_008
   name: 金色ワイヤレスイヤホン
-  price: 24800
+  price: 34800
   image: /products/p_008.png
   category: gadget
   description: 音質は普通。耳から金が生えているように見えます。
@@ -77,7 +77,7 @@
     - ケースが重くてポケットの片側だけ伸びてきました。
 - id: p_009
   name: 燃える氷
-  price: 3200
+  price: 200000
   image: /products/p_009.png
   description: 伝説のアイテム。
   reviews:
@@ -85,7 +85,7 @@
     - タバコに火をつけるのに便利です。
 - id: p_010
   name: めるちゃも印 金色のヤカン
-  price: 9800
+  price: 2800
   image: /products/p_010.png
   description: お湯を沸かすと金色の蒸気が出ません。
   reviews:
@@ -102,7 +102,7 @@
     - 庭に置いてたら風で飛ばされてどこかに行きました。
 - id: p_012
   name: きれいな石
-  price: 7200
+  price: 20
   image: /products/p_012.png
   description: 河原で拾いました。
   reviews:
@@ -119,7 +119,7 @@
     - レモンに使ったら果汁が飛び散りました。
 - id: p_014
   name: おいしいレトルトカレー
-  price: 1200
+  price: 550
   image: /products/p_014.png
   category: food
   description: 905種類のスパイスを使ったインド風のカレーです。
@@ -129,7 +129,7 @@
     - 辛いので牛乳と一緒に買い直しました。
 - id: p_015
   name: 大人気ゲーム
-  price: 8800
+  price: 9880
   image: /products/p_015.png
   category: gadget
   description: 150匹の仲間と共にめざせめるモンマスター！
@@ -138,16 +138,16 @@
     - 最初の森でめるチュウがなかなかゲットできません。
 - id: p_016
   name: デスクライト バージョン5
-  price: 2400
+  price: 12400
   image: /products/p_016.png
   category: gadget
-  description: お風呂で輝くあなたを演出。
+  description: 光るオブジェクトです。
   reviews:
     - 威圧感がありすぎて勉強できません。
     - 単三電池5本も使うと思ってませんでした。
 - id: p_017
   name: 金の洗濯バサミ(10個セット)
-  price: 1800
+  price: 2800
   image: /products/p_017.png
   description: 洗濯物が金で挟まれます。塗装は徐々に剥げます。
   reviews:
@@ -155,7 +155,7 @@
     - 雨の日は使えないと言われましたが普通に使えました。
 - id: p_018
   name: こたつとみかん
-  price: 4200
+  price: 14200
   image: /products/p_018.png
   description: こたつとみかんのセットです。冬にちょうどいいですね。
   reviews:
@@ -172,7 +172,7 @@
     - 切るのを躊躇しました。
 - id: p_020
   name: スポーツジムの利用券
-  price: 1600
+  price: 6600
   image: /products/p_020.png
   description: めるちゃもジム東京店で1回利用できます。タオル・水・気合は別売です。
   reviews:
