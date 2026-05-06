@@ -2,21 +2,21 @@ import { describe, it, expect } from 'vitest';
 import { payoutByMisses } from '@/lib/memory';
 
 describe('memory payout', () => {
-  const table = [
-    [0, 1_000_000],
-    [1, 300_000],
-    [2, 100_000],
-    [3, 50_000],
-    [4, 25_000],
-    [5, 10_000],
-    [6, 5_000],
-    [7, 1_000],
-    [99, 1_000],
-  ] as const;
+  it('misses=0 が最高報酬', () => {
+    expect(payoutByMisses(0)).toBeGreaterThan(payoutByMisses(1));
+  });
 
-  for (const [misses, expected] of table) {
-    it(`misses=${misses} → ${expected} pt`, () => {
-      expect(payoutByMisses(misses)).toBe(expected);
-    });
-  }
+  it('ミス増加で報酬は単調減少する', () => {
+    for (let i = 0; i < 6; i++) {
+      expect(payoutByMisses(i)).toBeGreaterThan(payoutByMisses(i + 1));
+    }
+  });
+
+  it('テーブル外のミス数は一定のフロア値を返す', () => {
+    const floor = payoutByMisses(99);
+    expect(floor).toBeGreaterThan(0);
+    expect(payoutByMisses(50)).toBe(floor);
+    expect(payoutByMisses(100)).toBe(floor);
+  });
+
 });

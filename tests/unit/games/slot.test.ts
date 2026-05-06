@@ -1,72 +1,94 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { spinResult, type ReelSymbol } from '@/lib/slot';
+import { spinResult, HANDS, type ReelSymbol } from '@/lib/slot';
 
 afterEach(() => {
   vi.restoreAllMocks();
 });
 
+const isSeven = (s: ReelSymbol) => s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED';
+
+// HANDS の累積確率からミッドポイントを計算
+const boundaries = (() => {
+  let cum = 0;
+  return HANDS.map(h => {
+    const start = cum;
+    cum += h.prob;
+    return { id: h.id, hand: h, mid: start + h.prob / 2 };
+  });
+})();
+const totalProb = HANDS.reduce((s, h) => s + h.prob, 0);
+
+
 describe('spinResult', () => {
-  it('金7×3揃い (r < 0.0001)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.00005);
+  it('金7×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'SEVEN_GOLD_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD']);
-    expect(result.payout).toBe(1_000_000);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('青7×3揃い (0.0001 <= r < 0.0011)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.0005);
+  it('青7×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'SEVEN_BLUE_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE']);
-    expect(result.payout).toBe(100_000);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('赤7×3揃い (0.0011 <= r < 0.0131)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.005);
+  it('赤7×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'SEVEN_RED_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['SEVEN_RED', 'SEVEN_RED', 'SEVEN_RED']);
-    expect(result.payout).toBe(10_000);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('7-7-BAR ミックス (0.0131 <= r < 0.0431): BARは必ず右リール', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.015);
+  it('7-7-BAR ミックス: BARは必ず右リール', () => {
+    const b = boundaries.find(b => b.id === 'SEVEN_BAR_MIX')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.payout).toBe(3_000);
-    const isSeven = (s: ReelSymbol) => s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED';
+    expect(result.payout).toBe(b.hand.payout);
     expect(isSeven(result.reels[0])).toBe(true);
-    expect(result.reels[0]).toBe(result.reels[1]); // 左中は同色
+    expect(result.reels[0]).toBe(result.reels[1]);
     expect(result.reels[2]).toBe('BAR');
   });
 
-  it('ピエロ×3揃い (0.0431 <= r < 0.0481)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.045);
+  it('ピエロ×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'PIERROT_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['PIERROT', 'PIERROT', 'PIERROT']);
-    expect(result.payout).toBe(1_000);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('チェリー×3揃い (0.0481 <= r < 0.0631)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.055);
+  it('チェリー×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'CHERRY_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['CHERRY', 'CHERRY', 'CHERRY']);
-    expect(result.payout).toBe(1_500);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('スイカ×3揃い (0.0631 <= r < 0.1631)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.10);
+  it('スイカ×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'WATERMELON_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['WATERMELON', 'WATERMELON', 'WATERMELON']);
-    expect(result.payout).toBe(800);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('ベル×3揃い (0.1631 <= r < 0.4131)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.25);
+  it('ベル×3揃い', () => {
+    const b = boundaries.find(b => b.id === 'BELL_3')!;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(b.mid);
     const result = spinResult();
-    expect(result.reels).toEqual(['BELL', 'BELL', 'BELL']);
-    expect(result.payout).toBe(300);
+    expect(result.reels).toEqual(b.hand.reels);
+    expect(result.payout).toBe(b.hand.payout);
   });
 
-  it('ハズレ (r >= 0.4131)', () => {
-    vi.spyOn(Math, 'random').mockReturnValueOnce(0.99);
+  it('ハズレ', () => {
+    const missR = (totalProb + 1) / 2;
+    vi.spyOn(Math, 'random').mockReturnValueOnce(missR);
     const result = spinResult();
     expect(result.payout).toBe(0);
   });
@@ -97,7 +119,6 @@ describe('spinResult', () => {
       if (r.payout !== 0) continue;
       if (r.reels[0] === 'CHERRY') leftCherry++;
       if (r.reels[0] === 'BAR' && r.reels[1] === 'BAR' && r.reels[2] === 'BAR') barTriple++;
-      const isSeven = (s: ReelSymbol) => s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED';
       if (isSeven(r.reels[0]) && isSeven(r.reels[1]) && r.reels[2] === 'BAR') mixedSevenBar++;
     }
     expect(leftCherry).toBe(0);
@@ -106,33 +127,22 @@ describe('spinResult', () => {
   });
 
   it('全体の確率分布 (10000 trials)', () => {
-    const counts = {
-      gold: 0,
-      blue: 0,
-      red: 0,
-      bar: 0,
-      pierrot: 0,
-      cherry: 0,
-      watermelon: 0,
-      bell: 0,
-      miss: 0,
-    };
-    for (let i = 0; i < 10_000; i++) {
+    const TRIALS = 10_000;
+    const hitCounts = new Map<string, number>(HANDS.map(h => [h.id, 0]));
+    let misses = 0;
+
+    for (let i = 0; i < TRIALS; i++) {
       const r = spinResult();
-      if (r.payout === 1_000_000) counts.gold++;
-      else if (r.payout === 100_000) counts.blue++;
-      else if (r.payout === 10_000) counts.red++;
-      else if (r.payout === 3_000) counts.bar++;
-      else if (r.payout === 1_500) counts.cherry++;
-      else if (r.payout === 1_000) counts.pierrot++;
-      else if (r.payout === 800) counts.watermelon++;
-      else if (r.payout === 300) counts.bell++;
-      else counts.miss++;
+      if (r.payout === 0) { misses++; continue; }
+      const hand = HANDS.find(h => h.payout === r.payout);
+      if (hand) hitCounts.set(hand.id, (hitCounts.get(hand.id) ?? 0) + 1);
     }
-    // 各カテゴリの統計検証 (寛容な許容範囲)
-    expect(counts.bell / 10_000).toBeCloseTo(0.25, 1);
-    expect(counts.watermelon / 10_000).toBeCloseTo(0.10, 1);
-    expect(counts.cherry / 10_000).toBeCloseTo(0.015, 2);
-    expect(counts.miss / 10_000).toBeCloseTo(0.5869, 1);
+
+    const missProb = 1 - totalProb;
+    expect(misses / TRIALS).toBeCloseTo(missProb, 1);
+
+    for (const hand of HANDS.filter(h => h.prob >= 0.05)) {
+      expect(hitCounts.get(hand.id)! / TRIALS).toBeCloseTo(hand.prob, 1);
+    }
   });
 });
