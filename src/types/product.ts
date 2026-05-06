@@ -5,4 +5,6 @@ export type Product = {
   image: string;
   description: string;
   reviews: string[];
+  featured?: boolean;
+  category?: string;
 };

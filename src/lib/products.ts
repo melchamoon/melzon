@@ -11,6 +11,8 @@ const productSchema = z.object({
   image: z.string().startsWith('/products/'),
   description: z.string(),
   reviews: z.array(z.string()).min(1).max(3),
+  featured: z.boolean().optional(),
+  category: z.string().optional(),
 });
 
 let cache: Product[] | null = null;
@@ -26,4 +28,12 @@ export function getProducts(): Product[] {
 
 export function getProduct(id: string): Product | null {
   return getProducts().find((p) => p.id === id) ?? null;
+}
+
+export function getFeaturedProducts(): Product[] {
+  return getProducts().filter((p) => p.featured === true);
+}
+
+export function getProductsByCategory(category: string): Product[] {
+  return getProducts().filter((p) => p.category === category);
 }

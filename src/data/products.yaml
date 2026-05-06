@@ -2,6 +2,7 @@
   name: 金鮭のフレークギフト(6個入)
   price: 12800
   image: /products/p_001.png
+  category: food
   description: 金沢の老舗が金箔をまぶした鮭フレーク。めるちゃもへの贈答に最適。
   reviews:
     - 食べてないけど見た目が金色で良い。
@@ -10,6 +11,7 @@
   name: 金のめるちゃも像
   price: 1000000
   image: /products/p_002.png
+  featured: true
   description: 純度の表示は無いが見た目は金。重量感あり。
   reviews:
     - 想像の3倍ピカピカでした。
@@ -28,6 +30,7 @@
   name: 24K コーヒー豆缶(200g)
   price: 18000
   image: /products/p_004.png
+  category: food
   description: 缶が金色。中身は普通のコーヒー豆。
   reviews:
     - 缶を飾ってます。豆は知人にあげました。
@@ -44,6 +47,7 @@
   name: ゴールデンマウス
   price: 3500
   image: /products/p_006.png
+  category: gadget
   description: 純金「風」のマウス。
   reviews:
     - 重すぎて手が疲れます。
@@ -60,6 +64,7 @@
   name: 金色ワイヤレスイヤホン
   price: 24800
   image: /products/p_008.png
+  category: gadget
   description: 音質は普通。耳から金が生えているように見えます。
   reviews:
     - 音は普通でした。見た目は最強です。
@@ -100,7 +105,7 @@
     - 重さに驚きました。
     - 文鎮にしています。
 - id: p_013
-  name: ゴールデン☆柑橘類皮向き
+  name: 【令和最新版】金の柑橘類皮剥き器
   price: 2800
   image: /products/p_013.png
   description: はっさくとかの皮を剥けます。
@@ -111,6 +116,7 @@
   name: おいしいレトルトカレー
   price: 1200
   image: /products/p_014.png
+  category: food
   description: 905種類のスパイスを使ったインド風のカレーです。
   reviews:
     - インドを感じました。
@@ -120,6 +126,7 @@
   name: 大人気ゲーム
   price: 8800
   image: /products/p_015.png
+  category: gadget
   description: 150匹の仲間と共にめざせめるモンマスター！
   reviews:
     - 3匹を選ぶところで迷って1時間が経過しました。
@@ -128,6 +135,7 @@
   name: デスクライト バージョン5
   price: 2400
   image: /products/p_016.png
+  category: gadget
   description: お風呂で輝くあなたを演出。
   reviews:
     - 威圧感がありすぎて勉強できません。
@@ -152,6 +160,7 @@
   name: 金粉たっぷりバウムクーヘン
   price: 5800
   image: /products/p_019.png
+  category: food
   description: バウムクーヘンにたっぷり金箔をのせました。輪切りにすると断面が輝きます。
   reviews:
     - 見た目は最強。味は普通でした。
