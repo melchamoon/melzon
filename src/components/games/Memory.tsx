@@ -110,7 +110,7 @@ export function Memory({ products }: { products: Product[] }) {
               disabled={card.matched || card.flipped || processing}
               aria-label={card.flipped || card.matched ? `カード ${card.symbol}` : '裏向きのカード'}
               data-testid={`memory-card-${card.id}`}
-              className={`w-20 h-20 md:w-24 md:h-24 rounded-sm border-2 transition-all ${
+              className={`w-24 h-24 md:w-32 md:h-32 rounded-sm border-2 transition-all ${
                 card.matched
                   ? 'border-[color:var(--color-success)] bg-[color:var(--color-surface)]'
                   : card.flipped
