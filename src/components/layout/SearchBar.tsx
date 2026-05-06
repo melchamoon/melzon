@@ -4,8 +4,6 @@ import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
-const CATEGORIES = ['すべて', '再び購入', 'セール', 'ギフト'];
-
 export function SearchBar() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,15 +20,12 @@ export function SearchBar() {
       className="flex h-10 rounded-[4px] overflow-hidden w-full"
       data-testid="search-form"
     >
-      <select
-        className="bg-surface text-fg border-r border-[color:var(--color-line-strong)] px-2 text-xs shrink-0 outline-none"
-        defaultValue="すべて"
+      <div
+        className="bg-surface text-fg border-r border-[color:var(--color-line-strong)] px-2 text-xs shrink-0 flex items-center"
         aria-label="カテゴリ"
       >
-        {CATEGORIES.map((c) => (
-          <option key={c} value={c}>{c}</option>
-        ))}
-      </select>
+        すべて
+      </div>
       <input
         ref={inputRef}
         type="text"
