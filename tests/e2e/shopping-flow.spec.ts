@@ -24,8 +24,9 @@ test.describe('ショッピングフロー', () => {
 
   test('カートに追加 → カートページで確認', async ({ page }) => {
     await page.goto('/products/p_020');
+    await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await page.waitForTimeout(500);
+    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
     await page.goto('/cart');
     await expect(page.getByTestId('cart-total')).toBeVisible();
     const totalText = await page.getByTestId('cart-total').textContent();
@@ -34,8 +35,9 @@ test.describe('ショッピングフロー', () => {
 
   test('プレゼント完了フロー（ポイント不足時）', async ({ page }) => {
     await page.goto('/products/p_002');
+    await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await page.waitForTimeout(500);
+    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
     await page.goto('/checkout');
 
     // p_002は980,000ptなので残高0では不足
@@ -56,8 +58,9 @@ test.describe('ショッピングフロー', () => {
 
     // カートに商品を追加
     await page.goto('/products/p_020');
+    await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await page.waitForTimeout(500);
+    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
 
     await page.goto('/checkout');
     await expect(page.getByTestId('present-button')).toBeVisible();
@@ -73,8 +76,9 @@ test.describe('ショッピングフロー', () => {
       { name: 'melzon_points', value: '99999999', domain: 'localhost', path: '/' },
     ]);
     await page.goto('/products/p_014');
+    await page.waitForLoadState('networkidle');
     await page.locator('button:has-text("カートに入れる")').click();
-    await page.waitForTimeout(500);
+    await expect(page.locator('button:has-text("✓ カートに追加しました")')).toBeVisible();
 
     await page.goto('/checkout');
     await page.getByTestId('present-button').click();

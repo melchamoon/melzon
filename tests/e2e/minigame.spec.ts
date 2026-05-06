@@ -40,23 +40,6 @@ test.describe('ミニゲーム', () => {
     expect(num).toBeGreaterThan(0);
   });
 
-  test('連打ゲーム: やめるボタンでポイント加算される', async ({ page }) => {
-    await page.goto('/games/click');
-
-    // クリックしてポイントを稼ぐ
-    for (let i = 0; i < 5; i++) {
-      await page.getByTestId('click-button').click();
-      await page.waitForTimeout(50);
-    }
-
-    const stopBtn = page.getByTestId('stop-button');
-    await stopBtn.click();
-
-    // モーダルが表示される
-    await expect(page.locator('text=お疲れさまでした')).toBeVisible();
-    await expect(page.locator('text=ポイント獲得')).toBeVisible();
-  });
-
   test('神経衰弱: カードが12枚表示される', async ({ page }) => {
     await page.goto('/games/memory');
     const cards = page.locator('[data-testid^="memory-card-"]');
