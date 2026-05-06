@@ -20,7 +20,6 @@ const SYMBOL_IMAGE: Record<ReelSymbol, string> = {
 
 
 const STOP_DELAYS = [800, 400, 400] as const; // 左→中→右の停止間隔(ms)
-const CONFETTI_THRESHOLD = 10_000; // 赤7揃い以上で紙吹雪
 
 type SlotState = {
   spinning: [boolean, boolean, boolean];
@@ -100,13 +99,14 @@ export function Slot() {
       return { ...s, reels, spinning: [false, false, false], lastEarn: result.payout };
     });
 
-    if (result.payout >= CONFETTI_THRESHOLD) {
+    if (result.reels.every(isSeven)) {
       setCooldown(true);
       cooldownTimer.current = setTimeout(() => setCooldown(false), 3000);
     }
   }, [isAnySpinning, cooldown]);
 
-  const showConfetti = state.lastEarn !== null && state.lastEarn >= CONFETTI_THRESHOLD;
+  const isSevenTriple = state.reels.every((s) => s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED');
+  const showConfetti = state.lastEarn !== null && state.lastEarn > 0 && isSevenTriple;
   const isJackpot = state.lastEarn !== null && state.lastEarn >= 1_000_000;
 
   return (
