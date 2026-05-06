@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import type { Metadata } from 'next';
-import { getProduct, pickProductImage } from '@/lib/products';
+import { getProduct } from '@/lib/products';
+import { ProductHeroImage } from '@/components/product/ProductHeroImage';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { BuyBox } from '@/components/product/BuyBox';
 
@@ -24,22 +24,11 @@ export default async function ProductPage({ params }: Props) {
   const product = getProduct(id);
   if (!product) notFound();
 
-  const heroImage = pickProductImage(product);
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_320px] gap-6 bg-white p-4 lg:p-6">
       {/* 画像 */}
       <div className="aspect-square bg-white overflow-hidden md:row-span-2 lg:row-span-1">
-        <Image
-          src={heroImage}
-          alt={product.name}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-full h-full object-contain"
-          unoptimized
-          priority
-        />
+        <ProductHeroImage product={product} />
       </div>
 
       {/* 中央：商品情報 */}
