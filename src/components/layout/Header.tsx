@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePoints, useCart } from '@/lib/use-storage';
 import { SearchBar } from './SearchBar';
 import { formatPoints } from '@/lib/format';
@@ -17,11 +18,15 @@ export function Header() {
     <header className="bg-ink-950 border-b border-gold-800 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-4 py-2">
-          <Link
-            href="/"
-            className="text-2xl md:text-3xl font-display text-gold-500 drop-shadow shrink-0"
-          >
-            Melzon
+          <Link href="/" className="shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Melzon"
+              width={160}
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
 
           <div className="flex-1 hidden md:block">
