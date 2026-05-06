@@ -33,7 +33,7 @@ export default async function ProductPage({ params }: Props) {
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain p-8"
+          className="object-cover"
           unoptimized
           priority
         />

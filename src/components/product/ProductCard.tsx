@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain p-4"
+          className="object-cover"
           unoptimized
           onError={() => {}}
         />
