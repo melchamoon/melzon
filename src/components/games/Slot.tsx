@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { earnPointsLocal } from '@/lib/points';
 import { usePoints } from '@/lib/use-storage';
-import { spinResult, ALL_SYMBOLS, type ReelSymbol } from '@/lib/slot';
+import { spinResult, ALL_SYMBOLS, PAY_TABLE, SYMBOL_LABEL, type ReelSymbol } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
 
 const SYMBOL_IMAGE: Record<ReelSymbol, string> = {
@@ -18,16 +18,6 @@ const SYMBOL_IMAGE: Record<ReelSymbol, string> = {
   BELL: '/games/slot/bell.png',
 };
 
-const SYMBOL_LABEL: Record<ReelSymbol, string> = {
-  SEVEN_GOLD: '金7',
-  SEVEN_BLUE: '青7',
-  SEVEN_RED: '赤7',
-  BAR: 'BAR',
-  PIERROT: 'ピエロ',
-  CHERRY: 'チェリー',
-  WATERMELON: 'スイカ',
-  BELL: 'ベル',
-};
 
 const STOP_DELAYS = [800, 400, 400] as const; // 左→中→右の停止間隔(ms)
 const CONFETTI_THRESHOLD = 10_000; // 赤7揃い以上で紙吹雪
@@ -98,8 +88,8 @@ export function Slot() {
     const isReach = isSeven(result.reels[0]) && isSeven(result.reels[1]);
     if (isReach) setReach(true);
 
-    // 右リール停止 + 結果反映（リーチ時は2秒ディレイ）
-    await new Promise((r) => setTimeout(r, isReach ? 2000 : STOP_DELAYS[2]));
+    // 右リール停止 + 結果反映（リーチ時は3秒ディレイ）
+    await new Promise((r) => setTimeout(r, isReach ? 3000 : STOP_DELAYS[2]));
     setReach(false);
     if (result.payout > 0) {
       earnPointsLocal(result.payout);
@@ -212,14 +202,15 @@ export function Slot() {
           </h3>
 
           <div className="flex flex-col gap-2">
-            <PaytableRow symbols={['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD']} payout={100_000_000} highlight="gold" />
-            <PaytableRow symbols={['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE']} payout={1_000_000} highlight="blue" />
-            <PaytableRow symbols={['SEVEN_RED', 'SEVEN_RED', 'SEVEN_RED']} payout={10_000} highlight="red" />
-            <PaytableRow symbols={['SEVEN_RED', 'SEVEN_RED', 'BAR']} payout={3_000} note="7-7-BAR" />
-            <PaytableRow symbols={['CHERRY', 'CHERRY', 'CHERRY']} payout={1_500} />
-            <PaytableRow symbols={['PIERROT', 'PIERROT', 'PIERROT']} payout={1_000} />
-            <PaytableRow symbols={['WATERMELON', 'WATERMELON', 'WATERMELON']} payout={800} />
-            <PaytableRow symbols={['BELL', 'BELL', 'BELL']} payout={300} />
+            {PAY_TABLE.map((hand) => (
+              <PaytableRow
+                key={hand.id}
+                symbols={(hand.displayReels ?? hand.reels)!}
+                payout={hand.payout}
+                highlight={hand.highlight}
+                note={hand.note}
+              />
+            ))}
           </div>
         </div>
       </div>

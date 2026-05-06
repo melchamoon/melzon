@@ -19,6 +19,65 @@ export const ALL_SYMBOLS: readonly ReelSymbol[] = [
   'BELL',
 ] as const;
 
+export const SYMBOL_LABEL: Record<ReelSymbol, string> = {
+  SEVEN_GOLD: '金7',
+  SEVEN_BLUE: '青7',
+  SEVEN_RED: '赤7',
+  BAR: 'BAR',
+  PIERROT: 'ピエロ',
+  CHERRY: 'チェリー',
+  WATERMELON: 'スイカ',
+  BELL: 'ベル',
+};
+
+export type HandId =
+  | 'SEVEN_GOLD_3'
+  | 'SEVEN_BLUE_3'
+  | 'SEVEN_RED_3'
+  | 'SEVEN_BAR_MIX'
+  | 'PIERROT_3'
+  | 'CHERRY_3'
+  | 'WATERMELON_3'
+  | 'BELL_3';
+
+export type HandConfig = {
+  readonly id: HandId;
+  readonly label: string;
+  readonly prob: number;
+  readonly payout: number;
+  /** null = 動的生成（ミックス役など） */
+  readonly reels: [ReelSymbol, ReelSymbol, ReelSymbol] | null;
+  /** reels が null の役のペイテーブル表示用リール */
+  readonly displayReels?: [ReelSymbol, ReelSymbol, ReelSymbol];
+  readonly highlight?: 'gold' | 'blue' | 'red';
+  readonly note?: string;
+};
+
+export const HANDS: readonly HandConfig[] = [
+  { id: 'SEVEN_GOLD_3',  label: '金セブン×3', prob: 0.0001, payout: 1_000_000, reels: ['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD'], highlight: 'gold' },
+  { id: 'SEVEN_BLUE_3',  label: '青セブン×3', prob: 0.001, payout: 100_000,  reels: ['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE'], highlight: 'blue' },
+  { id: 'SEVEN_RED_3',   label: '赤セブン×3', prob: 0.012, payout: 10_000,   reels: ['SEVEN_RED',  'SEVEN_RED',  'SEVEN_RED' ], highlight: 'red'  },
+  { id: 'SEVEN_BAR_MIX', label: 'セブン-BAR', prob: 0.030, payout: 3_000,       reels: null, displayReels: ['SEVEN_RED', 'SEVEN_RED', 'BAR'], note: '7-7-BAR' },
+  { id: 'PIERROT_3',     label: 'ピエロ×3',   prob: 0.005, payout: 1_000,       reels: ['PIERROT',    'PIERROT',    'PIERROT'   ] },
+  { id: 'CHERRY_3',      label: 'チェリー×3', prob: 0.015, payout: 1_500,       reels: ['CHERRY',     'CHERRY',     'CHERRY'    ] },
+  { id: 'WATERMELON_3',  label: 'スイカ×3',   prob: 0.10,  payout: 800,         reels: ['WATERMELON', 'WATERMELON', 'WATERMELON'] },
+  { id: 'BELL_3',        label: 'ベル×3',     prob: 0.25,  payout: 300,         reels: ['BELL',       'BELL',       'BELL'      ] },
+];
+
+export type PayTableEntry = HandConfig & {
+  readonly ev: number;       // prob × payout（1スピンあたりの期待値寄与）
+  readonly hitRate: number;  // 1/prob の整数（例: 0.002 → 500）
+};
+
+export const PAY_TABLE: readonly PayTableEntry[] = HANDS.map((h) => ({
+  ...h,
+  ev: h.prob * h.payout,
+  hitRate: Math.round(1 / h.prob),
+}));
+
+/** 1スピンあたりの期待ペイアウト合計 */
+export const EXPECTED_PAYOUT: number = PAY_TABLE.reduce((sum, row) => sum + row.ev, 0);
+
 const SEVEN_COLORS: readonly ReelSymbol[] = ['SEVEN_GOLD', 'SEVEN_BLUE', 'SEVEN_RED'];
 
 // 左リールにCHERRYは出ない + 7は揃いかけ不可（7×2=ハズレにできないため）
@@ -64,32 +123,13 @@ export function spinResult(): {
   payout: number;
 } {
   const r = Math.random();
-
-  // 金7×3: 0.01%
-  if (r < 0.0001) return { reels: ['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD'], payout: 100_000_000 };
-  // 青7×3: 0.1%
-  if (r < 0.0011) return { reels: ['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE'], payout: 1_000_000 };
-  // 赤7×3: 1%
-  if (r < 0.0111) return { reels: ['SEVEN_RED', 'SEVEN_RED', 'SEVEN_RED'], payout: 10_000 };
-  // 7-7-BAR ミックス: 1%
-  if (r < 0.0211) return { reels: generateMixedSevenBar(), payout: 3_000 };
-  // ピエロ×3: 0.5%
-  if (r < 0.0261) return { reels: ['PIERROT', 'PIERROT', 'PIERROT'], payout: 1_000 };
-  // チェリー×3: 1.5%
-  if (r < 0.0411) return { reels: ['CHERRY', 'CHERRY', 'CHERRY'], payout: 1_500 };
-  // スイカ×3: 10%
-  if (r < 0.1411) return { reels: ['WATERMELON', 'WATERMELON', 'WATERMELON'], payout: 800 };
-  // ベル×3: 20%
-  if (r < 0.3411) return { reels: ['BELL', 'BELL', 'BELL'], payout: 300 };
-  // ハズレ
+  let cumulative = 0;
+  for (const hand of HANDS) {
+    cumulative += hand.prob;
+    if (r < cumulative) {
+      const reels = hand.reels ?? generateMixedSevenBar();
+      return { reels, payout: hand.payout };
+    }
+  }
   return { reels: randomLoss(), payout: 0 };
-}
-
-export function calcClickPt(gauge: number): number {
-  return Math.floor(1 + (99 * gauge) / 100);
-}
-
-export function payoutByMisses(misses: number): number {
-  const table = [100_000_000, 1_000_000, 515_000, 265_000, 135_000, 70_000, 35_000];
-  return table[misses] ?? 1_000;
 }
