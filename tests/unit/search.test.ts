@@ -19,12 +19,10 @@ describe('search', () => {
     expect(products.some((p) => p.id === result.product.id)).toBe(true);
   });
 
-  it('suggestion is different from original name in most cases (melPrefix always prefixes)', () => {
-    let hasDifference = false;
+  it('suggestion matches the product name exactly', () => {
     for (let i = 0; i < 20; i++) {
       const r = generateDidYouMean('q', products);
-      if (r.suggestion !== r.product.name) hasDifference = true;
+      expect(r.suggestion).toBe(r.product.name);
     }
-    expect(hasDifference).toBe(true);
   });
 });
