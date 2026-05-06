@@ -67,7 +67,7 @@ test.describe('ショッピングフロー', () => {
     await page.getByTestId('present-button').click();
 
     await expect(page).toHaveURL('/complete');
-    await expect(page.locator('text=めるちゃもへのプレゼントが完了しました')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'めるちゃもへのプレゼントが完了しました' })).toBeVisible();
     await expect(page.getByTestId('tweet-button')).toBeVisible();
   });
 
