@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { formatPoints } from '@/lib/format';
 import { readCart, writeCart } from '@/lib/storage';
 import { updateQty, removeItem } from '@/lib/cart';
@@ -20,7 +21,7 @@ export function CartItem({ item, product }: Props) {
 
   return (
     <div className="flex gap-4 py-4 border-b border-[color:var(--color-line)]">
-      <div className="relative w-20 h-20 bg-white border border-[color:var(--color-line)] rounded-sm shrink-0">
+      <Link href={`/products/${product.id}`} className="relative w-20 h-20 bg-white border border-[color:var(--color-line)] rounded-sm shrink-0">
         <Image
           src={imgSrc!}
           alt={product.name}
@@ -28,11 +29,11 @@ export function CartItem({ item, product }: Props) {
           className="object-contain p-2"
           unoptimized
         />
-      </div>
+      </Link>
       <div className="flex-1 min-w-0">
-        <p className="text-link hover:text-link-hover hover:underline text-sm mb-1 cursor-pointer">
+        <Link href={`/products/${product.id}`} className="text-link hover:text-link-hover hover:underline text-sm mb-1 block">
           {product.name}
-        </p>
+        </Link>
         <p className="text-price font-bold text-sm mb-2">{formatPoints(product.price)} pt</p>
         <div className="flex items-center gap-2">
           <button
