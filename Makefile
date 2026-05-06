@@ -13,6 +13,7 @@ test:
 
 ci:
 	pnpm install --frozen-lockfile
+	pnpm audit --audit-level=high
 	pnpm build
 	$(MAKE) lint
 	pnpm test -- --run
