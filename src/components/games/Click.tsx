@@ -7,7 +7,7 @@ import { usePoints } from '@/lib/use-storage';
 import { calcClickPt } from '@/lib/click';
 import { formatPoints } from '@/lib/format';
 
-const CLICK_PT_MAX = 300;
+const CLICK_PT_MAX = 100;
 const IMAGE_RESET_MS = 200;
 
 const PRAISE_WORDS = ['すごい！', 'えらい！', 'やるね！', 'さすが！', 'いいね！', 'かっこいい！', '天才！', 'ナイス！'];
