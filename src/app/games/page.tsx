@@ -17,7 +17,7 @@ export default function GamesPage() {
         <GameCard
           slug="slot"
           title="めるちゃもスロット"
-          description="3 つのリールを回して揃えよう！大当たりで 10,000 pt 獲得。"
+          description="3つのリールを回して揃えよう！大当たりで大量獲得。"
           image="/banners/banner2.png"
         />
         <GameCard

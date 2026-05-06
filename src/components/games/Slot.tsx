@@ -127,7 +127,7 @@ export function Slot() {
         {/* スロット本体 */}
         <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-white border border-[color:var(--color-line)] w-full max-w-lg relative overflow-hidden shrink-0">
           <h2 className="text-3xl md:text-4xl font-black text-fg tracking-widest relative z-10">
-            MELZON SLOT
+            メルゾンスロット
           </h2>
 
           <div
@@ -162,7 +162,7 @@ export function Slot() {
             {state.lastEarn !== null && state.lastEarn > 0 && (
               <div className="flex flex-col items-center animate-in zoom-in duration-500 fade-in slide-in-from-bottom-4">
                 <span className="text-2xl md:text-3xl font-bold text-cta">
-                  {isJackpot ? '🎉 MEGA JACKPOT! 🎉' : '✨ WIN! ✨'}
+                  {isJackpot ? '🎉 メガジャックポット！🎉' : '✨ 当たり！✨'}
                 </span>
                 <span className="text-xl text-price mt-2 font-mono bg-surface px-4 py-1 border border-[color:var(--color-line)]">
                   +{formatPoints(state.lastEarn)} pt
@@ -171,7 +171,7 @@ export function Slot() {
             )}
             {state.lastEarn === 0 && (
               <div className="text-fg-muted text-lg animate-in fade-in duration-300 font-medium">
-                Next Time...
+                残念...
               </div>
             )}
           </div>
@@ -183,11 +183,11 @@ export function Slot() {
               className="w-full md:w-64 h-16 text-2xl font-black bg-cta-yellow border-2 border-[color:var(--color-cta-yellow-border)] text-fg hover:brightness-95 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="spin-button"
             >
-              {isAnySpinning ? 'SPINNING...' : cooldown ? 'WAIT...' : 'SPIN!'}
+              {isAnySpinning ? 'スピン中...' : cooldown ? '少々お待ちを...' : 'スピン！'}
             </button>
 
             <div className="flex justify-between items-center w-full px-5 py-3 bg-surface border border-[color:var(--color-line)]">
-              <span className="text-fg-muted text-sm font-bold tracking-wider">BALANCE</span>
+              <span className="text-fg-muted text-sm font-bold tracking-wider">残高</span>
               <span className="text-fg text-2xl font-mono tracking-wider font-semibold">
                 {formatPoints(balance)} <span className="text-sm text-fg-muted">pt</span>
               </span>
@@ -198,7 +198,7 @@ export function Slot() {
         {/* ペイアウト表 */}
         <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 bg-white border border-[color:var(--color-line)] shrink-0">
           <h3 className="text-fg font-bold text-xl text-center border-b border-[color:var(--color-line)] pb-4 tracking-widest">
-            PAYTABLE
+            配当表
           </h3>
 
           <div className="flex flex-col gap-2">
