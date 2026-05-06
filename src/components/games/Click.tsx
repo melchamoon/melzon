@@ -15,13 +15,14 @@ const FLOAT_X_RANGE = 30;          // 浮き上がりテキストのX位置ラ�
 const GAUGE_COLOR_BLUE = 33;       // 青色になるゲージ閾値（%）
 const GAUGE_COLOR_RED = 66;        // 赤色になるゲージ閾値（%）
 const GAUGE_COLOR_GOLD = 100;      // 金色になるゲージ閾値（%）
+const FLUSH_INTERVAL_MS = 300;     // ポイント保存インターバル（ms）
 
 export function Click({ initialBalance }: { initialBalance: number }) {
   const [gauge, setGauge] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
+  const [balance, setBalance] = useState(initialBalance);
   const [running, setRunning] = useState(false);
-  const [balance] = useState(initialBalance);
-  const earnedRef = useRef(0);
+  const pendingRef = useRef(0);
   const lastClickTimeRef = useRef(0);
   const [floats, setFloats] = useState<{ id: number; pt: number; x: number; color: string }[]>([]);
   const floatIdRef = useRef(0);
@@ -35,12 +36,24 @@ export function Click({ initialBalance }: { initialBalance: number }) {
     return () => clearInterval(id);
   }, [running]);
 
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(async () => {
+      const pts = pendingRef.current;
+      if (pts <= 0) return;
+      pendingRef.current = 0;
+      const res = await earnPoints({ game: 'click', points: pts });
+      setBalance(res.balance);
+    }, FLUSH_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [running]);
+
   const handleClick = useCallback(() => {
     if (!running) setRunning(true);
     lastClickTimeRef.current = Date.now();
     const pt = calcClickPt(gauge);
-    earnedRef.current += pt;
-    setTotalEarned(earnedRef.current);
+    pendingRef.current += pt;
+    setTotalEarned((t) => t + pt);
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
     const id = ++floatIdRef.current;
     const x = FLOAT_X_MIN + Math.random() * FLOAT_X_RANGE;
@@ -51,8 +64,8 @@ export function Click({ initialBalance }: { initialBalance: number }) {
 
   useEffect(() => {
     return () => {
-      if (earnedRef.current > 0) {
-        earnPoints({ game: 'click', points: earnedRef.current }).catch(() => {});
+      if (pendingRef.current > 0) {
+        earnPoints({ game: 'click', points: pendingRef.current }).catch(() => {});
       }
     };
   }, []);
@@ -94,7 +107,7 @@ export function Click({ initialBalance }: { initialBalance: number }) {
       <p className="text-gold-300 text-lg font-semibold" data-testid="total-earned">
         累計: {formatPoints(totalEarned)} pt
       </p>
-      <p className="text-gold-200 text-sm">残高: {formatPoints(balance + totalEarned)} pt</p>
+      <p className="text-gold-200 text-sm">残高: {formatPoints(balance)} pt</p>
     </div>
   );
 }
