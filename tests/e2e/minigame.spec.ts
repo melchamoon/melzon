@@ -43,8 +43,9 @@ test.describe('ミニゲーム', () => {
     await page.goto('/games/memory');
     const firstCard = page.locator('[data-testid^="memory-card-"]').first();
     await firstCard.click();
-    // クリック後にカードが表向きになる（？が消える）
-    await expect(firstCard.locator('text=？')).toHaveCount(0);
+    // クリック後に1枚がめくれる（？が11枚になる）
+    const unflipped = page.locator('[data-testid^="memory-card-"]').filter({ hasText: '？' });
+    await expect(unflipped).toHaveCount(11);
   });
 
   test('不正なスラッグは404', async ({ page }) => {

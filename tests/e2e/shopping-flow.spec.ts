@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('ショッピングフロー', () => {
-  test('トップページに12件の商品が表示される', async ({ page }) => {
+  test('トップページに9件の商品が表示される', async ({ page }) => {
     await page.goto('/');
     const cards = page.locator('a[href^="/products/p_"]');
-    await expect(cards).toHaveCount(12);
+    // おすすめ6件 + 今売れてます1件 + 注目の食品情報1件 + 最新ガジェット特集1件 = 9件
+    await expect(cards).toHaveCount(9);
   });
 
   test('商品カードをクリックすると商品詳細に遷移する', async ({ page }) => {
