@@ -1,24 +1,39 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import Image from 'next/image';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { earnPointsLocal } from '@/lib/points';
 import { usePoints } from '@/lib/use-storage';
-import { spinResult, type ReelSymbol } from '@/lib/slot';
+import { spinResult, ALL_SYMBOLS, type ReelSymbol } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
 
-const SYMBOL_DISPLAY: Record<ReelSymbol, string> = {
-  '7': '7️⃣',
-  CHERRY: '🍒',
-  BELL: '🔔',
-  LEMON: '🍋',
-  GEM: '💎',
-  MEL: '⭐',
+const SYMBOL_IMAGE: Record<ReelSymbol, string> = {
+  SEVEN_GOLD: '/games/slot/7-gold.png',
+  SEVEN_BLUE: '/games/slot/7-blue.png',
+  SEVEN_RED: '/games/slot/7-red.png',
+  BAR: '/games/slot/bar.png',
+  PIERROT: '/games/slot/pierrot.png',
+  CHERRY: '/games/slot/cherry.png',
+  WATERMELON: '/games/slot/watermelon.png',
+  BELL: '/games/slot/bell.png',
 };
 
-const ALL_SYMBOLS: ReelSymbol[] = ['7', 'CHERRY', 'BELL', 'LEMON', 'GEM', 'MEL'];
+const SYMBOL_LABEL: Record<ReelSymbol, string> = {
+  SEVEN_GOLD: '金7',
+  SEVEN_BLUE: '青7',
+  SEVEN_RED: '赤7',
+  BAR: 'BAR',
+  PIERROT: 'ピエロ',
+  CHERRY: 'チェリー',
+  WATERMELON: 'スイカ',
+  BELL: 'ベル',
+};
+
+const STOP_DELAYS = [800, 400, 400] as const; // 左→中→右の停止間隔(ms)
+const CONFETTI_THRESHOLD = 10_000; // 赤7揃い以上で紙吹雪
 
 type SlotState = {
-  spinning: boolean;
+  spinning: [boolean, boolean, boolean];
   reels: [ReelSymbol, ReelSymbol, ReelSymbol];
   lastEarn: number | null;
 };
@@ -26,51 +41,98 @@ type SlotState = {
 export function Slot() {
   const balance = usePoints();
   const [state, setState] = useState<SlotState>({
-    spinning: false,
-    reels: ['MEL', 'MEL', 'MEL'],
+    spinning: [false, false, false],
+    reels: ['SEVEN_GOLD', 'SEVEN_BLUE', 'SEVEN_RED'],
     lastEarn: null,
   });
 
+  const isAnySpinning = state.spinning.some(Boolean);
+  const [reach, setReach] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
+  const cooldownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (cooldownTimer.current) clearTimeout(cooldownTimer.current); }, []);
+
+  // スピン中のリールのみランダム表示を更新
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-    if (state.spinning) {
-      intervalId = setInterval(() => {
-        setState((s) => {
-          if (!s.spinning) return s;
-          const randomReels: [ReelSymbol, ReelSymbol, ReelSymbol] = [
-            ALL_SYMBOLS[Math.floor(Math.random() * ALL_SYMBOLS.length)]!,
-            ALL_SYMBOLS[Math.floor(Math.random() * ALL_SYMBOLS.length)]!,
-            ALL_SYMBOLS[Math.floor(Math.random() * ALL_SYMBOLS.length)]!,
-          ];
-          return { ...s, reels: randomReels };
-        });
-      }, 50);
-    }
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [state.spinning]);
+    if (!isAnySpinning) return;
+    const id = setInterval(() => {
+      setState((s) => {
+        if (!s.spinning.some(Boolean)) return s;
+        const reels = [...s.reels] as [ReelSymbol, ReelSymbol, ReelSymbol];
+        for (let i = 0; i < 3; i++) {
+          if (s.spinning[i]) {
+            reels[i] = ALL_SYMBOLS[Math.floor(Math.random() * ALL_SYMBOLS.length)]!;
+          }
+        }
+        return { ...s, reels };
+      });
+    }, 60);
+    return () => clearInterval(id);
+  }, [isAnySpinning]);
 
   const spin = useCallback(async () => {
-    if (state.spinning) return;
-    setState((s) => ({ ...s, spinning: true, lastEarn: null }));
-
-    await new Promise((r) => setTimeout(r, 1200));
+    if (isAnySpinning || cooldown) return;
+    setState((s) => ({ ...s, spinning: [true, true, true], lastEarn: null }));
 
     const result = spinResult();
-    setState((s) => ({ ...s, spinning: false, reels: result.reels }));
 
+    // 左リール停止
+    await new Promise((r) => setTimeout(r, STOP_DELAYS[0]));
+    setState((s) => {
+      const reels = [...s.reels] as [ReelSymbol, ReelSymbol, ReelSymbol];
+      reels[0] = result.reels[0];
+      return { ...s, reels, spinning: [false, true, true] };
+    });
+
+    // 中リール停止
+    await new Promise((r) => setTimeout(r, STOP_DELAYS[1]));
+    setState((s) => {
+      const reels = [...s.reels] as [ReelSymbol, ReelSymbol, ReelSymbol];
+      reels[1] = result.reels[1];
+      return { ...s, reels, spinning: [false, false, true] };
+    });
+
+    // 左中が7×2ならリーチ演出
+    const isSeven = (s: ReelSymbol) => s === 'SEVEN_GOLD' || s === 'SEVEN_BLUE' || s === 'SEVEN_RED';
+    const isReach = isSeven(result.reels[0]) && isSeven(result.reels[1]);
+    if (isReach) setReach(true);
+
+    // 右リール停止 + 結果反映（リーチ時は2秒ディレイ）
+    await new Promise((r) => setTimeout(r, isReach ? 2000 : STOP_DELAYS[2]));
+    setReach(false);
     if (result.payout > 0) {
       earnPointsLocal(result.payout);
-      setState((s) => ({ ...s, lastEarn: result.payout }));
-    } else {
-      setState((s) => ({ ...s, lastEarn: 0 }));
     }
-  }, [state.spinning]);
+    setState((s) => {
+      const reels = [...s.reels] as [ReelSymbol, ReelSymbol, ReelSymbol];
+      reels[2] = result.reels[2];
+      return { ...s, reels, spinning: [false, false, false], lastEarn: result.payout };
+    });
+
+    if (result.payout >= CONFETTI_THRESHOLD) {
+      setCooldown(true);
+      cooldownTimer.current = setTimeout(() => setCooldown(false), 3000);
+    }
+  }, [isAnySpinning, cooldown]);
+
+  const showConfetti = state.lastEarn !== null && state.lastEarn >= CONFETTI_THRESHOLD;
+  const isJackpot = state.lastEarn !== null && state.lastEarn >= 1_000_000;
 
   return (
     <>
-      {state.lastEarn === 10_000 && <Confetti />}
+      {showConfetti && <Confetti />}
+      <style>{`
+        @keyframes reach-glow {
+          0%   { border-color: #ff0000; box-shadow: 0 0 12px #ff0000; }
+          16%  { border-color: #ff8800; box-shadow: 0 0 12px #ff8800; }
+          33%  { border-color: #ffee00; box-shadow: 0 0 12px #ffee00; }
+          50%  { border-color: #00cc00; box-shadow: 0 0 12px #00cc00; }
+          66%  { border-color: #0066ff; box-shadow: 0 0 12px #0066ff; }
+          83%  { border-color: #9900ff; box-shadow: 0 0 12px #9900ff; }
+          100% { border-color: #ff0000; box-shadow: 0 0 12px #ff0000; }
+        }
+      `}</style>
       <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-8 w-full max-w-5xl mx-auto">
         {/* スロット本体 */}
         <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-white border border-[color:var(--color-line)] w-full max-w-lg relative overflow-hidden shrink-0">
@@ -78,15 +140,29 @@ export function Slot() {
             MELZON SLOT
           </h2>
 
-          <div className="flex gap-4 p-6 bg-surface rounded-sm border-4 border-[color:var(--color-line-strong)] relative z-10">
+          <div
+            className="flex border-4 border-[color:var(--color-line-strong)] relative z-10 bg-white shadow-inner"
+            style={reach ? { animation: 'reach-glow 0.6s linear infinite' } : undefined}
+          >
             {state.reels.map((sym, i) => (
               <div
                 key={i}
-                className="w-24 h-24 md:w-32 md:h-32 bg-white border border-[color:var(--color-line)] rounded-sm flex items-center justify-center text-5xl md:text-6xl overflow-hidden relative"
+                className={`w-24 h-24 md:w-32 md:h-32 bg-white flex items-center justify-center overflow-hidden relative${i < 2 ? ' border-r-2 border-[color:var(--color-line-strong)]' : ''}`}
                 data-testid={`reel-${i}`}
               >
-                <div className={`transition-transform duration-75 ${state.spinning ? 'scale-y-150 blur-[2px] opacity-80' : 'scale-y-100 blur-none opacity-100'}`}>
-                  {SYMBOL_DISPLAY[sym]}
+                <div
+                  className={`relative w-full h-full transition-all duration-75 ${
+                    state.spinning[i] ? 'blur-[2px] opacity-80' : 'blur-none opacity-100'
+                  }`}
+                >
+                  <Image
+                    src={SYMBOL_IMAGE[sym]}
+                    alt={SYMBOL_LABEL[sym]}
+                    fill
+                    sizes="(min-width: 768px) 128px, 96px"
+                    className="object-contain p-2"
+                    priority={i === 0}
+                  />
                 </div>
               </div>
             ))}
@@ -96,7 +172,7 @@ export function Slot() {
             {state.lastEarn !== null && state.lastEarn > 0 && (
               <div className="flex flex-col items-center animate-in zoom-in duration-500 fade-in slide-in-from-bottom-4">
                 <span className="text-2xl md:text-3xl font-bold text-cta">
-                  {state.lastEarn === 10_000 ? '🎉 MEGA JACKPOT! 🎉' : '✨ WIN! ✨'}
+                  {isJackpot ? '🎉 MEGA JACKPOT! 🎉' : '✨ WIN! ✨'}
                 </span>
                 <span className="text-xl text-price mt-2 font-mono bg-surface px-4 py-1 border border-[color:var(--color-line)]">
                   +{formatPoints(state.lastEarn)} pt
@@ -113,11 +189,11 @@ export function Slot() {
           <div className="flex flex-col items-center gap-6 w-full relative z-10">
             <button
               onClick={spin}
-              disabled={state.spinning}
+              disabled={isAnySpinning || cooldown}
               className="w-full md:w-64 h-16 text-2xl font-black bg-cta-yellow border-2 border-[color:var(--color-cta-yellow-border)] text-fg hover:brightness-95 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="spin-button"
             >
-              {state.spinning ? 'SPINNING...' : 'SPIN!'}
+              {isAnySpinning ? 'SPINNING...' : cooldown ? 'WAIT...' : 'SPIN!'}
             </button>
 
             <div className="flex justify-between items-center w-full px-5 py-3 bg-surface border border-[color:var(--color-line)]">
@@ -135,60 +211,15 @@ export function Slot() {
             PAYTABLE
           </h3>
 
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-cta)]">
-              <div className="flex gap-2 text-xl md:text-2xl">
-                <span>7️⃣</span><span>7️⃣</span><span>7️⃣</span>
-              </div>
-              <div className="text-price font-mono font-black text-lg md:text-xl tracking-wider">
-                10,000 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-line)]">
-              <div className="flex gap-2 text-xl md:text-2xl">
-                <span>💎</span><span>💎</span><span>💎</span>
-              </div>
-              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
-                5,000 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-line)]">
-              <div className="flex gap-2 text-xl md:text-2xl">
-                <span>⭐</span><span>⭐</span><span>⭐</span>
-              </div>
-              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
-                2,000 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
-              <div className="flex gap-2 text-xl md:text-2xl">
-                <span>🔔</span><span>🔔</span><span>🔔</span>
-              </div>
-              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
-                1,000 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
-              <div className="flex gap-2 text-lg md:text-xl">
-                <span>🍒</span><span className="opacity-70">/</span><span>🍋</span><span className="text-[10px] md:text-xs text-fg-muted ml-2 self-center">3つ揃い</span>
-              </div>
-              <div className="text-fg font-mono font-medium text-base md:text-lg tracking-wider">
-                500 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
-              <div className="flex gap-2 text-sm md:text-base opacity-70 items-center">
-                <span>任意の絵柄 2つ揃い</span>
-              </div>
-              <div className="text-fg font-mono font-medium text-base md:text-lg tracking-wider">
-                100 <span className="text-sm font-normal text-fg-muted">pt</span>
-              </div>
-            </div>
+          <div className="flex flex-col gap-2">
+            <PaytableRow symbols={['SEVEN_GOLD', 'SEVEN_GOLD', 'SEVEN_GOLD']} payout={100_000_000} highlight="gold" />
+            <PaytableRow symbols={['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE']} payout={1_000_000} highlight="blue" />
+            <PaytableRow symbols={['SEVEN_RED', 'SEVEN_RED', 'SEVEN_RED']} payout={10_000} highlight="red" />
+            <PaytableRow symbols={['SEVEN_RED', 'SEVEN_RED', 'BAR']} payout={3_000} note="7-7-BAR" />
+            <PaytableRow symbols={['CHERRY', 'CHERRY', 'CHERRY']} payout={1_500} />
+            <PaytableRow symbols={['PIERROT', 'PIERROT', 'PIERROT']} payout={1_000} />
+            <PaytableRow symbols={['WATERMELON', 'WATERMELON', 'WATERMELON']} payout={800} />
+            <PaytableRow symbols={['BELL', 'BELL', 'BELL']} payout={300} />
           </div>
         </div>
       </div>
@@ -196,9 +227,52 @@ export function Slot() {
   );
 }
 
+function PaytableRow({
+  symbols,
+  payout,
+  highlight,
+  note,
+}: {
+  symbols: [ReelSymbol, ReelSymbol, ReelSymbol];
+  payout: number;
+  highlight?: 'gold' | 'blue' | 'red';
+  note?: string;
+}) {
+  const borderClass =
+    highlight === 'gold'
+      ? 'border-2 border-amber-400'
+      : highlight === 'blue'
+        ? 'border-2 border-blue-500'
+        : highlight === 'red'
+          ? 'border-2 border-red-500'
+          : 'border border-[color:var(--color-line)]';
+  return (
+    <div className={`flex justify-between items-center bg-surface px-2 py-1.5 ${borderClass}`}>
+      <div className="flex items-center gap-0.5">
+        {symbols.map((s, i) => (
+          <span key={i} className="relative w-6 h-6 md:w-7 md:h-7 inline-block">
+            <Image
+              src={SYMBOL_IMAGE[s]}
+              alt={SYMBOL_LABEL[s]}
+              fill
+              sizes="28px"
+              className="object-contain"
+            />
+          </span>
+        ))}
+        {note && <span className="text-[9px] text-fg-muted ml-1">{note}</span>}
+      </div>
+      <div className="text-fg font-mono font-bold text-xs md:text-sm tracking-wider whitespace-nowrap">
+        {formatPoints(payout)} <span className="text-[10px] font-normal text-fg-muted">pt</span>
+      </div>
+    </div>
+  );
+}
 
 function Confetti() {
-  const [pieces, setPieces] = useState<{ id: number; left: number; animDuration: number; delay: number; color: string; tilt: number }[]>([]);
+  const [pieces, setPieces] = useState<
+    { id: number; left: number; animDuration: number; delay: number; color: string; tilt: number }[]
+  >([]);
 
   useEffect(() => {
     const colors = ['#F0C14B', '#FF9900', '#B12704', '#0066C0', '#ffffff'];
