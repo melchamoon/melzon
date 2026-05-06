@@ -1,15 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts } from '@/lib/products';
 import { BannerCarousel } from '@/components/layout/BannerCarousel';
 import { RecommendedProducts } from '@/components/product/RecommendedProducts';
-import { Button } from '@/components/ui/button';
-import type { BannerSlide } from '@/types/game';
-
-const BANNERS: BannerSlide[] = [
-  { id: 'b1', title: 'めるちゃもさん金ネームおめでとう', href: '/games/click', image: '/banners/banner1.png' },
-  { id: 'b2', title: 'めるちゃもスロットで勝ちまくり！モテまくり！', href: '/games/slot', image: '/banners/banner2.png' },
-  { id: 'b3', title: '賭博神経衰弱めるちゃもでミリオン獲得！', href: '/games/memory', image: '/banners/banner3.png' },
-];
+import { BANNERS } from '@/lib/banners';
 
 export default function HomePage() {
   return (
@@ -21,11 +15,10 @@ export default function HomePage() {
         <RecommendedProducts products={getProducts()} />
       </section>
 
-      <section className="bg-ink-900 border border-gold-800 rounded-xl p-8 text-center">
-        <p className="text-gold-300 mb-4 text-lg">ポイントが足りない？ ミニゲームで稼ごう</p>
-        <Button asChild size="lg">
-          <Link href="/games">ミニゲームへ</Link>
-        </Button>
+      <section className="max-w-2xl mx-auto">
+        <Link href="/games" className="block relative w-full aspect-[4/1] rounded-lg overflow-hidden border border-gold-800/50 hover:border-gold-500 transition-colors">
+          <Image src="/banners/banner4.png" alt="ポイントが足りない？ ミニゲームで稼ごう" fill className="object-cover" />
+        </Link>
       </section>
     </div>
   );
