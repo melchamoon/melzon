@@ -85,13 +85,14 @@ export function Memory({ products }: { products: Product[] }) {
   }, [products]);
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="flex gap-4 text-sm text-gold-300">
-        <span>ミス: {misses} 回</span>
-        <span>残高: {formatPoints(balance)} pt</span>
-      </div>
+    <div className="flex flex-col lg:flex-row gap-8 items-start justify-center max-w-4xl mx-auto w-full">
+      <div className="flex flex-col items-center gap-6 flex-1 w-full">
+        <div className="flex gap-4 text-sm text-gold-300">
+          <span>ミス: {misses} 回</span>
+          <span>残高: {formatPoints(balance)} pt</span>
+        </div>
 
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
         {cards.map((card) => (
           <button
             key={card.id}
@@ -116,6 +117,36 @@ export function Memory({ products }: { products: Product[] }) {
             )}
           </button>
         ))}
+      </div>
+      </div>
+
+      <div className="w-full lg:w-64 shrink-0 bg-ink-900 border border-gold-800 rounded-lg p-4">
+        <h3 className="text-gold-400 font-display mb-3 text-center border-b border-gold-800/50 pb-2">報酬一覧</h3>
+        <div className="space-y-1 text-sm font-mono">
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => (
+            <div
+              key={m}
+              className={`flex justify-between py-1.5 px-3 rounded transition-colors ${
+                misses === m && !cleared
+                  ? 'bg-gold-500 text-ink-950 font-bold'
+                  : 'text-gold-300/80'
+              }`}
+            >
+              <span>{m} ミス</span>
+              <span>{formatPoints(payoutByMisses(m))} pt</span>
+            </div>
+          ))}
+          <div
+            className={`flex justify-between py-1.5 px-3 rounded transition-colors ${
+              misses >= 10 && !cleared
+                ? 'bg-gold-500 text-ink-950 font-bold'
+                : 'text-gold-300/80'
+            }`}
+          >
+            <span>10+ ミス</span>
+            <span>{formatPoints(payoutByMisses(10))} pt</span>
+          </div>
+        </div>
       </div>
 
       <Dialog open={cleared}>
