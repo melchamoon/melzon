@@ -4,9 +4,10 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { earnPointsLocal } from '@/lib/points';
 import { usePoints } from '@/lib/use-storage';
-import { calcClickPt } from '@/lib/slot';
+import { calcClickPt } from '@/lib/click';
 import { formatPoints } from '@/lib/format';
 
+const CLICK_PT_MAX = 300;
 const IMAGE_RESET_MS = 200;
 
 const PRAISE_WORDS = ['すごい！', 'えらい！', 'やるね！', 'さすが！', 'いいね！', 'かっこいい！', '天才！', 'ナイス！'];
@@ -15,7 +16,7 @@ const PRAISE_X_RANGE = 25;
 
 const GAUGE_TICK_MS = 50;
 const GAUGE_DECAY = 0.15;
-const GAUGE_CLICK_RISE = 1.67;
+const GAUGE_CLICK_RISE = 0.5;
 const CLICK_GRACE_MS = 1000;
 const FLOAT_DURATION_MS = 900;
 const FLOAT_X_MIN = 55;
@@ -65,7 +66,7 @@ export function Click() {
     setClicked(true);
     if (imageResetTimerRef.current) clearTimeout(imageResetTimerRef.current);
     imageResetTimerRef.current = setTimeout(() => setClicked(false), IMAGE_RESET_MS);
-    const pt = calcClickPt(gauge);
+    const pt = calcClickPt(gauge, CLICK_PT_MAX);
     earnPointsLocal(pt);
     setTotalEarned((t) => t + pt);
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
