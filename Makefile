@@ -8,7 +8,7 @@ lint:
 	pnpm typecheck
 
 test:
-	pnpm test -- --run
+	pnpm exec vitest run
 	pnpm e2e
 
 ci:
@@ -16,5 +16,5 @@ ci:
 	pnpm audit --audit-level=high
 	pnpm build
 	$(MAKE) lint
-	pnpm test -- --run
+	pnpm exec vitest run
 	CI=true pnpm e2e
