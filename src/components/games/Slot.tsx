@@ -5,7 +5,6 @@ import { earnPointsLocal } from '@/lib/points';
 import { usePoints } from '@/lib/use-storage';
 import { spinResult, type ReelSymbol } from '@/lib/slot';
 import { formatPoints } from '@/lib/format';
-import Link from 'next/link';
 
 const SYMBOL_DISPLAY: Record<ReelSymbol, string> = {
   '7': '7️⃣',
@@ -133,14 +132,6 @@ export function Slot() {
               </span>
             </div>
 
-            <div className="flex gap-6 mt-2">
-              <Link href="/" className="text-gold-600 hover:text-gold-300 transition-colors text-sm font-medium border-b border-transparent hover:border-gold-300 pb-0.5">
-                ストアに戻る
-              </Link>
-              <Link href="/cart" className="text-gold-600 hover:text-gold-300 transition-colors text-sm font-medium border-b border-transparent hover:border-gold-300 pb-0.5">
-                カートを見る
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -184,7 +175,7 @@ export function Slot() {
             </div>
 
             {/* 1,000 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-ink-600/50">
+            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
               <div className="flex gap-2 text-xl md:text-2xl">
                 <span>🔔</span><span>🔔</span><span>🔔</span>
               </div>
@@ -194,7 +185,7 @@ export function Slot() {
             </div>
 
             {/* 500 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-ink-700/50">
+            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
               <div className="flex gap-2 text-lg md:text-xl">
                 <span>🍒</span><span className="opacity-70">/</span><span>🍋</span><span className="text-[10px] md:text-xs text-gold-500/70 ml-2 self-center">3つ揃い</span>
               </div>
@@ -204,7 +195,7 @@ export function Slot() {
             </div>
 
             {/* 100 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-ink-800/50">
+            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
               <div className="flex gap-2 text-sm md:text-base opacity-70 items-center">
                 <span>任意の絵柄 2つ揃い</span>
               </div>
