@@ -2,12 +2,12 @@ import { GameCard } from '@/components/games/GameCard';
 
 export default function GamesPage() {
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-display text-gold-400">ポイントを稼ぐ</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-xl font-bold text-fg">ポイントを稼ぐ</h1>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-4">
         <GameCard
           slug="click"
           title="めるちゃもを褒める"

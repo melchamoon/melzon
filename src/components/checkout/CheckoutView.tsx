@@ -52,34 +52,34 @@ export function CheckoutView({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="max-w-xl mx-auto space-y-8">
-      <h1 className="text-2xl font-display text-gold-400">プレゼント確認</h1>
+    <div className="max-w-xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold text-fg">プレゼント確認</h1>
 
-      <div className="bg-ink-900 border border-gold-700 rounded-xl p-6 space-y-4">
-        <h2 className="text-gold-400 font-semibold">お届け先</h2>
-        <p className="text-gold-300 text-lg font-display">めるちゃも</p>
-        <p className="text-ink-400 text-xs">（変更不可）</p>
+      <div className="bg-white border border-[color:var(--color-line)] p-6 space-y-3">
+        <h2 className="text-fg font-bold">お届け先</h2>
+        <p className="text-fg text-lg font-bold">めるちゃも</p>
+        <p className="text-fg-muted text-xs">（変更不可）</p>
       </div>
 
-      <div className="bg-ink-900 border border-gold-800 rounded-xl p-6 space-y-3">
-        <h2 className="text-gold-400 font-semibold mb-2">注文内容</h2>
+      <div className="bg-white border border-[color:var(--color-line)] p-6 space-y-3">
+        <h2 className="text-fg font-bold mb-2">注文内容</h2>
         {cartWithProducts.map((item) => (
-          <div key={item.id} className="flex justify-between text-sm text-gold-200">
+          <div key={item.id} className="flex justify-between text-sm text-fg">
             <span>{item.name} ×{item.qty}</span>
             <span>{formatPoints(item.price * item.qty)} pt</span>
           </div>
         ))}
-        <div className="border-t border-gold-900 pt-3 flex justify-between font-semibold text-gold-400">
+        <div className="border-t border-[color:var(--color-line)] pt-3 flex justify-between font-bold text-fg">
           <span>合計</span>
           <span data-testid="checkout-total">{formatPoints(total)} pt</span>
         </div>
-        <div className="flex justify-between text-sm text-gold-300">
+        <div className="flex justify-between text-sm text-fg-muted">
           <span>残高</span>
           <span data-testid="checkout-balance">{formatPoints(points)} pt</span>
         </div>
         {!canAfford && (
           <div
-            className="bg-ruby/20 border border-ruby rounded-lg p-3 text-ruby text-sm"
+            className="bg-[#FFF3F3] border border-[color:var(--color-price)] rounded-sm p-3 text-price text-sm"
             data-testid="shortage-notice"
           >
             ポイントが {formatPoints(shortage)} ポイント足りません
@@ -91,6 +91,7 @@ export function CheckoutView({ products }: { products: Product[] }) {
         <Button
           type="button"
           size="lg"
+          variant="primary"
           className="w-full"
           data-testid="present-button"
           onClick={handlePresent}
@@ -99,10 +100,10 @@ export function CheckoutView({ products }: { products: Product[] }) {
         </Button>
       ) : (
         <div className="space-y-3">
-          <Button asChild size="lg" className="w-full">
+          <Button asChild size="lg" variant="primary" className="w-full">
             <Link href="/games">ミニゲームでポイントを稼ぐ</Link>
           </Button>
-          <Button variant="outline-gold" asChild className="w-full">
+          <Button variant="secondary" asChild className="w-full">
             <Link href="/cart">カートに戻る</Link>
           </Button>
         </div>

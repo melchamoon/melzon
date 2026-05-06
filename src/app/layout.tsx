@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_JP, Cormorant_Garamond } from 'next/font/google';
+import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -9,13 +9,6 @@ import { Analytics } from '@vercel/analytics/react';
 const noto = Noto_Sans_JP({
   variable: '--font-noto',
   subsets: ['latin'],
-  display: 'swap',
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: '--font-cormorant',
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
   display: 'swap',
 });
 
@@ -38,11 +31,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja" className={`${noto.variable} ${cormorant.variable}`}>
-      <body className="bg-ink-950 text-gold-200 font-sans min-h-screen">
+    <html lang="ja" className={noto.variable}>
+      <body className="bg-white text-fg font-sans min-h-screen">
         <ToastProviderWrapper>
           <Header />
-          <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">{children}</main>
+          <main className="max-w-[1500px] mx-auto px-2 md:px-4 py-4">{children}</main>
           <Footer />
         </ToastProviderWrapper>
         <Analytics />

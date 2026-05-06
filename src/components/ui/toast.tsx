@@ -27,9 +27,9 @@ export function ToastProviderWrapper({ children }: { children: React.ReactNode }
         {messages.map((m) => (
           <div
             key={m.id}
-            className="bg-ink-900 border border-gold-700 text-gold-200 rounded-lg p-4 shadow-lg pointer-events-auto"
+            className="bg-white border border-[color:var(--color-line)] text-fg rounded-sm p-4 shadow-lg pointer-events-auto"
           >
-            <p className="font-semibold text-gold-400">{m.title}</p>
+            <p className="font-semibold text-fg">{m.title}</p>
           </div>
         ))}
       </div>

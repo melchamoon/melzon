@@ -22,7 +22,6 @@ const FLOAT_X_MIN = 55;
 const FLOAT_X_RANGE = 30;
 const GAUGE_COLOR_BLUE = 33;
 const GAUGE_COLOR_RED = 66;
-const GAUGE_COLOR_GOLD = 100;
 
 export function Click() {
   const balance = usePoints();
@@ -57,7 +56,7 @@ export function Click() {
     setGauge((g) => Math.min(100, g + GAUGE_CLICK_RISE));
     const id = ++floatIdRef.current;
     const x = FLOAT_X_MIN + Math.random() * FLOAT_X_RANGE;
-    const color = gauge >= GAUGE_COLOR_GOLD ? '#D4AF37' : gauge >= GAUGE_COLOR_RED ? '#ef4444' : gauge >= GAUGE_COLOR_BLUE ? '#60a5fa' : '#ffffff';
+    const color = gauge >= GAUGE_COLOR_RED ? '#B12704' : gauge >= GAUGE_COLOR_BLUE ? '#0066C0' : '#ffffff';
     setFloats((prev) => [...prev, { id, pt, x, color }]);
     setTimeout(() => setFloats((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
     const word = PRAISE_WORDS[Math.floor(Math.random() * PRAISE_WORDS.length)]!;
@@ -67,10 +66,10 @@ export function Click() {
   }, [running, gauge]);
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className={`w-full max-w-sm bg-ink-950 rounded-full h-6 border border-gold-800 overflow-hidden ${gauge >= GAUGE_COLOR_GOLD ? 'gauge-max' : ''}`}>
+    <div className="flex flex-col items-center gap-6 bg-white border border-[color:var(--color-line)] p-6">
+      <div className={`w-full max-w-sm bg-surface rounded-full h-6 border border-[color:var(--color-line-strong)] overflow-hidden`}>
         <div
-          className={`h-full gauge-fill ${gauge >= GAUGE_COLOR_GOLD ? 'gauge-gold-shine' : gauge >= GAUGE_COLOR_RED ? 'gauge-red' : gauge >= GAUGE_COLOR_BLUE ? 'gauge-blue' : 'gauge-white'}`}
+          className={`h-full gauge-fill ${gauge >= GAUGE_COLOR_RED ? 'gauge-red' : gauge >= GAUGE_COLOR_BLUE ? 'gauge-blue' : 'gauge-white'}`}
           style={{ width: `${gauge}%` }}
           data-testid="gauge"
         />
@@ -94,8 +93,8 @@ export function Click() {
           />
         </button>
         {!running && (
-          <span className="animate-hover-bob pointer-events-none absolute inset-0 z-10 flex items-start justify-center pt-4 text-xl font-bold text-gold-300"
-            style={{ textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000' }}
+          <span className="animate-hover-bob pointer-events-none absolute inset-0 z-10 flex items-start justify-center pt-4 text-xl font-bold text-fg"
+            style={{ textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' }}
           >
             ▼タップで褒める
           </span>
@@ -106,8 +105,8 @@ export function Click() {
             className="animate-float-up pointer-events-none absolute bottom-1/2 font-bold text-2xl select-none"
             style={{
               left: `${p.x}%`,
-              color: '#f9a8d4',
-              textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px #f9a8d4',
+              color: '#FF9900',
+              textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
             }}
           >
             {p.word}
@@ -120,7 +119,7 @@ export function Click() {
             style={{
               left: `${f.x}%`,
               color: f.color,
-              textShadow: `-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px ${f.color}`,
+              textShadow: `-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000`,
             }}
           >
             +{f.pt}
@@ -128,10 +127,10 @@ export function Click() {
         ))}
       </div>
 
-      <p className="text-gold-300 text-lg font-semibold" data-testid="total-earned">
+      <p className="text-price text-lg font-semibold" data-testid="total-earned">
         累計: {formatPoints(totalEarned)} pt
       </p>
-      <p className="text-gold-200 text-sm">残高: {formatPoints(balance)} pt</p>
+      <p className="text-fg-muted text-sm">残高: {formatPoints(balance)} pt</p>
     </div>
   );
 }

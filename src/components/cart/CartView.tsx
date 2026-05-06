@@ -27,42 +27,36 @@ export function CartView({ products }: { products: Product[] }) {
   const isEmpty = cartWithProducts.length === 0;
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-display text-gold-400 mb-8">カート</h1>
+    <div className="max-w-5xl mx-auto">
+      <h1 className="text-2xl font-bold text-fg mb-6">カート</h1>
 
       {isEmpty ? (
-        <div className="text-center py-12">
-          <p className="text-gold-300 mb-4">カートは空です</p>
-          <Button asChild>
+        <div className="text-center py-12 bg-white border border-[color:var(--color-line)] p-8">
+          <p className="text-fg-muted mb-4">カートは空です</p>
+          <Button asChild variant="primary">
             <Link href="/">ストアに戻る</Link>
           </Button>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4">
+          <div className="bg-white border border-[color:var(--color-line)] p-4">
+            <h2 className="text-lg font-bold text-fg mb-2 border-b border-[color:var(--color-line)] pb-2">
+              ショッピングカート
+            </h2>
             {cartWithProducts.map(({ item, product }) => (
               <CartItem key={item.id} item={item} product={product} />
             ))}
           </div>
 
-          <div className="bg-ink-900 border border-gold-800 rounded-xl p-4 h-fit space-y-4">
-            <h2 className="text-gold-400 font-semibold">注文サマリ</h2>
-            <div className="space-y-2 text-sm">
-              {cartWithProducts.map(({ item, product }) => (
-                <div key={item.id} className="flex justify-between text-gold-200">
-                  <span className="truncate mr-2">{product.name} ×{item.qty}</span>
-                  <span className="shrink-0">{formatPoints(product.price * item.qty)} pt</span>
-                </div>
-              ))}
-            </div>
-            <div className="border-t border-gold-900 pt-3 flex justify-between font-semibold text-gold-400">
-              <span>合計</span>
-              <span data-testid="cart-total">{formatPoints(total)} pt</span>
-            </div>
-            <div className="text-xs text-ink-400">
-              残高: {formatPoints(points)} pt
-            </div>
-            <Button asChild size="lg" className="w-full">
+          <div className="bg-white border border-[color:var(--color-line)] p-4 h-fit sticky top-[120px] space-y-3">
+            <p className="text-fg text-sm">
+              小計（{cartWithProducts.length}点）:{' '}
+              <span className="font-bold text-price" data-testid="cart-total">
+                {formatPoints(total)} pt
+              </span>
+            </p>
+            <p className="text-xs text-fg-muted">残高: {formatPoints(points)} pt</p>
+            <Button asChild size="lg" variant="primary" className="w-full">
               <Link href="/checkout">めるちゃもへプレゼントする</Link>
             </Button>
           </div>

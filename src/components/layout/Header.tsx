@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePoints, useCart } from '@/lib/use-storage';
 import { SearchBar } from './SearchBar';
+import { HeaderNav } from './HeaderNav';
 import { formatPoints } from '@/lib/format';
 
 export function Header() {
@@ -15,26 +16,43 @@ export function Header() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <header className="bg-ink-950 border-b border-gold-800 sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex items-center gap-4 py-2">
-          <Link href="/" className="shrink-0">
+    <header className="sticky top-0 z-40">
+      {/* 上段 */}
+      <div className="bg-nav text-white">
+        <div className="flex items-center gap-2 px-3 h-[60px]">
+          {/* ロゴ */}
+          <Link href="/" className="shrink-0 px-1 py-1">
             <Image
               src="/logo.png"
               alt="Melzon"
-              width={160}
-              height={60}
-              className="h-12 w-auto"
+              width={437}
+              height={180}
+              className="h-9 w-auto object-contain"
               priority
             />
           </Link>
 
+          {/* 配送先（中サイズ以上） */}
+          <div className="hidden md:flex flex-col text-xs px-1 py-1 shrink-0">
+            <span className="text-white/70 text-[10px]">お届け先</span>
+            <span className="font-bold">めるちゃもさん</span>
+          </div>
+
+          {/* 検索バー */}
           <div className="flex-1 hidden md:block">
             <SearchBar />
           </div>
 
-          <div className="flex items-center gap-3 ml-auto shrink-0">
-            <span className="hidden sm:block text-gold-300 text-sm">
+          {/* 右側メニュー */}
+          <div className="flex items-center gap-1 ml-auto shrink-0">
+            {/* 言語ダミー */}
+            <div className="hidden lg:flex items-center gap-1 text-xs px-2 py-1">
+              <span>🇯🇵</span>
+              <span>JP</span>
+            </div>
+
+            {/* ポイント表示 */}
+            <span className="hidden sm:block text-xs px-2 py-1">
               {mounted ? (
                 <span>{formatPoints(points)} pt</span>
               ) : (
@@ -42,38 +60,33 @@ export function Header() {
               )}
             </span>
 
-            <Link
-              href="/games"
-              className="text-gold-400 hover:text-gold-300 text-sm"
-              aria-label="ポイントを稼ぐ"
-            >
-              🎮
-              <span className="hidden md:inline ml-1">ポイントを稼ぐ</span>
-            </Link>
-
+            {/* カート */}
             <Link
               href="/cart"
-              className="relative text-gold-400 hover:text-gold-300"
+              className="flex items-center gap-1 px-2 py-1"
               aria-label={`カート（${mounted ? cartCount : 0}件）`}
             >
-              🛒
-              {mounted && cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-ruby text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
+              <span className="text-xl relative">
+                🛒
+                {mounted && cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-cta text-nav text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold leading-none">
+                    {cartCount}
+                  </span>
+                )}
+              </span>
+              <span className="hidden sm:inline text-sm font-bold">カート</span>
             </Link>
           </div>
         </div>
 
-        <div className="md:hidden pb-2">
+        {/* モバイル検索 */}
+        <div className="md:hidden px-3 pb-2">
           <SearchBar />
         </div>
-
-        <div className="hidden md:block border-t border-gold-900 py-1 text-xs text-gold-600 text-center">
-          めるちゃもへの贈り物専門ストア
-        </div>
       </div>
+
+      {/* 下段ナビ */}
+      <HeaderNav />
     </header>
   );
 }

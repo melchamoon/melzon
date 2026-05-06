@@ -22,23 +22,23 @@ export function CompleteView() {
   if (summary === null) return null;
 
   return (
-    <div className="max-w-xl mx-auto space-y-8 text-center">
+    <div className="bg-white border border-[color:var(--color-line)] max-w-2xl mx-auto p-8 text-center space-y-6">
       <div className="space-y-2">
         <p className="text-5xl">🎉</p>
-        <h1 className="text-2xl font-display text-gold-400">
+        <h1 className="text-xl font-bold text-fg">
           めるちゃもへのプレゼントが完了しました
         </h1>
       </div>
 
-      <div className="bg-ink-900 border border-gold-700 rounded-xl p-6 text-left space-y-3">
-        <h2 className="text-gold-400 font-semibold">プレゼント内容</h2>
+      <div className="bg-surface-soft border border-[color:var(--color-line)] p-6 text-left space-y-3">
+        <h2 className="text-fg font-bold">プレゼント内容</h2>
         {summary.items.map((item, i) => (
-          <div key={i} className="flex justify-between text-sm text-gold-200">
+          <div key={i} className="flex justify-between text-sm text-fg">
             <span>{item.name} ×{item.qty}</span>
             <span>{formatPoints(item.price * item.qty)} pt</span>
           </div>
         ))}
-        <div className="border-t border-gold-900 pt-3 flex justify-between font-semibold text-gold-400">
+        <div className="border-t border-[color:var(--color-line)] pt-3 flex justify-between font-bold text-fg">
           <span>合計</span>
           <span>{formatPoints(summary.totalPoints)} pt</span>
         </div>
@@ -46,9 +46,14 @@ export function CompleteView() {
 
       <TweetButton summary={summary} />
 
-      <Button variant="outline-gold" asChild>
-        <Link href="/">ストアに戻る</Link>
-      </Button>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Button variant="primary" asChild>
+          <Link href="/">トップに戻る</Link>
+        </Button>
+        <Button variant="secondary" asChild>
+          <Link href="/cart">購入履歴を見る</Link>
+        </Button>
+      </div>
     </div>
   );
 }

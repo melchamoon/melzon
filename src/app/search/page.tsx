@@ -16,17 +16,17 @@ export default async function SearchPage({ searchParams }: Props) {
   const didYouMean = generateDidYouMean(query, products);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-display text-gold-400 mb-2">
+        <h1 className="text-xl font-bold text-fg mb-2">
           「{query}」の検索結果
         </h1>
-        <div className="bg-ink-900 border border-gold-800 rounded-lg p-4" data-testid="did-you-mean">
-          <p className="text-gold-300 text-sm">
+        <div className="bg-white border border-[color:var(--color-line)] p-4" data-testid="did-you-mean">
+          <p className="text-fg text-sm">
             もしかして:{' '}
             <Link
               href={`/products/${didYouMean.product.id}`}
-              className="text-gold-400 font-bold underline hover:text-gold-300"
+              className="text-link font-bold underline hover:text-link-hover"
             >
               「{didYouMean.suggestion}」
             </Link>
@@ -35,10 +35,10 @@ export default async function SearchPage({ searchParams }: Props) {
         </div>
       </div>
 
-      <p className="text-ink-400 text-sm">該当する商品はありませんでした</p>
+      <p className="text-fg-muted text-sm">該当する商品はありませんでした</p>
 
       <section>
-        <h2 className="text-lg font-display text-gold-400 mb-4">あなたへのおすすめ</h2>
+        <h2 className="text-lg font-bold text-fg mb-4">あなたへのおすすめ</h2>
         <ProductGrid products={recommended} />
       </section>
     </div>

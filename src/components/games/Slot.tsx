@@ -73,26 +73,21 @@ export function Slot() {
       {state.lastEarn === 10_000 && <Confetti />}
       <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-8 w-full max-w-5xl mx-auto">
         {/* スロット本体 */}
-        <div className="flex flex-col items-center gap-8 p-8 md:p-12 rounded-3xl bg-ink-900 border border-gold-900 shadow-gold-glow w-full max-w-lg relative overflow-hidden shrink-0">
-          {/* 豪華な装飾 */}
-          <div className="absolute top-0 inset-x-0 h-1/2 bg-gold-900/20 blur-[80px] pointer-events-none" />
-
-          <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-gold-200 to-gold-500 drop-shadow-md tracking-widest relative z-10">
+        <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-white border border-[color:var(--color-line)] w-full max-w-lg relative overflow-hidden shrink-0">
+          <h2 className="text-3xl md:text-4xl font-black text-fg tracking-widest relative z-10">
             MELZON SLOT
           </h2>
 
-          <div className="flex gap-4 p-6 bg-ink-950 rounded-2xl border-4 border-gold-700 shadow-[inset_0_0_30px_rgba(0,0,0,1)] relative z-10">
+          <div className="flex gap-4 p-6 bg-surface rounded-sm border-4 border-[color:var(--color-line-strong)] relative z-10">
             {state.reels.map((sym, i) => (
               <div
                 key={i}
-                className="w-24 h-24 md:w-32 md:h-32 bg-ink-900 border-b-4 border-ink-700 rounded-xl flex items-center justify-center text-5xl md:text-6xl overflow-hidden relative shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
+                className="w-24 h-24 md:w-32 md:h-32 bg-white border border-[color:var(--color-line)] rounded-sm flex items-center justify-center text-5xl md:text-6xl overflow-hidden relative"
                 data-testid={`reel-${i}`}
               >
-                <div className={`transition-transform duration-75 ${state.spinning ? 'scale-y-150 blur-[2px] opacity-80' : 'scale-y-100 blur-none opacity-100'} drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]`}>
+                <div className={`transition-transform duration-75 ${state.spinning ? 'scale-y-150 blur-[2px] opacity-80' : 'scale-y-100 blur-none opacity-100'}`}>
                   {SYMBOL_DISPLAY[sym]}
                 </div>
-                {/* ガラスのような反射 */}
-                <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none" />
               </div>
             ))}
           </div>
@@ -100,16 +95,16 @@ export function Slot() {
           <div className="h-24 flex items-center justify-center w-full relative z-10">
             {state.lastEarn !== null && state.lastEarn > 0 && (
               <div className="flex flex-col items-center animate-in zoom-in duration-500 fade-in slide-in-from-bottom-4">
-                <span className="text-2xl md:text-3xl font-bold text-gold-300 drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]">
+                <span className="text-2xl md:text-3xl font-bold text-cta">
                   {state.lastEarn === 10_000 ? '🎉 MEGA JACKPOT! 🎉' : '✨ WIN! ✨'}
                 </span>
-                <span className="text-xl text-gold-200 mt-2 font-mono bg-ink-950 px-4 py-1 rounded-full border border-gold-800">
+                <span className="text-xl text-price mt-2 font-mono bg-surface px-4 py-1 border border-[color:var(--color-line)]">
                   +{formatPoints(state.lastEarn)} pt
                 </span>
               </div>
             )}
             {state.lastEarn === 0 && (
-              <div className="text-ink-400 text-lg animate-in fade-in duration-300 font-medium">
+              <div className="text-fg-muted text-lg animate-in fade-in duration-300 font-medium">
                 Next Time...
               </div>
             )}
@@ -119,88 +114,79 @@ export function Slot() {
             <button
               onClick={spin}
               disabled={state.spinning}
-              className="w-full md:w-64 h-16 text-2xl font-black rounded-full bg-gold-metal text-ink-950 shadow-gold-glow hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-2 border-gold-300/50"
+              className="w-full md:w-64 h-16 text-2xl font-black bg-cta-yellow border-2 border-[color:var(--color-cta-yellow-border)] text-fg hover:brightness-95 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="spin-button"
             >
               {state.spinning ? 'SPINNING...' : 'SPIN!'}
             </button>
 
-            <div className="flex justify-between items-center w-full px-5 py-3 bg-ink-950/80 rounded-xl border border-gold-900/50 backdrop-blur-sm">
-              <span className="text-gold-500/70 text-sm font-bold tracking-wider">BALANCE</span>
-              <span className="text-gold-200 text-2xl font-mono tracking-wider font-semibold">
-                {formatPoints(balance)} <span className="text-sm text-gold-600">pt</span>
+            <div className="flex justify-between items-center w-full px-5 py-3 bg-surface border border-[color:var(--color-line)]">
+              <span className="text-fg-muted text-sm font-bold tracking-wider">BALANCE</span>
+              <span className="text-fg text-2xl font-mono tracking-wider font-semibold">
+                {formatPoints(balance)} <span className="text-sm text-fg-muted">pt</span>
               </span>
             </div>
-
           </div>
         </div>
 
         {/* ペイアウト表 */}
-        <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-ink-900 border border-gold-900/50 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative overflow-hidden shrink-0">
-          <div className="absolute top-0 inset-x-0 h-32 bg-gold-900/10 blur-[50px] pointer-events-none" />
-
-          <h3 className="text-gold-400 font-bold text-xl text-center border-b border-gold-900/50 pb-4 tracking-widest relative z-10">
+        <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 bg-white border border-[color:var(--color-line)] shrink-0">
+          <h3 className="text-fg font-bold text-xl text-center border-b border-[color:var(--color-line)] pb-4 tracking-widest">
             PAYTABLE
           </h3>
 
-          <div className="flex flex-col gap-3 relative z-10">
-            {/* 10,000 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-gold-600/40 shadow-[0_0_10px_rgba(212,175,55,0.1)]">
-              <div className="flex gap-2 text-xl md:text-2xl drop-shadow-md">
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-cta)]">
+              <div className="flex gap-2 text-xl md:text-2xl">
                 <span>7️⃣</span><span>7️⃣</span><span>7️⃣</span>
               </div>
-              <div className="text-gold-300 font-mono font-black text-lg md:text-xl tracking-wider">
-                10,000 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-price font-mono font-black text-lg md:text-xl tracking-wider">
+                10,000 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
 
-            {/* 5,000 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-gold-700/40">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-line)]">
               <div className="flex gap-2 text-xl md:text-2xl">
                 <span>💎</span><span>💎</span><span>💎</span>
               </div>
-              <div className="text-gold-200 font-mono font-bold text-base md:text-lg tracking-wider">
-                5,000 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
+                5,000 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
 
-            {/* 2,000 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-gold-800/40">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3 border border-[color:var(--color-line)]">
               <div className="flex gap-2 text-xl md:text-2xl">
                 <span>⭐</span><span>⭐</span><span>⭐</span>
               </div>
-              <div className="text-gold-200 font-mono font-bold text-base md:text-lg tracking-wider">
-                2,000 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
+                2,000 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
 
-            {/* 1,000 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
               <div className="flex gap-2 text-xl md:text-2xl">
                 <span>🔔</span><span>🔔</span><span>🔔</span>
               </div>
-              <div className="text-gold-200 font-mono font-bold text-base md:text-lg tracking-wider">
-                1,000 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-fg font-mono font-bold text-base md:text-lg tracking-wider">
+                1,000 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
 
-            {/* 500 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
               <div className="flex gap-2 text-lg md:text-xl">
-                <span>🍒</span><span className="opacity-70">/</span><span>🍋</span><span className="text-[10px] md:text-xs text-gold-500/70 ml-2 self-center">3つ揃い</span>
+                <span>🍒</span><span className="opacity-70">/</span><span>🍋</span><span className="text-[10px] md:text-xs text-fg-muted ml-2 self-center">3つ揃い</span>
               </div>
-              <div className="text-gold-100 font-mono font-medium text-base md:text-lg tracking-wider">
-                500 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-fg font-mono font-medium text-base md:text-lg tracking-wider">
+                500 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
 
-            {/* 100 pt */}
-            <div className="flex justify-between items-center bg-ink-950 p-2 md:p-3 rounded-xl border border-transparent">
+            <div className="flex justify-between items-center bg-surface p-2 md:p-3">
               <div className="flex gap-2 text-sm md:text-base opacity-70 items-center">
                 <span>任意の絵柄 2つ揃い</span>
               </div>
-              <div className="text-gold-100 font-mono font-medium text-base md:text-lg tracking-wider">
-                100 <span className="text-sm font-normal text-gold-600">pt</span>
+              <div className="text-fg font-mono font-medium text-base md:text-lg tracking-wider">
+                100 <span className="text-sm font-normal text-fg-muted">pt</span>
               </div>
             </div>
           </div>
@@ -215,7 +201,7 @@ function Confetti() {
   const [pieces, setPieces] = useState<{ id: number; left: number; animDuration: number; delay: number; color: string; tilt: number }[]>([]);
 
   useEffect(() => {
-    const colors = ['#F5E184', '#D4AF37', '#9B1B30', '#ffffff', '#eab308'];
+    const colors = ['#F0C14B', '#FF9900', '#B12704', '#0066C0', '#ffffff'];
     const newPieces = Array.from({ length: 150 }).map((_, i) => ({
       id: i,
       left: Math.random() * 100,

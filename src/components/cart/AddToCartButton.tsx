@@ -18,11 +18,11 @@ export function AddToCartButton({ productId }: { productId: string }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-2">
-        <label className="text-gold-300 text-sm">数量:</label>
+        <label className="text-fg-muted text-sm">数量:</label>
         <select
           value={qty}
           onChange={(e) => setQty(Number(e.target.value))}
-          className="bg-ink-900 border border-gold-700 text-gold-200 rounded px-2 py-1 text-sm"
+          className="bg-white border border-[color:var(--color-line-strong)] text-fg rounded-[3px] px-2 py-1 text-sm"
         >
           {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
             <option key={n} value={n}>
@@ -31,7 +31,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
           ))}
         </select>
       </div>
-      <Button onClick={handleAdd} size="lg" className="w-full">
+      <Button onClick={handleAdd} variant="primary" size="lg" className="w-full">
         {added ? '✓ カートに追加しました' : 'カートに入れる'}
       </Button>
     </div>

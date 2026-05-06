@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { getProduct } from '@/lib/products';
 import { formatPoints } from '@/lib/format';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import { RatingStars } from '@/components/ui/RatingStars';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -25,45 +26,46 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-      <div className="bg-ink-900 rounded-xl overflow-hidden self-start">
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 bg-white p-4 border border-[color:var(--color-line)]">
+      <div className="aspect-square bg-white overflow-hidden">
         <Image
           src={product.image}
           alt={product.name}
           width={0}
           height={0}
           sizes="100vw"
-          className="w-full h-auto"
+          className="w-full h-full object-contain"
           unoptimized
           priority
         />
       </div>
 
-      <div className="space-y-6">
-        <h1 className="text-2xl md:text-3xl font-display text-gold-300 leading-tight">
+      <div className="space-y-4">
+        <h1 className="text-2xl font-medium text-fg leading-tight">
           {product.name}
         </h1>
 
-        <div className="text-gold-500 text-xl">★★★★★</div>
+        <RatingStars value={5} reviewCount={product.reviews.length} />
 
-        <p className="text-4xl font-bold text-gold-500" data-testid="product-price">
-          {formatPoints(product.price)} pt
+        <p className="text-price font-bold" data-testid="product-price">
+          <span className="text-3xl">{formatPoints(product.price)}</span>
+          <span className="text-sm ml-1 text-fg-muted">pt</span>
         </p>
 
         <AddToCartButton productId={product.id} />
 
-        <div className="border-t border-gold-900 pt-4">
-          <p className="text-gold-200 text-sm whitespace-pre-wrap leading-relaxed">
+        <div className="border-t border-[color:var(--color-line)] pt-4">
+          <p className="text-fg text-sm whitespace-pre-wrap leading-relaxed">
             {product.description}
           </p>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="text-lg font-display text-gold-400">レビュー</h2>
+        <div className="border-t border-[color:var(--color-line)] pt-4 space-y-3">
+          <h2 className="text-lg font-bold text-fg">レビュー</h2>
           {product.reviews.map((review, i) => (
-            <div key={i} className="bg-ink-900 rounded-lg p-3">
-              <div className="text-gold-500 text-xs mb-1">★★★★★</div>
-              <p className="text-gold-200 text-sm">{review}</p>
+            <div key={i} className="bg-surface-soft border border-[color:var(--color-line)] border-b border-b-[color:var(--color-line)] py-3 px-3 rounded-sm">
+              <RatingStars value={5} />
+              <p className="text-fg text-sm mt-1">{review}</p>
             </div>
           ))}
         </div>

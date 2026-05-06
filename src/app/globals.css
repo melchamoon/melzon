@@ -1,78 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold-50: #FDF8E1;
-  --color-gold-100: #FAEFB4;
-  --color-gold-200: #F5E184;
-  --color-gold-300: #EFD05A;
-  --color-gold-400: #E5BD3F;
-  --color-gold-500: #D4AF37;
-  --color-gold-600: #B8860B;
-  --color-gold-700: #8B6914;
-  --color-gold-800: #5A440D;
-  --color-gold-900: #2F2306;
-  --color-gold-950: #1A1303;
-  --color-ink-50: #F4F4F5;
-  --color-ink-100: #E4E4E7;
-  --color-ink-400: #52525B;
-  --color-ink-700: #27272A;
-  --color-ink-900: #1A1A1A;
-  --color-ink-950: #0A0A0A;
-  --color-champagne: #F7E7CE;
-  --color-ruby: #9B1B30;
-
-  --font-display: var(--font-cormorant), serif;
   --font-sans: var(--font-noto), sans-serif;
+
+  --color-nav: #131921;
+  --color-nav-sub: #232F3E;
+  --color-nav-slate: #37475A;
+  --color-nav-night: #131A22;
+  --color-cta: #FF9900;
+  --color-cta-yellow-1: #F7DFA5;
+  --color-cta-yellow-2: #F0C14B;
+  --color-cta-yellow-3: #EB8F00;
+  --color-cta-yellow-border: #A88734;
+  --color-price: #B12704;
+  --color-link: #007185;
+  --color-link-hover: #C7511F;
+  --color-line: #DDDDDD;
+  --color-line-strong: #D5D9D9;
+  --color-surface: #EAEDED;
+  --color-surface-soft: #F7F8F8;
+  --color-fg: #0F1111;
+  --color-fg-muted: #565959;
+  --color-success: #067D62;
+}
+
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 body {
-  background: #0A0A0A;
-  color: #F5E184;
+  background: #FFFFFF;
+  color: #0F1111;
   font-family: var(--font-sans, sans-serif);
 }
 
-.bg-gold-metal {
-  background: linear-gradient(135deg, #FFD86F 0%, #D4AF37 50%, #8B6914 100%);
+.bg-cta-yellow {
+  background: linear-gradient(180deg, #F7DFA5 0%, #F0C14B 50%, #EB8F00 100%);
+}
+.bg-cta-yellow-hover {
+  background: linear-gradient(180deg, #F5D78E 0%, #EEB933 50%, #E47911 100%);
+}
+.bg-cta-yellow-active {
+  background: linear-gradient(180deg, #F0C14B 0%, #EB8F00 100%);
 }
 
 .gauge-fill {
   transition: width 75ms, background 300ms ease;
 }
 .gauge-white { background: #ffffff; }
-.gauge-blue  { background: #3b82f6; }
-.gauge-red   { background: #ef4444; }
-
-@keyframes gold-sweep {
-  0%   { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-@keyframes gold-glow-pulse {
-  0%, 100% { box-shadow: 0 0 6px 2px rgba(212, 175, 55, 0.5); }
-  50%       { box-shadow: 0 0 18px 6px rgba(212, 175, 55, 0.95); }
-}
-
-.gauge-gold-shine {
-  background: linear-gradient(
-    90deg,
-    #8B6914 0%,
-    #D4AF37 20%,
-    #FFD86F 35%,
-    #fffbe6 50%,
-    #FFD86F 65%,
-    #D4AF37 80%,
-    #8B6914 100%
-  );
-  background-size: 300% 100%;
-  animation: gold-sweep 1.2s linear infinite;
-  transition: width 75ms;
-}
-.gauge-max {
-  animation: gold-glow-pulse 1s ease-in-out infinite;
-}
-
-.shadow-gold-glow {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.45);
-}
+.gauge-blue  { background: #0066C0; }
+.gauge-red   { background: #B12704; }
 
 @keyframes float-up {
   0%   { opacity: 1; transform: translateY(0) scale(1); }

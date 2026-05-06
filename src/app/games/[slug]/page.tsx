@@ -28,14 +28,14 @@ export default async function GamePage({ params }: Props) {
   const banner = GAME_BANNERS[slug];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {banner && (
-        <div className="relative w-full max-w-lg mx-auto aspect-[3/1] rounded-lg overflow-hidden border border-gold-800/50">
+        <div className="relative w-full max-w-lg mx-auto aspect-[3/1] rounded-sm overflow-hidden border border-[color:var(--color-line)]">
           <Image src={banner} alt={title} fill className="object-cover" priority />
         </div>
       )}
 
-      <h1 className="text-2xl font-display text-gold-400 text-center">{title}</h1>
+      <h1 className="text-xl font-bold text-fg text-center">{title}</h1>
 
       {slug === 'slot' && <Slot />}
       {slug === 'click' && <Click />}

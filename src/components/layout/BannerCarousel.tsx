@@ -5,14 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { BannerSlide } from '@/types/game';
 
-const PEEK = 120; // 左右に見せるpx
-const GAP = 8;   // スライド間のギャップpx
+const PEEK = 120;
+const GAP = 8;
 
 export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
-  // 無限ループ用: [clone-last, ...slides, clone-first]
   const extended: BannerSlide[] = [slides[slides.length - 1]!, ...slides, slides[0]!];
 
-  const [current, setCurrent] = useState(1); // 最初のスライドは index 1
+  const [current, setCurrent] = useState(1);
   const [animated, setAnimated] = useState(true);
   const [slideWidth, setSlideWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +19,6 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  // コンテナ幅からスライド幅を計算
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -36,7 +34,6 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
     setCurrent(index);
   }, []);
 
-  // 自動再生タイマー
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setCurrent((c) => c + 1), 5000);
@@ -47,7 +44,6 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [current, resetTimer]);
 
-  // clone に達したらアニメなしで本物にジャンプ（無限ループ）
   useEffect(() => {
     if (current === 0) {
       const t = setTimeout(() => goTo(slides.length, false), 500);
@@ -59,7 +55,6 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
     }
   }, [current, slides.length, extended.length, goTo]);
 
-  // アニメ無効後に再有効化
   useEffect(() => {
     if (!animated) {
       const t = setTimeout(() => setAnimated(true), 50);
@@ -67,7 +62,6 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
     }
   }, [animated]);
 
-  // タッチ操作
   const minSwipeDistance = 50;
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -85,13 +79,11 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
 
   if (!slides || slides.length === 0) return null;
 
-  // ドット用: 実際のスライドインデックス（0始まり）
   const realIndex =
     current === 0 ? slides.length - 1
     : current === extended.length - 1 ? 0
     : current - 1;
 
-  // translateX: 現在スライドが PEEK 分だけ右にオフセットされた位置に来るよう計算
   const translateX = slideWidth > 0
     ? -(current * (slideWidth + GAP)) + PEEK
     : 0;
@@ -102,12 +94,12 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
         <Image src={slide.image} alt={slide.title} fill className="object-cover" priority={priority} />
       </div>
     ) : (
-      <div className="bg-gold-metal w-full aspect-[3/1] flex flex-col items-center justify-center px-8 text-center">
-        <h2 className="text-2xl md:text-4xl font-display text-ink-950 drop-shadow font-bold">
+      <div className="bg-nav-sub w-full aspect-[3/1] flex flex-col items-center justify-center px-8 text-center">
+        <h2 className="text-2xl md:text-4xl font-bold text-white">
           {slide.title}
         </h2>
         {slide.subtitle && (
-          <p className="mt-2 text-ink-700 text-sm md:text-base">{slide.subtitle}</p>
+          <p className="mt-2 text-white/80 text-sm md:text-base">{slide.subtitle}</p>
         )}
       </div>
     );
@@ -130,7 +122,7 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
           {extended.map((slide, i) => (
             <div
               key={i}
-              className="flex-shrink-0 rounded-lg overflow-hidden"
+              className="flex-shrink-0 rounded-sm overflow-hidden"
               style={{ width: slideWidth > 0 ? `${slideWidth}px` : '100%' }}
             >
               {renderInner(slide, i === 1)}
@@ -139,14 +131,12 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
         </div>
       </div>
 
-      {/* 左PEEKエリア：クリックで前のスライドへ */}
       <button
         aria-label="前のスライド"
         onClick={() => { setCurrent((c) => c - 1); resetTimer(); }}
         className="absolute inset-y-0 left-0 cursor-pointer z-10"
         style={{ width: `${PEEK}px` }}
       />
-      {/* 右PEEKエリア：クリックで次のスライドへ */}
       <button
         aria-label="次のスライド"
         onClick={() => { setCurrent((c) => c + 1); resetTimer(); }}
@@ -161,7 +151,7 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
             onClick={() => { goTo(i + 1); resetTimer(); }}
             aria-label={`スライド ${i + 1}`}
             className={`w-2 h-2 rounded-full transition-colors cursor-pointer ${
-              i === realIndex ? 'bg-gold-500' : 'bg-gold-800'
+              i === realIndex ? 'bg-cta' : 'bg-gray-300'
             }`}
           />
         ))}
