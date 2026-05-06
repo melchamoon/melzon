@@ -7,8 +7,8 @@ import { Memory } from '@/components/games/Memory';
 
 const GAME_TITLES: Record<string, string> = {
   slot: 'めるちゃもスロット',
-  click: '金ネーム連打',
-  memory: '金箔めくり（神経衰弱）',
+  click: 'めるちゃもを褒める',
+  memory: '賭博神経衰弱めるちゃも',
 };
 
 type Props = { params: Promise<{ slug: string }> };

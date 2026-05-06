@@ -40,10 +40,10 @@ export function Header() {
             <Link
               href="/games"
               className="text-gold-400 hover:text-gold-300 text-sm"
-              aria-label="ミニゲーム"
+              aria-label="ポイントを稼ぐ"
             >
               🎮
-              <span className="hidden md:inline ml-1">ミニゲーム</span>
+              <span className="hidden md:inline ml-1">ポイントを稼ぐ</span>
             </Link>
 
             <Link
