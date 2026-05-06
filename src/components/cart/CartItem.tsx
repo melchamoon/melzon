@@ -16,19 +16,21 @@ type Props = {
 };
 
 export function CartItem({ item, product }: Props) {
-  const [imgSrc, setImgSrc] = useState(product.images[0]);
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
   useEffect(() => { setImgSrc(pickProductImage(product)); }, [product]);
 
   return (
     <div className="flex gap-4 py-4 border-b border-[color:var(--color-line)]">
       <Link href={`/products/${product.id}`} className="relative w-20 h-20 bg-white border border-[color:var(--color-line)] rounded-sm shrink-0">
-        <Image
-          src={imgSrc!}
-          alt={product.name}
-          fill
-          className="object-contain p-2"
-          unoptimized
-        />
+        {imgSrc && (
+          <Image
+            src={imgSrc}
+            alt={product.name}
+            fill
+            className="object-contain p-2"
+            unoptimized
+          />
+        )}
       </Link>
       <div className="flex-1 min-w-0">
         <Link href={`/products/${product.id}`} className="text-link hover:text-link-hover hover:underline text-sm mb-1 block">
