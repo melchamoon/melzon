@@ -42,8 +42,8 @@ test.describe('ミニゲーム', () => {
     await page.goto('/games/memory');
     const firstCard = page.locator('[data-testid^="memory-card-"]').first();
     await firstCard.click();
-    // クリック後に1枚がめくれる（？が11枚になる）
-    const unflipped = page.locator('[data-testid^="memory-card-"]').filter({ hasText: '？' });
+    // クリック後に1枚がめくれる（裏向きのカードが11枚になる）
+    const unflipped = page.locator('[data-testid^="memory-card-"][aria-label="裏向きのカード"]');
     await expect(unflipped).toHaveCount(11);
   });
 
