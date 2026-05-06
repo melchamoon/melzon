@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 import type { BannerSlide } from '@/types/game';
 
 const BANNERS: BannerSlide[] = [
-  { id: 'b1', title: 'めるちゃもさん金ネームおめでとう' },
-  { id: 'b2', title: 'めるちゃもスロットで一攫千金！', href: '/games/slot' },
-  { id: 'b3', title: '金ネーム連打でポイント爆稼ぎ！', href: '/games/click' },
-  { id: 'b4', title: '金箔めくりでミリオン獲得！', href: '/games/memory' },
+  { id: 'b1', title: 'めるちゃもさん金ネームおめでとう', href: '/games/click', image: '/banners/banner1.png' },
+  { id: 'b2', title: 'めるちゃもスロットで勝ちまくり！モテまくり！', href: '/games/slot', image: '/banners/banner2.png' },
+  { id: 'b3', title: '金箔めくりでミリオン獲得！', href: '/games/memory', image: '/banners/banner3.png' },
 ];
 
 export default function HomePage() {

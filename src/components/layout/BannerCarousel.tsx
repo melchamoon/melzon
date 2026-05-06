@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { BannerSlide } from '@/types/game';
 
@@ -18,8 +19,12 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
 
   const slide = slides[current]!;
 
-  const inner = (
-    <div className="bg-gold-metal min-w-full h-48 md:h-64 flex flex-col items-center justify-center px-8 text-center rounded-lg">
+  const inner = slide.image ? (
+    <div className="relative w-full aspect-[3/1] rounded-lg overflow-hidden">
+      <Image src={slide.image} alt={slide.title} fill className="object-cover" priority={current === 0} />
+    </div>
+  ) : (
+    <div className="bg-gold-metal w-full aspect-[3/1] flex flex-col items-center justify-center px-8 text-center rounded-lg">
       <h2 className="text-2xl md:text-4xl font-display text-ink-950 drop-shadow font-bold">
         {slide.title}
       </h2>
