@@ -1,18 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { readCart, writeCart } from '@/lib/storage';
 import { addItem } from '@/lib/cart';
 import { Button } from '@/components/ui/button';
 
 export function AddToCartButton({ productId }: { productId: string }) {
   const [qty, setQty] = useState(1);
-  const [added, setAdded] = useState(false);
+  const router = useRouter();
 
   function handleAdd() {
     writeCart(addItem(readCart(), productId, qty));
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    router.push('/cart');
   }
 
   return (
@@ -32,7 +32,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
         </select>
       </div>
       <Button onClick={handleAdd} variant="primary" size="lg" className="w-full">
-        {added ? '✓ カートに追加しました' : 'カートに入れる'}
+        カートに入れる
       </Button>
     </div>
   );
