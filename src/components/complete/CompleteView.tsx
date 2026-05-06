@@ -55,12 +55,9 @@ export function CompleteView() {
 
       <TweetButton summary={summary} />
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex justify-center">
         <Button variant="primary" asChild>
           <Link href="/">トップに戻る</Link>
-        </Button>
-        <Button variant="secondary" asChild>
-          <Link href="/cart">購入履歴を見る</Link>
         </Button>
       </div>
     </div>
