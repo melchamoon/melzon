@@ -126,10 +126,6 @@ export function Slot() {
       <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-8 w-full max-w-5xl mx-auto">
         {/* スロット本体 */}
         <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-white border border-[color:var(--color-line)] w-full max-w-lg relative overflow-hidden shrink-0">
-          <h2 className="text-3xl md:text-4xl font-black text-fg tracking-widest relative z-10">
-            メルゾンスロット
-          </h2>
-
           <div
             className="flex border-4 border-[color:var(--color-line-strong)] relative z-10 bg-white shadow-inner"
             style={reach ? { animation: 'reach-glow 0.6s linear infinite' } : undefined}
@@ -169,11 +165,6 @@ export function Slot() {
                 </span>
               </div>
             )}
-            {state.lastEarn === 0 && (
-              <div className="text-fg-muted text-lg animate-in fade-in duration-300 font-medium">
-                残念...
-              </div>
-            )}
           </div>
 
           <div className="flex flex-col items-center gap-6 w-full relative z-10">
@@ -183,7 +174,7 @@ export function Slot() {
               className="w-full md:w-64 h-16 text-2xl font-black bg-cta-yellow border-2 border-[color:var(--color-cta-yellow-border)] text-fg hover:brightness-95 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="spin-button"
             >
-              {isAnySpinning ? 'スピン中...' : cooldown ? '少々お待ちを...' : 'スピン！'}
+              {isAnySpinning ? '抽選中...' : cooldown ? 'Wait...' : 'スタート！'}
             </button>
 
             <div className="flex justify-between items-center w-full px-5 py-3 bg-surface border border-[color:var(--color-line)]">

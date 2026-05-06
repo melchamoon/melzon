@@ -21,7 +21,6 @@ export function GameCard({ slug, title, description, image }: Props) {
         </div>
       )}
       <div className="p-4">
-        <h2 className="text-base font-bold text-fg mb-1">{title}</h2>
         <p className="text-fg-muted text-sm">{description}</p>
       </div>
     </Link>

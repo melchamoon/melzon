@@ -35,8 +35,6 @@ export default async function GamePage({ params }: Props) {
         </div>
       )}
 
-      <h1 className="text-xl font-bold text-fg text-center">{title}</h1>
-
       {slug === 'slot' && <Slot />}
       {slug === 'click' && <Click />}
       {slug === 'memory' && (
