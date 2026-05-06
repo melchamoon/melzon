@@ -7,13 +7,13 @@ export function Footer() {
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="w-full bg-nav-slate text-white text-sm h-12 flex items-center justify-center hover:bg-[#485769] transition-colors"
+        className="w-full bg-nav-slate text-white text-sm h-12 flex items-center justify-center hover:bg-[#485769] transition-colors px-2"
       >
         ページの先頭へ戻る
       </button>
 
       {/* 最下段 */}
-      <div className="bg-nav-night text-white/70 text-xs py-6 text-center space-y-2">
+      <div className="bg-nav-night text-white/70 text-xs py-6 text-center space-y-2 px-2">
         <div className="flex items-center justify-center gap-3">
           <a
             href="https://x.com/melchamoon"
