@@ -58,7 +58,7 @@ export const HANDS: readonly HandConfig[] = [
   { id: 'SEVEN_BLUE_3',  label: '青セブン×3', prob: 0.002, payout: 500_000,  reels: ['SEVEN_BLUE', 'SEVEN_BLUE', 'SEVEN_BLUE'], highlight: 'blue' },
   { id: 'SEVEN_RED_3',   label: '赤セブン×3', prob: 0.012, payout: 100_000,   reels: ['SEVEN_RED',  'SEVEN_RED',  'SEVEN_RED' ], highlight: 'red'  },
   { id: 'SEVEN_BAR_MIX', label: 'セブン-BAR', prob: 0.015, payout: 10_000,       reels: null, displayReels: ['SEVEN_RED', 'SEVEN_RED', 'BAR'], note: '7-7-BAR' },
-  { id: 'PIERROT_3',     label: 'ピエロ×3',   prob: 0.002, payout: 5_000,       reels: ['PIERROT',    'PIERROT',    'PIERROT'   ] },
+  { id: 'PIERROT_3',     label: 'ピエロ×3',   prob: 0.0001, payout: 5_000,       reels: ['PIERROT',    'PIERROT',    'PIERROT'   ] },
   { id: 'CHERRY_3',      label: 'チェリー×3', prob: 0.030, payout: 2_500,       reels: ['CHERRY',     'CHERRY',     'CHERRY'    ] },
   { id: 'WATERMELON_3',  label: 'スイカ×3',   prob: 0.10,  payout: 2000,         reels: ['WATERMELON', 'WATERMELON', 'WATERMELON'] },
   { id: 'BELL_3',        label: 'ベル×3',     prob: 0.25,  payout: 500,         reels: ['BELL',       'BELL',       'BELL'      ] },
