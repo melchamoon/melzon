@@ -1,3 +1,4 @@
+'use client';
 import { getProducts } from '@/lib/products';
 import { CartView } from '@/components/cart/CartView';
 

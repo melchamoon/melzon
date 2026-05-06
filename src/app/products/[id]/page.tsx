@@ -1,26 +1,13 @@
+'use client';
+import { useParams } from 'next/navigation';
 import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
 import { getProduct } from '@/lib/products';
 import { ProductHeroImage } from '@/components/product/ProductHeroImage';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { BuyBox } from '@/components/product/BuyBox';
 
-type Props = { params: Promise<{ id: string }> };
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const p = getProduct(id);
-  if (!p) return {};
-  return {
-    title: p.name,
-    description: p.description,
-    openGraph: { images: [p.images[0]!] },
-    twitter: { images: [p.images[0]!] },
-  };
-}
-
-export default async function ProductPage({ params }: Props) {
-  const { id } = await params;
+export default function ProductPage() {
+  const { id } = useParams<{ id: string }>();
   const product = getProduct(id);
   if (!product) notFound();
 

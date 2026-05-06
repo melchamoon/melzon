@@ -1,24 +1,12 @@
+'use client';
+import { useParams } from 'next/navigation';
 import { notFound } from 'next/navigation';
 import { getProductsByCategory } from '@/lib/products';
 import { CATEGORIES } from '@/lib/categories';
 import { ProductGrid } from '@/components/product/ProductGrid';
-import type { Metadata } from 'next';
 
-type Props = { params: Promise<{ slug: string }> };
-
-export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ slug: c.slug }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const category = CATEGORIES.find((c) => c.slug === slug);
-  if (!category) return {};
-  return { title: category.label };
-}
-
-export default async function CategoryPage({ params }: Props) {
-  const { slug } = await params;
+export default function CategoryPage() {
+  const { slug } = useParams<{ slug: string }>();
   const category = CATEGORIES.find((c) => c.slug === slug);
   if (!category) notFound();
 

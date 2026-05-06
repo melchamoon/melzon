@@ -1,8 +1,6 @@
+'use client';
 import { getFeaturedProducts } from '@/lib/products';
 import { ProductGrid } from '@/components/product/ProductGrid';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = { title: 'ベストセラー' };
 
 export default function BestsellersPage() {
   const products = getFeaturedProducts().sort((a, b) => a.id.localeCompare(b.id));

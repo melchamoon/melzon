@@ -1,16 +1,15 @@
+'use client';
+import { Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { getProducts } from '@/lib/products';
 import { pickRandom } from '@/lib/recommend';
 import { generateDidYouMean } from '@/lib/search';
 import { ProductGrid } from '@/components/product/ProductGrid';
 
-type Props = {
-  searchParams: Promise<{ q?: string }>;
-};
-
-export default async function SearchPage({ searchParams }: Props) {
-  const { q } = await searchParams;
-  const query = q ?? '';
+function SearchContent() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q') ?? '';
   const products = getProducts();
   const recommended = pickRandom(products, 11);
   const didYouMean = generateDidYouMean(query, products);
@@ -42,5 +41,13 @@ export default async function SearchPage({ searchParams }: Props) {
         <ProductGrid products={recommended} />
       </section>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense>
+      <SearchContent />
+    </Suspense>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+import { useParams } from 'next/navigation';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getProducts } from '@/lib/products';
@@ -18,10 +20,8 @@ const GAME_BANNERS: Record<string, string> = {
   memory: '/banners/banner3.png',
 };
 
-type Props = { params: Promise<{ slug: string }> };
-
-export default async function GamePage({ params }: Props) {
-  const { slug } = await params;
+export default function GamePage() {
+  const { slug } = useParams<{ slug: string }>();
   if (!['slot', 'click', 'memory'].includes(slug)) notFound();
 
   const title = GAME_TITLES[slug]!;
