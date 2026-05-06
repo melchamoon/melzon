@@ -125,15 +125,15 @@ export function Slot() {
       `}</style>
       <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-8 w-full max-w-5xl mx-auto">
         {/* スロット本体 */}
-        <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-white border border-[color:var(--color-line)] w-full max-w-lg relative overflow-hidden shrink-0">
+        <div className="flex flex-col items-center gap-8 p-8 md:p-12 bg-gradient-to-b from-zinc-900 via-black to-zinc-900 border border-amber-500/40 w-full max-w-lg relative overflow-hidden shrink-0 shadow-2xl shadow-amber-500/10">
           <div
-            className="flex border-4 border-[color:var(--color-line-strong)] relative z-10 bg-white shadow-inner"
+            className="flex border-4 border-amber-500 relative z-10 bg-black shadow-[inset_0_0_20px_rgba(245,158,11,0.25)]"
             style={reach ? { animation: 'reach-glow 0.6s linear infinite' } : undefined}
           >
             {state.reels.map((sym, i) => (
               <div
                 key={i}
-                className={`w-24 h-24 md:w-32 md:h-32 bg-white flex items-center justify-center overflow-hidden relative${i < 2 ? ' border-r-2 border-[color:var(--color-line-strong)]' : ''}`}
+                className={`w-24 h-24 md:w-32 md:h-32 bg-white flex items-center justify-center overflow-hidden relative${i < 2 ? ' border-r-2 border-amber-500/60' : ''}`}
                 data-testid={`reel-${i}`}
               >
                 <div
@@ -157,10 +157,10 @@ export function Slot() {
           <div className="h-24 flex items-center justify-center w-full relative z-10">
             {state.lastEarn !== null && state.lastEarn > 0 && (
               <div className="flex flex-col items-center animate-in zoom-in duration-500 fade-in slide-in-from-bottom-4">
-                <span className="text-2xl md:text-3xl font-bold text-cta">
+                <span className="text-2xl md:text-3xl font-bold bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
                   {isJackpot ? '🎉 メガジャックポット！🎉' : '✨ 当たり！✨'}
                 </span>
-                <span className="text-xl text-price mt-2 font-mono bg-surface px-4 py-1 border border-[color:var(--color-line)]">
+                <span className="text-xl text-amber-300 mt-2 font-mono bg-black/70 px-4 py-1 border border-amber-500/50">
                   +{formatPoints(state.lastEarn)} pt
                 </span>
               </div>
@@ -171,24 +171,24 @@ export function Slot() {
             <button
               onClick={spin}
               disabled={isAnySpinning || cooldown}
-              className="w-full md:w-64 h-16 text-2xl font-black bg-cta-yellow border-2 border-[color:var(--color-cta-yellow-border)] text-fg hover:brightness-95 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full md:w-64 h-16 text-2xl font-black bg-gradient-to-b from-amber-300 via-amber-400 to-amber-600 border-2 border-amber-200 text-black tracking-widest shadow-lg shadow-amber-500/40 hover:brightness-110 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:saturate-50"
               data-testid="spin-button"
             >
               {isAnySpinning ? '抽選中...' : cooldown ? 'Wait...' : 'スタート！'}
             </button>
 
-            <div className="flex justify-between items-center w-full px-5 py-3 bg-surface border border-[color:var(--color-line)]">
-              <span className="text-fg-muted text-sm font-bold tracking-wider">残高</span>
-              <span className="text-fg text-2xl font-mono tracking-wider font-semibold">
-                {formatPoints(balance)} <span className="text-sm text-fg-muted">pt</span>
+            <div className="flex justify-between items-center w-full px-5 py-3 bg-black/70 border border-amber-500/40">
+              <span className="text-amber-300/80 text-sm font-bold tracking-wider">残高</span>
+              <span className="text-amber-100 text-2xl font-mono tracking-wider font-semibold">
+                {formatPoints(balance)} <span className="text-sm text-amber-300/70">pt</span>
               </span>
             </div>
           </div>
         </div>
 
         {/* ペイアウト表 */}
-        <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 bg-white border border-[color:var(--color-line)] shrink-0">
-          <h3 className="text-fg font-bold text-xl text-center border-b border-[color:var(--color-line)] pb-4 tracking-widest">
+        <div className="w-full max-w-sm lg:w-80 flex flex-col gap-6 p-6 md:p-8 bg-gradient-to-b from-zinc-900 via-black to-zinc-900 border border-amber-500/40 shrink-0 shadow-2xl shadow-amber-500/10">
+          <h3 className="text-amber-300 font-bold text-xl text-center border-b border-amber-500/40 pb-4 tracking-widest drop-shadow-[0_0_6px_rgba(245,158,11,0.4)]">
             配当表
           </h3>
 
@@ -222,14 +222,14 @@ function PaytableRow({
 }) {
   const borderClass =
     highlight === 'gold'
-      ? 'border-2 border-amber-400'
+      ? 'border-2 border-amber-300 shadow-[0_0_10px_rgba(252,211,77,0.4)]'
       : highlight === 'blue'
-        ? 'border-2 border-blue-500'
+        ? 'border-2 border-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.4)]'
         : highlight === 'red'
-          ? 'border-2 border-red-500'
-          : 'border border-[color:var(--color-line)]';
+          ? 'border-2 border-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.4)]'
+          : 'border border-amber-500/30';
   return (
-    <div className={`flex justify-between items-center bg-surface px-2 py-1.5 ${borderClass}`}>
+    <div className={`flex justify-between items-center bg-black/60 px-2 py-1.5 ${borderClass}`}>
       <div className="flex items-center gap-0.5">
         {symbols.map((s, i) => (
           <span key={i} className="relative w-6 h-6 md:w-7 md:h-7 inline-block">
@@ -242,10 +242,10 @@ function PaytableRow({
             />
           </span>
         ))}
-        {note && <span className="text-[9px] text-fg-muted ml-1">{note}</span>}
+        {note && <span className="text-[9px] text-amber-200/70 ml-1">{note}</span>}
       </div>
-      <div className="text-fg font-mono font-bold text-xs md:text-sm tracking-wider whitespace-nowrap">
-        {formatPoints(payout)} <span className="text-[10px] font-normal text-fg-muted">pt</span>
+      <div className="text-amber-100 font-mono font-bold text-xs md:text-sm tracking-wider whitespace-nowrap">
+        {formatPoints(payout)} <span className="text-[10px] font-normal text-amber-300/70">pt</span>
       </div>
     </div>
   );
