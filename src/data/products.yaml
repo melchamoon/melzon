@@ -10,7 +10,12 @@
 - id: p_002
   name: 金のめるちゃも像
   price: 1000000
-  image: /products/p_002.png
+  image:
+    - /products/p_002_1.png
+    - /products/p_002_2.png
+    - /products/p_002_3.png
+    - /products/p_002_4.png
+    - /products/p_002_5.png
   featured: true
   description: 純度の表示は無いが見た目は金。重量感あり。
   reviews:
