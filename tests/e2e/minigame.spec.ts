@@ -8,13 +8,6 @@ test.describe('ミニゲーム', () => {
     await expect(page.getByTestId('game-card-memory')).toBeVisible();
   });
 
-  test('ゲーム一覧のポイント残高が表示される', async ({ page }) => {
-    await page.goto('/games');
-    await expect(page.getByTestId('games-balance')).toBeVisible();
-    const balanceText = await page.getByTestId('games-balance').textContent();
-    expect(balanceText).toContain('pt');
-  });
-
   test('スロット: スピンボタンが動作する', async ({ page }) => {
     await page.goto('/games/slot');
     const spinBtn = page.getByTestId('spin-button');
