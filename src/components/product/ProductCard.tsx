@@ -18,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
       className="block bg-white border border-[color:var(--color-line)] rounded-sm overflow-hidden hover:shadow-[0_0_0_1px_var(--color-cta)] transition-shadow"
     >
       <div className="relative aspect-square bg-white">
-        {imgSrc && (
+        {imgSrc ? (
           <Image
             src={imgSrc}
             alt={product.name}
@@ -27,6 +27,10 @@ export function ProductCard({ product }: { product: Product }) {
             unoptimized
             onError={() => {}}
           />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-6 h-6 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+          </div>
         )}
       </div>
       <div className="p-3 space-y-1">

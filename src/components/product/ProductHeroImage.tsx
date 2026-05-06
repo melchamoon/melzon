@@ -9,7 +9,11 @@ export function ProductHeroImage({ product }: { product: Product }) {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   useEffect(() => { setImgSrc(pickProductImage(product)); }, [product]);
 
-  if (!imgSrc) return null;
+  if (!imgSrc) return (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="w-8 h-8 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
   return (
     <Image
       src={imgSrc}

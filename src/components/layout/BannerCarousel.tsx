@@ -5,6 +5,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { BannerSlide } from '@/types/game';
 
+function SlideImage({ src, alt, priority }: { src: string; alt: string; priority: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative w-full aspect-[3/1] bg-gray-100">
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+      <Image src={src} alt={alt} fill className="object-cover" priority={priority} onLoad={() => setLoaded(true)} />
+    </div>
+  );
+}
+
 const PEEK = 120;
 const GAP = 8;
 const MOBILE_BREAKPOINT = 768;
@@ -99,9 +113,7 @@ export function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
 
   const renderInner = (slide: BannerSlide, priority: boolean) => {
     const inner = slide.image ? (
-      <div className="relative w-full aspect-[3/1]">
-        <Image src={slide.image} alt={slide.title} fill className="object-cover" priority={priority} />
-      </div>
+      <SlideImage src={slide.image} alt={slide.title} priority={priority} />
     ) : (
       <div className="bg-nav-sub w-full aspect-[3/1] flex flex-col items-center justify-center px-8 text-center">
         <h2 className="text-2xl md:text-4xl font-bold text-white">
