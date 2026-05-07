@@ -41,6 +41,10 @@ export function Memory({ products }: { products: Product[] }) {
 
   useEffect(() => {
     setCards(shuffleCards(initCards(products, pickProductImage)));
+    products.slice(0, 6).forEach((p) => {
+      const img = new window.Image();
+      img.src = pickProductImage(p);
+    });
   }, [products]);
   const [misses, setMisses] = useState(0);
   const [cleared, setCleared] = useState(false);
